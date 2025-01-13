@@ -25,15 +25,42 @@
                 VALUES (:denom_social, :pays_assu, :ville_assu, :adresse_assu, :code_interne, :numeroAgree, :Rccm, :numero_impot, :emailEntre, :telephone_Entr, :nomRespo, :emailRespo, :TelephoneRespo, :etatpartenaire)";
                 return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
             }
+            public function DeletePartenaire($idpartenaire){
+                $query = "DELETE FROM partenaire where idpartenaire = :idpartenaire";
+                $paramDelete=[':idutile'=>$idpartenaire];
+                return $this->executeQuery($query, $paramDelete);//cfr les explication de la methode executeQuery ci-haut
+    
+            }
             public function fx_UpdatePartenaire($data){
-                $query = "UPDATE partenaire set denom_social = :denom_social, pays_assu = :pays_assu, ville_assu = :ville_assu, adresse_assu = :adresse_assu, code_interne = :code_interne,
-                 numeroAgree = :numeroAgree, Rccm = :Rccm, numero_impot = :numero_impot, emailEntre = :emailEntre, telephone_Entr = :telephone_Entr, nomRespo = :nomRespo, emailRespo = :emailRespo, TelephoneRespo = :TelephoneRespo where idpartenaire = :idpartenaire ";
-                return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
+               // $query = "UPDATE partenaire set denom_social = :denom_social, pays_assu = :pays_assu, ville_assu = :ville_assu, adresse_assu = :adresse_assu, code_interne = :code_interne,
+                 //numeroAgree = :numeroAgree, Rccm = :Rccm, numero_impot = :numero_impot, emailEntre = :emailEntre, telephone_Entr = :telephone_Entr, nomRespo = :nomRespo, emailRespo = :emailRespo, TelephoneRespo = :TelephoneRespo where idpartenaire = :idpartenaire ";
+                //return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
+
+                $Rqte = "UPDATE partenaire SET ";
+                $dataset = [];
+                $params = [];
+            
+                foreach ($data as $key => $value) {
+                    if ($key !== 'idpartenaire') {
+                        $dataset[] = "$key = :$key";
+                    }
+                    $params[$key] = $value;
+                }
+            
+                $Rqte .= implode(', ', $dataset) . " WHERE idpartenaire = :idpartenaire";
+            
+                return $this->executeQuery($Rqte, $params);
+    
             }
             public function ListePartenaire(){
                 $query = "SELECT idpartenaire, denom_social, pays_assu, ville_assu, adresse_assu, code_interne, numeroAgree, Rccm, numero_impot, emailEntre,
-                 telephone_Entr, nomRespo, emailRespo, TelephoneRespo, etatpartenaire, adresseip, FROM partenaire";
+                 telephone_Entr, nomRespo, emailRespo, TelephoneRespo, etatpartenaire, adresseip FROM partenaire where etatpartenaire = 1";
                 return $this->executeQuery($query);
+            }
+            public function RecherchePartenaire($idpartenaire){
+                $query = "SELECT idpartenaire, denom_social, pays_assu, ville_assu, adresse_assu, code_interne, numeroAgree, Rccm, numero_impot, emailEntre,
+                 telephone_Entr, nomRespo, emailRespo, TelephoneRespo, etatpartenaire, adresseip FROM partenaire where idpartenaire = :idpartenaire";
+                return $this->executeQuery($query, [':idpartenaire' => $idpartenaire]);
             }
             public function fx_ActiverPartenaire($idpartenaire){
                 $query = "UPDATE partenaire set etatpartenaire=1 where idpartenaire = :idpartenaire LIMIT 1";

@@ -32,16 +32,35 @@ class Client{
         return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
     }
     public function fx_UpdateClient($data) {//data sera notre tableau qui va recevoir les données de paramètre
-        $query = "Update client set idsite = :idsite, den_social = :den_social, pays_entr = :pays_entr, ville_entr =:ville_entr, adresse_entr = :adresse_entr, code_interne = :code_interne, id_nat= :id_nat, telephone_client = :telephone_client, nom_respon = :nom_respon, email_respon = :email_respon, telephone_respo = :telephone_respo, numclasseur=:numclasseur, datecrea = :datecrea, etat = :etat where idclient =  :idclient LIMIT 1";
-        return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
+       
+        $Rqte = "UPDATE client SET ";
+        $dataset = [];
+        $params = [];
+    
+        foreach ($data as $key => $value) {
+            if ($key !== 'idclient') {
+                $dataset[] = "$key = :$key";
+            }
+            $params[$key] = $value;
+        }
+    
+        $Rqte .= implode(', ', $dataset) . " WHERE idclient = :idclient";
+    
+        return $this->executeQuery($Rqte, $params);
+    }
+    public function DeleteClientssss($idclient){
+        $query = "DELETE FROM client where idclient = :idclient";
+        $paramDelete=[':idutile'=>$idclient];
+        return $this->executeQuery($query, $paramDelete);//cfr les explication de la methode executeQuery ci-haut
+
     }
     public function ListeGlobalClient() {
-        $query = "SELECT c.idclient, s.idsite,libsite, den_social, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite";
+        $query = "SELECT c.idclient, s.idsite,libsite, den_social, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite LIMIT 50";
         return $this->executeQuery($query);
     }
     public function fx_RechercheClientID($idclient){
         $query = "SELECT c.idclient, s.idsite,libsite, den_social, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite where idclient = :idclient";
-        return $this->executeQuery($query);
+        return $this->executeQuery($query, [':idclient' => $idclient]);
     }
     public function fx_ActiverClient($idclient){
         $query = "Update client set etat=1 where idclient = :idclient LIMIT 1";
