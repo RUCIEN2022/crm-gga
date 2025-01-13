@@ -1,7 +1,0 @@
-# num@period  delay(unused) name script...
-#
-# uncomment to purge files older than 7days in TMP
-#1@daily 0 purgetmp find /srv/data/tmp -type f -mtime +7 -delete > /dev/null
-25@daily 0 recuperation_base php -f /wamp64/www/smartbiz/app/codes/fonctions/support_tech.php
-1@monthly 0 recuperation_base php -f /wamp64/www/smartbiz/app/codes/fonctions/support_tech.php
-
