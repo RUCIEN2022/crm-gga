@@ -100,16 +100,14 @@
         }
         public function AuthentifierUser($email,$motpasse){
                 
-                //$query = "SELECT * FROM utilisateur WHERE email = :email and motpasse = :motpasse";
-                //$ParamAut=[':email' => $email, ':motpasse' => $this->TrouverMP($motpasse)];
-                //return $this->executeQuery($query, $ParamAut);//cfr les explication de la methode executeQuery ci-haut
                             //-----------from jmas---------
                                 $zmotpass=$this->TrouverMP($email);
                                 $zmot=$zmotpass[0];
+                                
                 
                                 $query = "SELECT idutile, idposte, idsite, nomutile, prenomutile, email, photo, motpasse, etatutile 
                                 FROM utilisateur WHERE email = :email and motpasse = :motpasse";
-                                $result = $this->executeQuery($query, ['email' => $email, 'motpasse' => $zmot['motpasse']]);
+                                $result = $this->executeQuery($query, ['email' => $email, 'motpasse' => $motpasse]);
                                 if (!$result || count($result) === 0) {
                                     throw new Exception("Aucun utilisateur trouvé avec cet email et cet mot de passe.");
                                 }
@@ -129,7 +127,7 @@
                                 //}
                               
                 
-                        }
+        }
                         public function EmailCheck($email) {
                             $query = "SELECT COUNT(*) AS count FROM utilisateur WHERE email = :email";
                             $result = $this->executeQuery($query, ['email' => $email]);
