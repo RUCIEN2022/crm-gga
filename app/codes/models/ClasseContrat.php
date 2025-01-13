@@ -2,7 +2,6 @@
 
 include_once(__DIR__ . '/Config/ParamDB.php');
 
-
 class Contrat {
     private $conn;
 
@@ -62,31 +61,164 @@ class Contrat {
         )";
         return $this->executeQuery($query, $data);
     }
-    public function listeGlobalContrats() {
-        $query = "SELECT police_contrat.idpolice,police_contrat.type_contrat,police_contrat.etat_contrat,
-        client.idclient,client.den_social,client.pays_entr,client.ville_entr 
-        FROM police_contrat,client 
-        WHERE police_contrat.idclient=client.idclient";
-        return $this->executeQuery($query);
+    // mise à jour police contrat
+    public function fx_UpdateContrat($data) {
+        $Rqte = "UPDATE police_contrat SET ";
+        $dataset = [];
+        $params = [];
+        foreach ($data as $key => $value) {
+            if ($key !== 'idpolice') {
+                $dataset[] = "$key = :$key";
+            }
+            $params[$key] = $value;
+        }
+        $Rqte .= implode(', ', $dataset) . " WHERE idpolice = :idpolice";
+        return $this->executeQuery($Rqte, $params);
     }
    
-    // liste contrats autofin par agent
+    public function fx_DeleteContrat($id) {
+        $Rqte = "DELETE FROM police_contrat WHERE idpolice = :idpolice";
+        $params = ['idpolice' => $id];
+        return $this->executeQuery($Rqte, $params);
+    }    
+    public function listeGlobalContrats($offset = 0, $limit = 50) {
+        $query = "
+            SELECT 
+                pc.idpolice, 
+                pc.type_contrat, 
+                pc.etat_contrat, 
+                c.idclient, 
+                c.den_social, 
+                c.pays_entr, 
+                c.ville_entr, 
+                pc.cocher_couvr_nat, 
+                pc.cocher_couvr_inter, 
+                pc.effectif_Benef, 
+                pc.frais_gest_gga, 
+                p.denom_social
+            FROM 
+                police_contrat AS pc
+            INNER JOIN 
+                client AS c ON pc.idclient = c.idclient
+            INNER JOIN 
+                partenaire AS p ON pc.code_partenaire = p.idpartenaire
+            LIMIT :offset, :limit
+        ";
+        return $this->executeQuery($query, ['offset' => $offset, 'limit' => $limit]);
+    }
+    
+    public function FindContrats($code) {
+        $query = "
+            SELECT 
+                pc.idpolice, 
+                pc.type_contrat, 
+                pc.etat_contrat, 
+                c.idclient, 
+                c.den_social, 
+                c.pays_entr, 
+                c.ville_entr, 
+                pc.cocher_couvr_nat, 
+                pc.cocher_couvr_inter, 
+                pc.effectif_Benef, 
+                pc.frais_gest_gga, 
+                p.denom_social
+            FROM 
+                police_contrat AS pc
+            INNER JOIN 
+                client AS c ON pc.idclient = c.idclient
+            INNER JOIN 
+                partenaire AS p ON pc.code_partenaire = p.idpartenaire
+            WHERE 
+                pc.idpolice = :code
+        ";
+        return $this->executeQuery($query, ['code' => $code]);
+    }
+    
+   
     public function listeGlobalContratsAutofin() {
-        $query = "SELECT 
-            c.idpolice, c.budget_total, c.modalite_AF, c.appel_fond_init, c.seuil_Sinis_declenAF, 
-            c.frais_gest_gga, c.modalite_facture, c.cocher_si_fg_index_sin, c.modalite_fc, 
-            c.cocher_couv_nat, c.cocher_couv_int, u.nomutile, u.prenomutile, u.email
-        FROM contrat_autofinance AS c
-        INNER JOIN utilisateur AS u ON c.idpolice = u.idutile
-        WHERE u.idutile = :idutile";
-        return $this->executeQuery($query);
+        $query = "
+            SELECT 
+                pc.idpolice, 
+                pc.type_contrat, 
+                pc.etat_contrat, 
+                c.idclient, 
+                c.den_social, 
+                c.pays_entr, 
+                c.ville_entr, 
+                pc.cocher_couvr_nat, 
+                pc.cocher_couvr_inter, 
+                pc.effectif_Benef, 
+                pc.frais_gest_gga, 
+                p.denom_social
+            FROM 
+                police_contrat AS pc
+            INNER JOIN 
+                client AS c ON pc.idclient = c.idclient
+            INNER JOIN 
+                partenaire AS p ON pc.code_partenaire = p.idpartenaire
+            WHERE 
+                pc.type_contrat = :type_contrat
+        ";
+        return $this->executeQuery($query, ['type_contrat' => 2]);
     }
+    
+// liste contrats assurance
+public function listeGlobalContratsAssur() {
+    $query = "
+        SELECT 
+            pc.idpolice, 
+            pc.type_contrat, 
+            pc.etat_contrat, 
+            c.idclient, 
+            c.den_social, 
+            c.pays_entr, 
+            c.ville_entr, 
+            pc.cocher_couvr_nat, 
+            pc.cocher_couvr_inter, 
+            pc.effectif_Benef, 
+            pc.frais_gest_gga, 
+            p.denom_social
+        FROM 
+            police_contrat AS pc
+        INNER JOIN 
+            client AS c ON pc.idclient = c.idclient
+        INNER JOIN 
+            partenaire AS p ON pc.code_partenaire = p.idpartenaire
+        WHERE 
+            pc.type_contrat = :type_contrat
+    ";
+    return $this->executeQuery($query, ['type_contrat' => 1]);
+}
 
-    // Liste contrats par assureur
-    public function listeContratsParAssureur($idAssureur) {
-        $query = "SELECT * FROM contrat_autofinance WHERE idAssureur = :idAssureur";
-        return $this->executeQuery($query, [':idAssureur' => $idAssureur]);//[':idAssureur' => $idAssureur] = tableau contenant les val de param
-    }
+
+
+public function listeContratsParAssureur($idAssureur) {
+    $query = "
+        SELECT 
+            pc.idpolice, 
+            pc.type_contrat, 
+            pc.etat_contrat, 
+            pc.cocher_couvr_nat, 
+            pc.cocher_couvr_inter, 
+            pc.effectif_Benef, 
+            pc.frais_gest_gga, 
+            c.idclient, 
+            c.den_social, 
+            c.pays_entr, 
+            c.ville_entr, 
+            p.denom_social
+        FROM 
+            police_contrat AS pc
+        INNER JOIN 
+            client AS c ON pc.idclient = c.idclient
+        INNER JOIN 
+            partenaire AS p ON pc.code_partenaire = p.idpartenaire
+        WHERE 
+            pc.code_partenaire = :idAssureur
+    ";
+    return $this->executeQuery($query, ['idAssureur' => $idAssureur]);
+}
+
 
     // total des contrats
     public function totalGlobalContrats() {
@@ -190,17 +322,26 @@ class Contrat {
         }
     }
 
-    //historique mouvements des effectifs
+    //historique mouvements des effectifs d'un contrat
     public function historiqueMouvEffectif($idContrat) {
         $sql = "
-            SELECT * 
-            FROM mouvementeffect 
-            WHERE idpolice = :idContrat 
-            ORDER BY date_ops DESC
+            SELECT 
+                me.idmou AS id_mouvement,
+                me.idpolice AS id_contrat,
+                me.typeops AS type_operation,
+                me.nombre AS effectif_modifie,
+                me.date_ops AS date_operation
+            FROM 
+                mouvementeffect AS me
+            WHERE 
+                me.idpolice = :idContrat
+            ORDER BY 
+                me.date_ops DESC
         ";
         $params = [':idContrat' => $idContrat];
         return $this->executeQuery($sql, $params);
     }
+    
 // -----------------------------Reporting-------------------------------------------------
     // Rapt global Production
     public function rapportGlobalProduction() {
@@ -219,10 +360,51 @@ class Contrat {
         return $this->executeQuery($query, [':idsite' => $idsite, ':idagent' => $idagent]);
     }
     // Etat prod par assureur
-    public function etatProductionParAssureur($idAssureur) {
-        $query = "SELECT COUNT(*) AS total_contrats, SUM(budget_total) AS total_budget FROM contrat_autofinance WHERE idAssureur = :idAssureur";
-        return $this->executeQuery($query, [':idAssureur' => $idAssureur]);
+    public function etatEtChiffreAffaireParAssureur() {
+        $sql = "
+            SELECT 
+                p.denom_social AS assureur,
+                COUNT(pc.idpolice) AS total_contrats,
+                SUM(CASE 
+                    WHEN pc.etat_contrat = 'actif' THEN 1 
+                    ELSE 0 
+                END) AS contrats_actifs,
+                SUM(CASE 
+                    WHEN pc.etat_contrat = 'expiré' THEN 1 
+                    ELSE 0 
+                END) AS contrats_expires,
+                SUM(pc.frais_gest_gga) AS chiffre_affaire
+            FROM 
+                police_contrat pc
+            JOIN 
+                partenaire p ON pc.code_partenaire = p.idpartenaire
+            GROUP BY 
+                p.denom_social
+            ORDER BY 
+                chiffre_affaire DESC
+        ";
+        return $this->executeQuery($sql);
     }
+//analyse comparative de chaque etat de production
+public function analyseComparativeParAssureur() {
+    $sql = "
+        SELECT 
+            p.denom_social AS assureur,
+            pc.etat_contrat AS etat,
+            COUNT(pc.idpolice) AS total_contrats,
+            SUM(pc.frais_gest_gga) AS chiffre_affaire
+        FROM 
+            police_contrat pc
+        JOIN 
+            partenaire p ON pc.code_partenaire = p.idpartenaire
+        GROUP BY 
+            p.denom_social, pc.etat_contrat
+        ORDER BY 
+            p.denom_social, total_contrats DESC
+    ";
+    return $this->executeQuery($sql);
+}
+
     // Total FG previsionnel
     public function TotalFrais_de_Gestion_prevision() {
         $query = "SELECT COUNT(*) AS total_contrats, SUM(frais_gest_gga) AS frais_gest FROM police_contrat WHERE etat_contrat = 1";

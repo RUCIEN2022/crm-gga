@@ -69,13 +69,38 @@ try {
                 }
             }
             break;
-
+            //Mise à jour contrat
+            case 'PUT':
+                if ($action === 'updtcontrat' && $id) { //j'appel l'action + id 
+                    // Récup data envoyées
+                    $data = json_decode(file_get_contents("php://input"), true);
+                    if ($data) {
+                        $response = $contrat->fx_UpdateContrat($id, $data);
+                    } else {
+                        $response = ['status' => 400, 'message' => 'Données manquantes pour la mise à jour'];
+                    }
+                } else {
+                    $response = ['status' => 400, 'message' => 'Action ou ID manquant pour la mise à jour'];
+                }
+                break;
+                //Suppression
+                case 'DELETE':
+                    if ($action === 'suppcontrat' && $id) {//j'appel l'action + id 
+                        $response = $contrat->fx_DeleteContrat($id);
+                        if ($response) {
+                            $response = ['status' => 200, 'message' => 'Le Contrat est supprimé avec succès!'];
+                        } else {
+                            $response = ['status' => 500, 'message' => 'Echec de suppression du contrat'];
+                        }
+                    } else {
+                        $response = ['status' => 400, 'message' => 'Action ou ID manquant pour effectuer cette opération'];
+                    }
+                    break;
+                
         default:
             $response = ['status' => 400, 'message' => 'Méthode HTTP non supportée'];
     }
 } catch (Exception $e) {
     $response = ['status' => 500, 'message' => $e->getMessage()];
 }
-
-// Retourner la réponse en JSON
 echo json_encode($response);
