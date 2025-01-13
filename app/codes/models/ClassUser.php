@@ -82,42 +82,6 @@
 
         }
 
-        public function fx_resetpwd($email){
-        // Générer un mot de passe temporaire
-                $temporaryPassword = $this->RandomPassword();
-                $hashedPassword = password_hash($temporaryPassword, PASSWORD_BCRYPT);
-
-                $Rqte = "UPDATE utilisateur SET motpasse = :motpasse WHERE email = :email";
-                $params = [
-                    'motpasse' => $hashedPassword,
-                    'email' => $email
-                ];
-                $success = $this->executeQuery($Rqte, $params);
-                if ($success) {
-                    return [
-                        'status' => 'success',
-                        'temporaryPassword' => $temporaryPassword,
-                        'message' => 'Mot de passe réinitialisé avec succès.'
-                    ];
-                } else {
-                    return [
-                        'status' => 'error',
-                        'message' => 'Erreur lors de la réinitialisation du mot de passe.'
-                    ];
-                }
-            }
-
-        
-            private function RandomPassword($length = 10)
-            {
-                $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-                $password = '';
-                for ($i = 0; $i < $length; $i++) {
-                    $password .= $characters[random_int(0, strlen($characters) - 1)];
-                }
-                return $password;
-            }
-
 
         
              
