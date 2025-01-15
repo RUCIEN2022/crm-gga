@@ -12,6 +12,7 @@
     <style>
         body{
             background-color: #f4f4f9;
+            font-size: 12px;
         }
         /* Effet de tremblement (shake) */
 @keyframes shake {
@@ -108,11 +109,7 @@
                 </div>
             </nav>
 
-            <div class="container mt-2">
-   
-    
-        <div class="container mt-2">
-  
+          
     <div class="card shadow">
         <div class="card-body">
         
@@ -1042,9 +1039,6 @@
             </div>
         </div>
     </div>
-</div>
-       
-</div>
 
     </div>
 </div>

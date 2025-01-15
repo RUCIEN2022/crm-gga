@@ -225,15 +225,44 @@ public function listeContratsParAssureur($idAssureur) {
         $query = "SELECT COUNT(*) AS total_contrats FROM police_contrat";
         return $this->executeQuery($query);
     }
+    // total des contrats
+    public function totalNewContrats() {
+        $query = "SELECT COUNT(*) AS total_newcontrats FROM police_contrat WHERE etat_contrat=0";
+        return $this->executeQuery($query);
+    }
     // total des contrats assurance
     public function totalGlobalContratsAssurance() {
         $query = "SELECT COUNT(*) AS total_contratsAss FROM police_contrat WHERE type_contrat=1 AND etat_contrat=1";
         return $this->executeQuery($query);
     }
+    // Total des contrats d'assurance pour le mois en cours
+public function totalGlobalContratsAssuranceMoisEncours() {
+    $query = "
+        SELECT COUNT(*) AS total_contratsAss_mois
+        FROM police_contrat
+        WHERE type_contrat = 1
+          AND etat_contrat = 1
+          AND MONTH(datecreate) = MONTH(CURRENT_DATE())
+          AND YEAR(datecreate) = YEAR(CURRENT_DATE())
+    ";
+    return $this->executeQuery($query);
+}
+
     // total des contrats autofin
     public function totalGlobalContratsAutoFin() {
     $query = "SELECT COUNT(*) AS total_contratsAutoFin FROM police_contrat WHERE type_contrat=2 AND etat_contrat=1";
     return $this->executeQuery($query);
+    }
+    public function totalGlobalContratsAutoFinMoisEncours() {
+        $query = "
+            SELECT COUNT(*) AS total_contratsAss_mois
+            FROM police_contrat
+            WHERE type_contrat = 2
+              AND etat_contrat = 1
+              AND MONTH(datecreate) = MONTH(CURRENT_DATE())
+              AND YEAR(datecreate) = YEAR(CURRENT_DATE())
+        ";
+        return $this->executeQuery($query);
     }
     // total des contrats totalGlobalContratsVoyage
     public function totalGlobalContratsVoyage() {
@@ -259,9 +288,11 @@ public function listeContratsParAssureur($idAssureur) {
     }
     // Nombre bénéf pour un contrat spécifique
     public function totalBeneficiairesParContrat($idContrat) {
-        $query = "SELECT SUM(effectif_Benef) AS total_beneficiaires FROM police_contrat WHERE idpolice = :idContrat AND etat_contrat=1";
+        $query = "SELECT SUM(effectif_Benef) AS total_beneficiaires 
+        FROM police_contrat WHERE idpolice = :idContrat AND etat_contrat=1";
         return $this->executeQuery($query, [':idContrat' => $idContrat]);
     }
+    
     // Suspendre contrat etat_contrat=2
     public function suspendreContrat($idContrat) {
         $query = "UPDATE police_contrat SET etat_contrat = '2' WHERE idpolice = :idContrat LIMIT 1";
@@ -390,7 +421,6 @@ public function analyseComparativeParAssureur() {
     $sql = "
         SELECT 
             p.denom_social AS assureur,
-            pc.etat_contrat AS etat,
             COUNT(pc.idpolice) AS total_contrats,
             SUM(pc.frais_gest_gga) AS chiffre_affaire
         FROM 
@@ -398,12 +428,38 @@ public function analyseComparativeParAssureur() {
         JOIN 
             partenaire p ON pc.code_partenaire = p.idpartenaire
         GROUP BY 
-            p.denom_social, pc.etat_contrat
+            p.denom_social
+        ORDER BY 
+            p.denom_social, total_contrats DESC
+    ";
+    
+    // Exécution de la requête
+    $result = $this->executeQuery($sql); // Remplacez avec la méthode adéquate pour exécuter la requête
+    
+    // Retour des données sous forme de tableau
+    return $result;
+}
+
+
+/*
+public function analyseComparativeParAssureur() {
+    $sql = "
+        SELECT 
+            p.denom_social AS assureur,
+            COUNT(pc.idpolice) AS total_contrats,
+            SUM(pc.frais_gest_gga) AS chiffre_affaire
+        FROM 
+            police_contrat pc
+        JOIN 
+            partenaire p ON pc.code_partenaire = p.idpartenaire
+        GROUP BY 
+            p.denom_social
         ORDER BY 
             p.denom_social, total_contrats DESC
     ";
     return $this->executeQuery($sql);
 }
+    */
 
     // Total FG previsionnel
     public function TotalFrais_de_Gestion_prevision() {
@@ -415,15 +471,33 @@ public function analyseComparativeParAssureur() {
         $query = "SELECT COUNT(*) AS total_contrats, SUM(frais_gest_gga) AS frais_gest FROM police_contrat WHERE etat_contrat = 1";
         return $this->executeQuery($query);
     }
-    // Total couv nationale
     public function Total_Couverture_Nationale() {
-        $query = "SELECT COUNT(cocher_couv_nat) AS total_couvNat FROM police_contrat ";
+        $query = "SELECT SUM(cocher_couvr_nat) AS total_couvNat FROM police_contrat";
         return $this->executeQuery($query);
     }
-    // Total couv internationale
     public function Total_Couverture_Internationale() {
-        $query = "SELECT COUNT(cocher_couvr_inter) AS total_couvInterNat FROM police_contrat";
+        $query = "SELECT SUM(cocher_couvr_inter) AS total_couvInterNat FROM police_contrat";
         return $this->executeQuery($query);
     }
+    public function getTotalTaches() {
+        $query = "SELECT COUNT(*) AS total_taches FROM taches";
+        return $this->executeQuery($query);
+    }
+
+    public function getTachesEnCours() {
+        $query = "SELECT * FROM taches WHERE statut = '1'";
+        return $this->executeQuery($query);
+    }
+
+    public function getTachesTerminees() {
+        $query = "SELECT * FROM taches WHERE statut = '2'";
+        return $this->executeQuery($query);
+    }
+
+    public function getTachesRetard() {
+        $query = "SELECT * FROM taches WHERE statut = '1' AND datelimite < CURDATE()";
+        return $this->executeQuery($query);
+    }
+
 }
 ?>

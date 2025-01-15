@@ -1,5 +1,5 @@
 
-<nav id="sidebar" class="active">
+<nav id="sidebar" class="">
             <div class="sidebar-header">
                 <h4 class="text-white fw-bold p-3">CRM-GGA</h4>
             </div>

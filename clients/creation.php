@@ -10,6 +10,7 @@
     <style>
         body{
             background-color: #f4f4f9;
+            font-size: 12px;
         }
         /* Effet de tremblement (shake) */
 @keyframes shake {

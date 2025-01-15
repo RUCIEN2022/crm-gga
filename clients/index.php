@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="style.css">
     <style>
         body{
-            background-color: #f4f4f9;
+            font-family: tahoma,sans-serif;
+            font-size: 12px;
         }
         /* Effet de tremblement (shake) */
 @keyframes shake {
@@ -89,7 +90,7 @@
                         <i class="bi bi-list"></i>
                     </button>
                     <div class="d-flex justify-content-between w-100 align-items-center">
-                        <h2>Clientts</h2>
+                        <h2>Clients</h2>
                         <div class="user-info">
                             <span class="user-name">Bonjour, John Masini</span>
                             <span class="time" id="currentTime"></span>
@@ -108,11 +109,6 @@
                 </div>
             </nav>
 
-            <div class="container mt-2">
-   
-    
-        <div class="container mt-2">
-  
     <div class="card shadow">
         <div class="card-body">
         
@@ -1042,10 +1038,8 @@
             </div>
         </div>
     </div>
-</div>
-       
-</div>
 
+    
     </div>
 </div>
 

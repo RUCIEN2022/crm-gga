@@ -100,70 +100,65 @@
         }
         public function AuthentifierUser($email,$motpasse){
                 
-                            //-----------from jmas---------
-                                $zmotpass=$this->TrouverMP($email);
-                                $zmot=$zmotpass[0];
-                                
-                
-                                $query = "SELECT idutile, idposte, idsite, nomutile, prenomutile, email, photo, motpasse, etatutile 
-                                FROM utilisateur WHERE email = :email and motpasse = :motpasse";
-                                $result = $this->executeQuery($query, ['email' => $email, 'motpasse' => $motpasse]);
-                                if (!$result || count($result) === 0) {
-                                    throw new Exception("Aucun utilisateur trouvé avec cet email et cet mot de passe.");
-                                }
-                
-                                $user = $result[0]; // Récupérer l'utilisateur
-                                
-                                // check le mot de passe haché ici avec password_verify
-                                
-                              // if (password_verify($motpasse, $user['motpasse'])) { 
-                                   // throw new Exception("Mot de passe incorrect.");
-                                     // Supprimer le mot de passe avant de retourner les données
-                                        unset($user['motpasse']);
-                                        return $result;
-                                        //return ['status' => 200, 'message' => 'Authentification réussie', 'data' => $user];
-                               //}else{
-                                 //   throw new Exception("Mot de passe incorrect.");
-                                //}
+        //-----------from jmas---------
+            $zmotpass=$this->TrouverMP($email);
+            $zmot=$zmotpass[0];
+            $query = "SELECT idutile, idposte, idsite, nomutile, prenomutile, email, photo, motpasse, etatutile 
+            FROM utilisateur WHERE email = :email and motpasse = :motpasse";
+            $result = $this->executeQuery($query, ['email' => $email, 'motpasse' => $motpasse]);
+            if (!$result || count($result) === 0) {
+                throw new Exception("Aucun utilisateur trouvé avec cet email et cet mot de passe.");
+            }
+
+            $user = $result[0]; // Récupérer l'utilisateur
+            
+            // check le mot de passe haché ici avec password_verify
+            
+            // if (password_verify($motpasse, $user['motpasse'])) { 
+                // throw new Exception("Mot de passe incorrect.");
+                    // Supprimer le mot de passe avant de retourner les données
+                    unset($user['motpasse']);
+                    return $result;
+                    //return ['status' => 200, 'message' => 'Authentification réussie', 'data' => $user];
+            //}else{
+                //   throw new Exception("Mot de passe incorrect.");
+            //}
                               
-                
         }
-                        public function EmailCheck($email) {
-                            $query = "SELECT COUNT(*) AS count FROM utilisateur WHERE email = :email";
-                            $result = $this->executeQuery($query, ['email' => $email]);
-                            // Retourne vrai si aucun utilisateur n'a cet email
-                            return isset($result[0]['count']) && $result[0]['count'] == 0;
-                        }
+        public function EmailCheck($email) {
+            $query = "SELECT COUNT(*) AS count FROM utilisateur WHERE email = :email";
+            $result = $this->executeQuery($query, ['email' => $email]);
+            // Retourne vrai si aucun utilisateur n'a cet email
+            return isset($result[0]['count']) && $result[0]['count'] == 0;
+        }
                                 
-                        public function CreerUser($data) {
-                            // Vérifier si l'email est fourni et valide
-                            if (!isset($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-                                throw new Exception("L'email fourni est invalide ou manquant.");
-                            }
-                
-                            // Vérifier si l'email est unique
-                            if (!$this->EmailCheck($data['email'])) {
-                                throw new Exception("Cet email est déjà utilisé.");
-                            }
-                
-                            // Valider et hacher le mot de passe
-                            if (!isset($data['motpasse']) || empty($data['motpasse'])) {
-                                throw new Exception("Le mot de passe est obligatoire.");
-                            }
-                            //hachage
-                            $data['motpasse'] = password_hash($data['motpasse'], PASSWORD_DEFAULT);
-                
-                            // reqte d'insertion
-                            $query = "INSERT INTO utilisateur (
-                                idposte, idsite, nomutile, prenomutile, email, photo, motpasse, etatutile
-                            ) VALUES (
-                                :idposte, :idsite, :nomutile, :prenomutile, :email, :photo, :motpasse, :etatutile
-                            )";
-                
-                            return $this->executeQuery($query, $data);
-                        }
+        public function CreerUser($data) {
+            // Vérifier si l'email est fourni et valide
+            if (!isset($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                throw new Exception("L'email fourni est invalide ou manquant.");
+            }
+
+            // Vérifier si l'email est unique
+            if (!$this->EmailCheck($data['email'])) {
+                throw new Exception("Cet email est déjà utilisé.");
+            }
+
+            // Valider et hacher le mot de passe
+            if (!isset($data['motpasse']) || empty($data['motpasse'])) {
+                throw new Exception("Le mot de passe est obligatoire.");
+            }
+            //hachage
+            $data['motpasse'] = password_hash($data['motpasse'], PASSWORD_DEFAULT);
+
+            // reqte d'insertion
+            $query = "INSERT INTO utilisateur (
+                idposte, idsite, nomutile, prenomutile, email, photo, motpasse, etatutile
+            ) VALUES (
+                :idposte, :idsite, :nomutile, :prenomutile, :email, :photo, :motpasse, :etatutile
+            )";
+
+            return $this->executeQuery($query, $data);
+        }
                       
-                    
-               
     }
 ?>

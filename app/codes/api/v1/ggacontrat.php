@@ -33,6 +33,22 @@ try {
                 $response = [
                     'status' => 200,
                     'data' => [
+                        'totalContrats' => ['count' => $contrat->totalGlobalContrats()['count'] ?? 0],
+                        'totalContratsAssur' => ['count' => $contrat->totalGlobalContratsAssurance()['count'] ?? 0],
+                        'totalContratsAutofin' => ['count' => $contrat->totalGlobalContratsAutoFin()['count'] ?? 0],
+                        'totalContratsVoyage' => ['count' => $contrat->totalGlobalContratsVoyage()['count'] ?? 0],
+                        'totalContratsVie' => ['count' => $contrat->totalGlobalContratsVie()['count'] ?? 0],
+                        'totalEffectBenef' => $contrat->effectifGlobalBeneficiaires() ?? 0,
+                        'totalFraisGestion' => ['amount' => $contrat->TotalFrais_de_Gestion_prevision()['amount'] ?? 0],
+                        'totalCouvNat' => $contrat->Total_Couverture_Nationale() ?? 0,
+                        'totalCouvInternat' => $contrat->Total_Couverture_Internationale() ?? 0,
+                        'date' => date('Y-m-d H:i:s'),
+                    ]
+                ];
+                /*
+                $response = [
+                    'status' => 200,
+                    'data' => [
                         'totalContrats' => $contrat->totalGlobalContrats(),
                         'totalContratsAssur' => $contrat->totalGlobalContratsAssurance(),
                         'totalContratsAutofin' => $contrat->totalGlobalContratsAutoFin(),
@@ -48,6 +64,7 @@ try {
                         'date' => date('Y-m-d H:i:s'),
                     ]
                 ];
+                */
             }
             break;
         

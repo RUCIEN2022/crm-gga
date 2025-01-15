@@ -5,7 +5,7 @@ session_start();
 $request = trim($_SERVER['REQUEST_URI'], '/');
 
 // Supprimer le préfixe de dossier si nécessaire
-$baseFolder = 'app-gga';
+$baseFolder = 'crm-gga';
 if (strpos($request, $baseFolder) === 0) {
     $request = substr($request, strlen($baseFolder));
 }

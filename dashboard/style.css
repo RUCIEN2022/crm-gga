@@ -205,13 +205,13 @@ body {
     .number {
         font-size: 2em;
     }
-    
     #sidebar ul li a span {
         opacity: 0;
         width: 0;
         height: 0;
         overflow: hidden;
     }
+    
 }
 
 @media (max-width: 576px) {
