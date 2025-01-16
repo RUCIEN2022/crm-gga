@@ -99,68 +99,45 @@ try {
         
         case 'POST':
              //------- from jmas -------   
-            if ($action === 'login') {
-                $data = json_decode(file_get_contents("php://input"), true);
-
-                // Vérif champs email et motdepasse
-                if (!isset($data['email'], $data['motpasse'])) {
-                    http_response_code(400);
-                    $response = ['status' => 400, 'message' => 'Identifiants requis'];
-                    echo json_encode($response);
-                    exit;
-                }
-                $auth = $user->AuthentifierUser($data['email'], $data['motpasse']);
-
-                //if ($auth instanceof PDOStatement && $auth->rowCount() > 0) {
-                if($auth){
-                    $response = ['status' => 200, 'data' => []];
-                    //var_dump($auth);
-                    // Vérifiez si $result est un tableau non vide
-                    if (is_array($auth) && !empty($auth)) {
-                        // Accédez au premier élément du tableau
-                        $ligne = $auth[0];
-                        $etatutile=$ligne['etatutile'];
-
-                        if($etatutile > 0){
-                            // Affichez les informations utilisateur
-                            $response['data'][] = [
-                                'id' => $ligne['idutile'],
-                                'email' => $ligne['email'],
-                                'nomutile' => $ligne['nomutile'],
-                                'prenomutile' => $ligne['prenomutile'],
-                                'etatutile' => $ligne['etatutile']
-                            ];
-                            // gestion de session
-                        }else{
-                            $response = ['status' => 404, 'message' => 'Votre compte Utilisateur est desactivé.'];
-                        }
-
-                    } else {
-                        
-                        $response = ['status' => 404, 'message' => 'Aucun utilisateur trouvé.'];
+             if ($action === 'login') { // Début action login
+                session_start(); // Démarrage de la session
+                try {
+                    $data = json_decode(file_get_contents("php://input"), true);
+        
+                    if (!isset($data['email'], $data['motpasse'])) {
+                        throw new Exception("Email et mot de passe requis.");
                     }
-
-                    /*
-                    while ($ligne = $auth->fetch(PDO::FETCH_ASSOC)) {
-                        $etatutile=$ligne['etatutile'];
-                        if($etatutile === 1){
-                            $response['data'][] = [
-                                'id' => $ligne['idutile'],
-                                'email' => $ligne['email'],
-                                'nomutile' => $ligne['nomutile'],
-                                'prenomutile' => $ligne['prenomutile'],
-                                'etatutile' => $ligne['etatutile']
-                            ];
-                        }else{
-                            $response = ['status' => 404, 'message' => 'Votre compte Utilisateur est desactive.'];
-                        }
-                        
-                    } */
-                } else {
-                    http_response_code(404); // renvoi le HTTP 404
-                    $response = ['status' => 404, 'message' => 'Utilisateur ou mot de passe incorrect.'];
+        
+                    $auth = $user->AuthentifierUser($data['email'], $data['motpasse']);
+                    
+                    if ($auth) {
+                        // Stocker les informations dans la session après authentification réussie
+                        $_SESSION['user_id'] = $auth['idutile'];
+                        $_SESSION['email'] = $auth['email'];
+                        $_SESSION['nom'] = $auth['nomutile'];
+                        $_SESSION['prenom'] = $auth['prenomutile'];
+                        $_SESSION['etatutile'] = $auth['etatutile'];
+        
+                        $response = [
+                            'status' => 200,
+                            'message' => 'Authentification réussie.',
+                            'data' => [
+                                'id' => $auth['idutile'],
+                                'email' => $auth['email'],
+                                'nom' => $auth['nomutile'],
+                                'prenom' => $auth['prenomutile'],
+                                'etatutile' => $auth['etatutile'],
+                            ],
+                        ];
+                    } else {
+                        throw new Exception("Authentification échouée. Vérifiez vos identifiants.");
+                    }
+                } catch (Exception $e) {
+                    http_response_code(400); // Code 400 pour mauvaise requête
+                    $response = ['status' => 400, 'message' => $e->getMessage()];
                 }
-            }elseif($action === 'create') {
+            }//fin login
+             elseif($action === 'create') {
                 $data = json_decode(file_get_contents("php://input"), true);
 
                 // Vérif champs email et motdepasse
