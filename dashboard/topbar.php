@@ -6,7 +6,7 @@
                     <div class="d-flex justify-content-between w-100 align-items-center">
                         <h2>Dashboard</h2>
                         <div class="user-info">
-                            <span class="user-name">Bonjour, <?= htmlspecialchars($userPrenom . ' ' . $userNom) ?></span>
+                            <span class="user-name">Bonjour, John Masini</span>
                             <span class="time" id="currentTime"></span>
                         </div>
                         <div class="position-relative animate-notification">
