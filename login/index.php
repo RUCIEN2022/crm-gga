@@ -200,7 +200,7 @@
         const data = await response.json();
 
         if (response.ok) {
-
+          // traitement ici
           Swal.fire({
             icon: "success",
             title: "Vous êtes connecté!",

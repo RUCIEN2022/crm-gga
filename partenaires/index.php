@@ -1,3 +1,19 @@
+
+<?php 
+session_start();
+
+// Vérification si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {//si on ne trouve aucun utilisateur
+    header("Location: ../login/"); // on redirige vers la page de connexion si non connecté
+    exit();
+}
+
+// Récupération des données utilisateur
+$userId = $_SESSION['user_id'];
+$userEmail = $_SESSION['email'];
+$userNom = $_SESSION['nom'];
+$userPrenom = $_SESSION['prenom'];
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -75,6 +91,25 @@
         table{
             font-size: 12px;
         }
+        .user-info {
+    display: flex;
+    flex-direction: column; /* Organise les éléments en colonne */
+    align-items: center; /* Aligne le texte à gauche */
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column; /* Organise les éléments en colonne */
+    align-items: center; /* Aligne le texte à gauche */
+}
+        .user-name {
+    font-weight: bold;
+    margin-bottom: 5px; /* Ajoute un espace entre le nom et l'heure */
+}
+        .time {
+    font-size: 1.5em;
+    color: gray; /* Ajoute une couleur plus discrète pour l'heure */
+}
     </style>
 </head>
 <body>
@@ -84,31 +119,7 @@
         <!-- Page Content -->
         <div id="content">
             <!-- Header -->
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn">
-                        <i class="bi bi-list"></i>
-                    </button>
-                    <div class="d-flex justify-content-between w-100 align-items-center">
-                        <h2>Partenaires</h2>
-                        <div class="user-info">
-                            <span class="user-name">Bonjour, John Masini</span>
-                            <span class="time" id="currentTime"></span>
-                        </div>
-                        <div class="position-relative animate-notification">
-                            <a href="">
-                           <span class="badged rounded p-2 bg-danger">
-                           <i class="bi bi-folder text-orange" style="font-size: 1.5rem;"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-orange text-white" style="font-size: 0.75rem;">
-                                5
-                            </span>
-                           </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
+            <?php include_once('topbar.php'); ?>
           
     <div class="card shadow">
         <div class="card-body">
@@ -123,908 +134,28 @@
                         type="text"
                         id="searchInput"
                         class="form-control w-50"
-                        placeholder="Rechercher un contrat (Numéro, Nom, Type, Date)"
+                        placeholder="Rechercher un partenaire (Numéro, Nom, Type, Date)"
                     />
                 </div>
                 <h5 class="mb-4">Partenaires</h5>
                 <!-- Tableau liste classeurs contrats -->
                 <div class="table-responsive">
-                    <table id="contractsTable" class="table table-striped table-hover align-middle">
+              
+
+
+                    <table id="partnersTable" class="table table-striped table-hover align-middle">
                         <thead class="table-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Numéro du contrat</th>
-                                <th>Nom du classeur</th>
-                                <th>Type de contrat</th>
-                                <th>Date de création</th>
+                                <th>DENOMINATION SOCIALE </th>
+                                <th>E-mail</th>
+                                <th>TELEPHONE</th>
+                                <th>RESPONSABLE</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Lignes du tableau -->
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>1</td>
-                                <td>PA15555</td>
-                                <td>Classeur A</td>
-                                <td>Assurance vie</td>
-                                <td>2024-01-10</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>PA742522</td>
-                                <td>Classeur B</td>
-                                <td>Assurance santé</td>
-                                <td>2024-02-15</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success me-2">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-primary me-2">
-                                        <i class="bi bi-pencil"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                            
                             <!-- Ajoutez d'autres lignes ici -->
                         </tbody>
                     </table>
@@ -1093,5 +224,48 @@
     renderTable(1);
     renderPagination();
 </script>
+<script>
+        document.addEventListener('DOMContentLoaded', fetchPartners);
+
+        function fetchPartners() {
+            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.querySelector('#partnersTable tbody');
+                    tableBody.innerHTML = '';
+
+                    if (data.length > 0) {
+                        data.forEach(partner => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${partner.idpartenaire}</td>
+                                <td>${partner.denom_social}</td>
+                                <td>${partner.emailEntre}</td>
+                                <td>${partner.telephone_Entr}</td>
+                                <td>${partner.nomRespo}</td>
+                              
+                                <td>
+                                    <button class="btn btn-sm btn-success me-2">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-primary me-2">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        const row = document.createElement('tr');
+                        row.innerHTML = '<td colspan="7" style="text-align:center;">Aucun partenaire trouvé</td>';
+                        tableBody.appendChild(row);
+                    }
+                })
+                .catch(error => console.error('Erreur lors de la récupération des partenaires :', error));
+        }
+    </script>
 </body>
 </html>

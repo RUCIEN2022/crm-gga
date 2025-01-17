@@ -65,22 +65,16 @@ document.addEventListener('DOMContentLoaded', function() {
         ).join('');
     }
 
-    updateTicker();
-    setInterval(updateTicker, 30000);
+   // Update Time
+   function updateTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0'); // Ajout des secondes
+    document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+}
 
-    // Update Time
-    function updateTime() {
-        const now = new Date();
-        const timeElement = document.getElementById('currentTime');
-        timeElement.textContent = now.toLocaleString('fr-FR', {
-            hour: '2-digit',
-            minute: '2-digit',
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric'
-        });
-    }
-
-    updateTime();
-    setInterval(updateTime, 1000);
+// Met à jour l'heure immédiatement et toutes les secondes
+updateTime();
+setInterval(updateTime, 1000);
 });
