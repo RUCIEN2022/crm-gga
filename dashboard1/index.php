@@ -13,6 +13,7 @@ $userEmail = $_SESSION['email'];
 $userNom = $_SESSION['nom'];
 $userPrenom = $_SESSION['prenom'];
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -29,25 +30,7 @@ body{
     font-family: tahoma,sans-serif;
     font-size: 12px;
 }
-.spinner {
-  border: 8px solid #f3f3f3; /* Couleur de fond */
-  border-top: 8px solid #3498db; /* Couleur principale */
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-        /* Effet de tremblement (shake) */
+/* Effet de tremblement (shake) */
 @keyframes shake {
     0%, 100% {
         transform: translateX(0);
@@ -81,7 +64,7 @@ body{
 
 /* Animation pour la notification */
 .animate-notification {
-    animation: pulse 1.5s infinite; /* Remplacez `pulse` par `shake` pour l'effet tremblement */
+    animation: pulse 1.5s infinite;
 }
 
 .text-orange {
@@ -91,34 +74,17 @@ body{
 .bg-orange {
     background-color: #d71828; /* Orange */
 }
-.user-info {
-    display: flex;
-    flex-direction: column; /* Organise les éléments en colonne */
-    align-items: center; /* Aligne le texte à gauche */
-}
-
-.user-name {
-    font-weight: bold;
-    margin-bottom: 5px; /* Ajoute un espace entre le nom et l'heure */
-}
-
-.time {
-    font-size: 1.5em;
-    color: gray; /* Ajoute une couleur plus discrète pour l'heure */
-}
-
 
     </style>
 </head>
 <body>
-<div class="wrapper">
+    <div class="wrapper">
         <!-- Sidebar -->
         <?php include_once('navbar.php'); ?>
         <!-- Page Content -->
         <div id="content">
             <!-- Header -->
-            <?php include("topbar.php"); ?>
-
+           <?php include_once('topbar.php'); ?>
             <!-- Cards Section -->
             <div class="row mt-2">
                 <div class="col-md-4">
@@ -209,12 +175,10 @@ body{
         </div>
     </div>
 
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     
@@ -332,6 +296,5 @@ document.addEventListener("DOMContentLoaded", function() {
     fetchDashboardData();
 });
 </script>
-
 </body>
 </html>
