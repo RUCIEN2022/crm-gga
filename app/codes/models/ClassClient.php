@@ -58,9 +58,17 @@ class Client{
         $query = "SELECT c.idclient, s.idsite,libsite, den_social, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite LIMIT 50";
         return $this->executeQuery($query);
     }
+    public function listeSite() {
+        $query = "SELECT idsite,libsite FROM site order by libsite";
+        return $this->executeQuery($query);
+    }
     public function fx_RechercheClientID($idclient){
-        $query = "SELECT c.idclient, s.idsite,libsite, den_social, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite where idclient = :idclient";
+        $query = "SELECT c.idclient, s.idsite,libsite, den_social, rccm, numeroimpot, emailclient, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite where idclient = :idclient";
         return $this->executeQuery($query, [':idclient' => $idclient]);
+    }
+    public function fx_RechercheClientRccm($rccm){
+        $query = "SELECT c.idclient, s.idsite,libsite, den_social, rccm, numeroimpot, emailclient, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite where idclient = :idclient";
+        return $this->executeQuery($query, [':rccm' => $rccm]);
     }
     public function fx_ActiverClient($idclient){
         $query = "Update client set etat=1 where idclient = :idclient LIMIT 1";
