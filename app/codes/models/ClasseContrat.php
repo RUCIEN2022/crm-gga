@@ -498,6 +498,14 @@ public function analyseComparativeParAssureur() {
         $query = "SELECT * FROM taches WHERE statut = '1' AND datelimite < CURDATE()";
         return $this->executeQuery($query);
     }
+    public function getTypeContrat() {
+        $query = "SELECT * FROM typecontrat";
+        return $this->executeQuery($query);
+    }
+    public function getGestionnaire() {
+        $query = "SELECT * FROM agent";
+        return $this->executeQuery($query);
+    }
 
 }
 ?>

@@ -28,7 +28,7 @@ try {
                     
                   //  $response = $contrat->totalGlobalContrats();
                 }
-            } elseif ($action === 'dashboard') {
+            }elseif ($action === 'dashboard') {
                 // Statistiques ou indicateurs pour le tableau de bord
                 $response = [
                     'status' => 200,
@@ -45,26 +45,24 @@ try {
                         'date' => date('Y-m-d H:i:s'),
                     ]
                 ];
-                /*
-                $response = [
-                    'status' => 200,
-                    'data' => [
-                        'totalContrats' => $contrat->totalGlobalContrats(),
-                        'totalContratsAssur' => $contrat->totalGlobalContratsAssurance(),
-                        'totalContratsAutofin' => $contrat->totalGlobalContratsAutoFin(),
-                        'totalContratsVoyage' => $contrat->totalGlobalContratsVoyage(),
-                        'totalContratsVie' => $contrat->totalGlobalContratsVie(),
-                        'totalEffectBenef' => $contrat->effectifGlobalBeneficiaires(),
-                        'totalBenefAssur' => $contrat->effectifGlobalBeneficiairesAssur(),
-                        'totalBenefAutifin' => $contrat->effectifGlobalBeneficiairesAutofin(),
-                        'totalprod' => $contrat->rapportGlobalProduction(),
-                        'totalFraisGestion' => $contrat->TotalFrais_de_Gestion_prevision(),
-                        'totalCouvNat' => $contrat->Total_Couverture_Nationale(),
-                        'totalCouvInternat' => $contrat->Total_Couverture_Internationale(),
-                        'date' => date('Y-m-d H:i:s'),
-                    ]
-                ];
-                */
+               
+            }elseif ($action === 'getTypeContrat') {
+                // Charger les types de contrats
+                $typesContrats = $contrat->getTypeContrat();
+                if ($typesContrats) {
+                    $response = ['status' => 200, 'data' => $typesContrats];
+                } else {
+                    $response = ['status' => 404, 'message' => 'Aucun type de contrat trouvé'];
+                }
+            }
+            elseif ($action === 'getGestionnaire') {
+                // Charger les agents
+                $agent = $contrat->getGestionnaire();
+                if ($agent) {
+                    $response = ['status' => 200, 'data' => $agent];
+                } else {
+                    $response = ['status' => 404, 'message' => 'Aucun agent trouvé'];
+                }
             }
             break;
         

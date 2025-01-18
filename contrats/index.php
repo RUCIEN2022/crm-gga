@@ -127,7 +127,7 @@ $userPrenom = $_SESSION['prenom'];
                         type="text"
                         id="searchInput"
                         class="form-control w-50"
-                        placeholder="Rechercher un contrat (Numéro, Nom, Type, Date)"
+                        placeholder="Rechercher un classeur (Numéro, Nom, Type, Statut, Date)"
                     />
                 </div>
                 <h5 class="mb-4">Classeurs contrats</h5>
@@ -137,10 +137,11 @@ $userPrenom = $_SESSION['prenom'];
                         <thead class="table-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Numéro du contrat</th>
+                                <th>Numéro claseur</th>
                                 <th>Nom du classeur</th>
                                 <th>Type de contrat</th>
                                 <th>Date de création</th>
+                                <th>Statut</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
