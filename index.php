@@ -52,7 +52,12 @@ switch ($request) {
     case 'users':
         include 'users/index.php';
         break;
-
+    case 'partenaires':
+            include 'partenaires/index.php';
+            break;
+    case 'partenaires/creation':
+            include 'partenaires/creation.php';
+            break;
     default:
         // Vérifiez si le fichier 404.php existe avant de l'inclure
         if (file_exists('404.php')) {

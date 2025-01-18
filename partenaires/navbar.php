@@ -35,7 +35,8 @@
                     <a href="../users/"><i class="bi bi-people"></i><span>Utilisateurs</span></a>
                 </li>
             </ul>
-            <div class="sidebar-footer">
-                <a href="#"><i class="bi bi-gear"></i><span>Paramètres</span></a>
+            <div class="sidebar-footer bg-danger">
+            <a href="../logout.php"><i class="bi bi-box-arrow-right"></i><span> Déconnexion</span></a>
+
             </div>
         </nav>

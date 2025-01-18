@@ -1,3 +1,18 @@
+<?php 
+session_start();
+
+// Vérification si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {//si on ne trouve aucun utilisateur
+    header("Location: ../login/"); // on redirige vers la page de connexion si non connecté
+    exit();
+}
+
+// Récupération des données utilisateur
+$userId = $_SESSION['user_id'];
+$userEmail = $_SESSION['email'];
+$userNom = $_SESSION['nom'];
+$userPrenom = $_SESSION['prenom'];
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,6 +21,9 @@
     <title>Dashboard Assurance</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet">
+    <!-- CSS de Select2 -->
+
     <link rel="stylesheet" href="style.css">
     <style>
         body{
@@ -56,12 +74,7 @@
 .bg-orange {
     background-color: #d71828; /* Orange */
 }
-        .form-section {
-           
-            border-top: 2px solid #dee2e6;
-            margin-top: 20px;
-            padding-top: 20px;
-        }
+       
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
@@ -69,6 +82,25 @@
         .btn-secondary {
             background-color: #6c757d;
             border-color: #6c757d;
+        }
+        .user-info {
+    display: flex;
+    flex-direction: column; /* Organise les éléments en colonne */
+    align-items: center; /* Aligne le texte à gauche */
+}
+        .user-name {
+    font-weight: bold;
+    margin-bottom: 5px; /* Ajoute un espace entre le nom et l'heure */
+}
+        .time {
+    font-size: 1.5em;
+    color: gray; /* Ajoute une couleur plus discrète pour l'heure */
+}
+.flag-icon {
+            width: 20px;
+            height: 15px;
+            margin-right: 8px;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -79,30 +111,7 @@
         <!-- Page Content -->
         <div id="content">
             <!-- Header -->
-            <nav class="navbar navbar-expand-lg">
-                <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn">
-                        <i class="bi bi-list"></i>
-                    </button>
-                    <div class="d-flex justify-content-between w-100 align-items-center">
-                        <h2>Contrats</h2>
-                        <div class="user-info">
-                            <span class="user-name">Bonjour, John Masini</span>
-                            <span class="time" id="currentTime"></span>
-                        </div>
-                        <div class="position-relative animate-notification">
-                            <a href="">
-                           <span class="badged rounded p-2 bg-danger">
-                           <i class="bi bi-folder text-orange" style="font-size: 1.5rem;"></i>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-orange text-white" style="font-size: 0.75rem;">
-                                5
-                            </span>
-                           </span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+            <?php include_once('topbar.php'); ?>
           
             <!-- Cards -->
             <div class="container mt-2">
@@ -112,54 +121,75 @@
             <form>
             <!-- Section 1 -->
             <div class="row g-3">
-            <div class="col-md-4">
+                <span class="fw-bold text-danger">1. Information du client</span>
+            <div class="col-md-3">
                     <label for="rccm" class="form-label">RCCM</label>
                     <input type="text" class="form-control" id="rccm">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="denomination" class="form-label">Dénomination sociale</label>
                     <input type="text" class="form-control" id="denomination">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
+                    <label for="idNat" class="form-label">Id. Nat</label>
+                    <input type="text" class="form-control" id="idNat">
+                </div>
+                <div class="col-md-3">
+                    <label for="numeroImpot" class="form-label">Numéro Impôt</label>
+                    <input type="text" class="form-control" id="numeroImpot">
+                </div>
+                <div class="col-md-3">
+                    <label for="codeInterne" class="form-label">Code interne</label>
+                    <input type="text" class="form-control" id="codeInterne">
+                </div>
+                <div class="col-md-3">
                     <label for="pays" class="form-label">Pays</label>
                     <select name="pays" id="pays" class="form-select">
                             <option value="">--choisir--</option>
                         </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="ville" class="form-label">Ville</label>
-                    <input type="text" class="form-control" id="ville">
+                    <input type="text" name="ville" id="ville" class="form-control" id="denomination">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="adresse" class="form-label">Adresse</label>
                     <input type="text" class="form-control" id="adresse">
                 </div>
-                <div class="col-md-4">
-                    <label for="codeInterne" class="form-label">Code interne</label>
-                    <input type="text" class="form-control" id="codeInterne">
-                </div>
-                <div class="col-md-4">
-                    <label for="idNat" class="form-label">Id. Nat</label>
-                    <input type="text" class="form-control" id="idNat">
-                </div>
                 
-                <div class="col-md-4">
-                    <label for="numeroImpot" class="form-label">Numéro Impôt</label>
-                    <input type="text" class="form-control" id="numeroImpot">
-                </div>
-                <div class="col-md-4">
+                
+                <div class="col-md-3">
                     <label for="emailEntreprise" class="form-label">Email entreprise</label>
                     <input type="email" class="form-control" id="emailEntreprise">
                 </div>
-                <div class="col-md-4">
-                    <label for="telephoneEntreprise" class="form-label">Téléphone entreprise</label>
+                <div class="col-md-3">
+                    <label for="telephoneEntreprise" class="form-label">Téléphone</label>
                     <input type="text" class="form-control" id="telephoneEntreprise">
                 </div>
+                <div class="col-md-3">
+                    <label for="telephoneEntreprise" class="form-label">Nom du responsable</label>
+                    <input type="text" class="form-control" id="responsable">
+                </div>
+                <div class="col-md-3">
+                    <label for="telephoneresponsable" class="form-label">Téléphone responsable</label>
+                    <input type="text" class="form-control" id="telephonerespons" placeholder="">
+                </div>
+                <div class="col-md-3">
+                    <label for="emailresponsable" class="form-label">Email responsable</label>
+                    <input type="email" class="form-control" id="email responsable">
+                </div>
+                <div class="col-md-3">
+                    <label for="site" class="form-label">Site</label>
+                    <select name="site" id="site" class="form-select">
+                        <option value="0">--Choisir site--</option>
+                    </select>
+                </div>
             </div>
-
+<hr>
             <!-- Section 2 -->
             <div class="form-section">
                 <div class="row g-3">
+                <span class="fw-bold text-danger">2. Information du contrat</span>
                 <div class="col-md-4">
                         <label for="typecontrat" class="form-label">Type contrat</label>
                     <select name="" id="" class="form-select">
@@ -243,7 +273,30 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        $(document).ready(function () {
+    const selectPays = $('#pays');
+    // Charger les pays
+    fetch('https://flagcdn.com/fr/codes.json')
+        .then(response => response.json())
+        .then(countries => {
+            selectPays.empty();
+            for (const [code, name] of Object.entries(countries)) {
+                const option = new Option(name, code);
+                selectPays.append(option);
+            }
+            selectPays.select2({
+                placeholder: '--choisir un pays--',
+                allowClear: true
+            });
+        })
+        .catch(error => console.error('Erreur lors du chargement des pays :', error));
+});
+
+
+    </script>
 </body>
 </html>

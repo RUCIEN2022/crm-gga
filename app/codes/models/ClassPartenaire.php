@@ -12,6 +12,7 @@
                     if (strpos(trim(strtoupper($query)), 'SELECT') === 0) {// ici on se rassure que la chaine commence par le mot SELECT et est convertie en majuscule en trimant la chaine
                         return $this->conn->fx_lecture($query, $params); // Lecture
                     } else {
+                        //echo $query;
                         return $this->conn->fx_ecriture($query, $params); // Écriture
                     }
                 } catch (Exception $e) {
@@ -23,6 +24,7 @@
             public function fx_CreerPartenaire($data) {//data sera notre tableau qui va recevoir les données de paramètre
                 $query = "INSERT INTO partenaire(denom_social, pays_assu, ville_assu, adresse_assu, code_interne, numeroAgree, Rccm, numero_impot, emailEntre, telephone_Entr, nomRespo, emailRespo, TelephoneRespo, etatpartenaire) 
                 VALUES (:denom_social, :pays_assu, :ville_assu, :adresse_assu, :code_interne, :numeroAgree, :Rccm, :numero_impot, :emailEntre, :telephone_Entr, :nomRespo, :emailRespo, :TelephoneRespo, :etatpartenaire)";
+               // echo $query;
                 return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
             }
             public function DeletePartenaire($idpartenaire){

@@ -1,5 +1,5 @@
 
-<nav id="sidebar" class="active">
+<nav id="sidebar" class="">
             <div class="sidebar-header">
                 <h4 class="text-white fw-bold p-3">CRM-GGA</h4>
             </div>
@@ -35,7 +35,8 @@
                     <a href="../users/"><i class="bi bi-people"></i><span>Utilisateurs</span></a>
                 </li>
             </ul>
-            <div class="sidebar-footer">
-                <a href="../logout.php"><i class="bi bi-gear"></i><span> Déconnexion</span></a>
+            <div class="sidebar-footer bg-danger">
+            <a href="../logout.php"><i class="bi bi-box-arrow-right"></i><span> Déconnexion</span></a>
+
             </div>
         </nav>

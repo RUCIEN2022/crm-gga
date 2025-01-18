@@ -3,7 +3,7 @@
 class connect {
 
     private $username = "root";
-    private $mdp = "";
+    private $mdp = "devpro";
     private $dsn = 'mysql:host=localhost;dbname=db_gga;port=3306;charset=utf8';
     private $ckx; // Instance PDO
 
