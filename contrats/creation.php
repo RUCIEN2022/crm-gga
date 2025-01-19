@@ -1,5 +1,5 @@
 <?php 
-session_start();
+//session_start();
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {//si on ne trouve aucun utilisateur
@@ -424,7 +424,7 @@ document.getElementById('typecontrat').addEventListener('change', function () {
 //------------ fin traitement formulaire---------------
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost/crm-gga/app/codes/api/v1/ggacontrat.php/getTypeContrat')
+    fetch('http://localhost:8080/crm-gga/app/codes/api/v1/ggacontrat.php/getTypeContrat')
         .then(response => response.json())
         .then(data => {
             if (data.status === 200) {
@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', function () {
 const selectPartenaire = document.getElementById('assureur');
 selectPartenaire.innerHTML = '<option>Chargement...</option>'; // Avant la requête
 
-fetch('http://localhost/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
+fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
     .then(response => response.json())
     .then(data => {
         selectPartenaire.innerHTML = ''; // Nettoyer les options par défaut
@@ -472,7 +472,7 @@ fetch('http://localhost/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires'
 const selectReassureur = document.getElementById('reassureur');
 selectReassureur.innerHTML = '<option>Chargement...</option>'; // Avant la requête
 
-fetch('http://localhost/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
+fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
     .then(response => response.json())
     .then(data => {
         selectReassureur.innerHTML = ''; // Nettoyer les options par défaut
@@ -501,7 +501,7 @@ fetch('http://localhost/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires'
 const selectAgent = document.getElementById('gestionnaire');
 selectAgent.innerHTML = '<option>Chargement...</option>'; // Avant la requête
 
-fetch('http://localhost/crm-gga/app/codes/api/v1/ggacontrat.php/getGestionnaire')
+fetch('http://localhost:8080/crm-gga/app/codes/api/v1/ggacontrat.php/getGestionnaire')
     .then(response => response.json())
     .then(responseData => {
         // Vérifier si la réponse contient la clé "data"
@@ -538,7 +538,7 @@ fetch('http://localhost/crm-gga/app/codes/api/v1/ggacontrat.php/getGestionnaire'
         selectAgent.innerHTML = '<option>Erreur de chargement</option>';
     });
 
-    fetch('http://localhost/crm-gga/app/codes/api/v1/api_client.php/site')
+    fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_client.php/site')
     .then(response => response.json())
     .then(data => {
         // Vérifier si la réponse est un tableau

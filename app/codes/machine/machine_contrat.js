@@ -19,7 +19,7 @@ $(document).ready(function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('http://localhost/crm-gga/app/codes/api/v1/ggacontrat.php/getTypeContrat')
+    fetch('http://localhost:8080/crm-gga/app/codes/api/v1/ggacontrat.php/getTypeContrat')
         .then(response => response.json())
         .then(data => {
             if (data.status === 200) {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectPartenaire = document.getElementById('assureur');
 selectPartenaire.innerHTML = '<option>Chargement...</option>'; // Avant la requête
 
-fetch('http://localhost/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
+fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
     .then(response => response.json())
     .then(data => {
         selectPartenaire.innerHTML = ''; // Nettoyer les options par défaut

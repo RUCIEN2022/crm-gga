@@ -261,7 +261,7 @@ $userPrenom = $_SESSION['prenom'];
         button.disabled = true;
         spinner.style.display = "inline-block";
 
-        fetch('http://localhost/gga1/app/codes/api/v1/api_partenaire.php/create', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

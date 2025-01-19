@@ -58,6 +58,9 @@ switch ($request) {
     case 'partenaires/creation':
             include 'partenaires/creation.php';
             break;
+    case 'clients/creation':
+            include 'clients/creation.php';
+            break;
     default:
         // Vérifiez si le fichier 404.php existe avant de l'inclure
         if (file_exists('404.php')) {

@@ -177,53 +177,7 @@ $userPrenom = $_SESSION['prenom'];
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
-    <script>
-    // Recherche dynamique
-    document.getElementById("searchInput").addEventListener("input", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#contractsTable tbody tr");
-        rows.forEach((row) => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(filter) ? "" : "none";
-        });
-    });
-
-    // Pagination
-    const table = document.getElementById("contractsTable");
-    const rowsPerPage = 5;
-    const rows = Array.from(table.querySelectorAll("tbody tr"));
-    const pagination = document.getElementById("pagination");
-
-    function renderTable(page) {
-        rows.forEach((row, index) => {
-            row.style.display =
-                index >= (page - 1) * rowsPerPage && index < page * rowsPerPage
-                    ? ""
-                    : "none";
-        });
-    }
-
-    function renderPagination() {
-        const pageCount = Math.ceil(rows.length / rowsPerPage);
-        pagination.innerHTML = "";
-        for (let i = 1; i <= pageCount; i++) {
-            const li = document.createElement("li");
-            li.className = "page-item";
-            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-            li.addEventListener("click", (e) => {
-                e.preventDefault();
-                renderTable(i);
-                document.querySelectorAll(".page-item").forEach((item) => item.classList.remove("active"));
-                li.classList.add("active");
-            });
-            pagination.appendChild(li);
-        }
-        pagination.firstChild.classList.add("active");
-    }
-
-    renderTable(1);
-    renderPagination();
-</script>
+    
 <script>
         document.addEventListener('DOMContentLoaded', fetchPartners);
 
@@ -258,6 +212,8 @@ $userPrenom = $_SESSION['prenom'];
                             `;
                             tableBody.appendChild(row);
                         });
+
+                        updatePagination();
                     } else {
                         const row = document.createElement('tr');
                         row.innerHTML = '<td colspan="7" style="text-align:center;">Aucun partenaire trouvé</td>';
@@ -266,6 +222,72 @@ $userPrenom = $_SESSION['prenom'];
                 })
                 .catch(error => console.error('Erreur lors de la récupération des partenaires :', error));
         }
+
+
+    // Recherche dynamique
+    document.getElementById("searchInput").addEventListener("input", function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#partnersTable tbody tr");
+        rows.forEach((row) => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+           
+        });
+      
+    });
+
+ 
+  
+
+
+
+    // pagination GPT
+ // Fonction de mise à jour de la pagination
+function updatePagination() {
+    const table = document.getElementById("partnersTable");
+    const rowsPerPage = 5;
+    const rows = Array.from(table.querySelectorAll("tbody tr"));
+    const pagination = document.getElementById("pagination");
+
+    function renderTable(page) {
+        rows.forEach((row, index) => {
+            row.style.display = (index >= (page - 1) * rowsPerPage && index < page * rowsPerPage) ? "" : "none";
+        });
+    }
+
+    function renderPagination() {
+        const pageCount = Math.ceil(rows.length / rowsPerPage);
+        pagination.innerHTML = "";
+
+        for (let i = 1; i <= pageCount; i++) {
+            const li = document.createElement("li");
+            li.className = "page-item";
+            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            
+            li.addEventListener("click", (e) => {
+                e.preventDefault();
+                renderTable(i);
+
+                document.querySelectorAll(".page-item").forEach((item) => item.classList.remove("active"));
+                li.classList.add("active");
+            });
+
+            pagination.appendChild(li);
+        }
+
+        if (pagination.firstChild) {
+            pagination.firstChild.classList.add("active");
+        }
+
+        renderTable(1); // Afficher la première page par défaut
+    }
+
+    renderPagination();
+}
+    
     </script>
+    <script>
+    
+</script>
 </body>
 </html>

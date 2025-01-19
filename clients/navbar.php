@@ -7,14 +7,14 @@
                 <li data-section="dashboard">
                     <a href="../dashboard/"><i class="bi bi-house-door"></i><span>Dashboard</span></a>
                 </li>
-                <li class="active" data-section="clients">
-                    <a href="./"><i class="bi bi-people"></i><span>Clients</span></a>
+                <li data-section="clients">
+                    <a href="../clients"><i class="bi bi-people"></i><span>Clients</span></a>
                 </li>
-                <li data-section="partenaires">
-                <a href="../partenaires/"><i class="bi bi-shield-check"></i><span>partenaires</span></a>
+                <li class="active" data-section="partenaires">
+                <a href="./"><i class="bi bi-shield-check"></i><span>partenaires</span></a>
                 </li>
-                <li  data-section="contrats">
-                    <a href="./"><i class="bi bi-folder"></i><span>Contrats</span></a>
+                <li data-section="contrats">
+                    <a href="../contrats/"><i class="bi bi-folder"></i><span>Contrats</span></a>
                 </li>
                 <li data-section="Tâches">
                     <a href="../taches/"><i class="bi bi-list-task"></i><span>Tâches</span></a>
@@ -35,7 +35,8 @@
                     <a href="../users/"><i class="bi bi-people"></i><span>Utilisateurs</span></a>
                 </li>
             </ul>
-            <div class="sidebar-footer">
-                <a href="#"><i class="bi bi-gear"></i><span>Paramètres</span></a>
+            <div class="sidebar-footer bg-danger">
+            <a href="../logout.php"><i class="bi bi-box-arrow-right"></i><span> Déconnexion</span></a>
+
             </div>
         </nav>
