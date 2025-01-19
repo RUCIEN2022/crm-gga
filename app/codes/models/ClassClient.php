@@ -24,15 +24,13 @@ class Client{
     public function fx_CreerClient($data) {//data sera notre tableau qui va recevoir les données de paramètre
         $query = "INSERT INTO client (
             idsite, den_social, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, 
-            telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat, RCCM, numeroimpot, emailclient
-        ) VALUES (
+            telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat, RCCM, numeroimpot, emailclient) 
+            VALUES (
             :idsite, :den_social, :pays_entr, :ville_entr, :adresse_entr, :code_interne, :id_nat, 
             :telephone_client, :nom_respon, :email_respon, :telephone_respo, :numclasseur, :datecrea, :etat, :RCCM, :numeroimpot, :emailclient
         )";
-        //return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
-        if (!$this->executeQuery($query, $data)->execute()) {
-            die(json_encode(["status" => 500, "message" => "Erreur MySQL: " . $this->executeQuery($query, $data)->error]));
-        }
+      return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
+        
     }
     public function fx_UpdateClient($data) {//data sera notre tableau qui va recevoir les données de paramètre
        
@@ -51,7 +49,7 @@ class Client{
     
         return $this->executeQuery($Rqte, $params);
     }
-    public function DeleteClientssss($idclient){
+    public function DeleteClient($idclient){
         $query = "DELETE FROM client where idclient = :idclient";
         $paramDelete=[':idutile'=>$idclient];
         return $this->executeQuery($query, $paramDelete);//cfr les explication de la methode executeQuery ci-haut

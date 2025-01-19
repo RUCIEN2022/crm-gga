@@ -7,10 +7,10 @@
                 <li data-section="dashboard">
                     <a href="../dashboard/"><i class="bi bi-house-door"></i><span>Dashboard</span></a>
                 </li>
-                <li data-section="clients">
+                <li class="active"  data-section="clients">
                     <a href="../clients"><i class="bi bi-people"></i><span>Clients</span></a>
                 </li>
-                <li class="active" data-section="partenaires">
+                <li data-section="partenaires">
                 <a href="./"><i class="bi bi-shield-check"></i><span>partenaires</span></a>
                 </li>
                 <li data-section="contrats">

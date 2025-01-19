@@ -4,7 +4,7 @@
                         <i class="bi bi-list"></i>
                     </button>
                     <div class="d-flex justify-content-between w-100 align-items-center">
-                        <h2>Client</h2>
+                        <h2>Clients</h2>
                         <div class="user-info">
                             <span class="user-name">Bonjour, <?= htmlspecialchars($userPrenom . ' ' . $userNom) ?></span>
                             <span class="time" id="currentTime"></span>

@@ -252,6 +252,7 @@ $userPrenom = $_SESSION['prenom'];
 
             setTimeout(() => {
                 toast.className = toast.className.replace('show', '');
+                window.location.href = './'
             }, 4500); // Durée d'affichage de 4,5 secondes
         }
 
@@ -282,7 +283,7 @@ $userPrenom = $_SESSION['prenom'];
             //site: 1,
             idsite: document.getElementById("site").value,
             den_social: document.getElementById("den_social").value,
-            pays: document.getElementById("pays").value,
+            pays_entr: document.getElementById("pays").value,
             ville_entr: document.getElementById("ville_entr").value,
             adresse_entr: document.getElementById("adresse_entr").value,
             code_interne: document.getElementById("code_interne").value,
