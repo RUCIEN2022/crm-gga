@@ -73,7 +73,7 @@ class Client{
         return $this->executeQuery($query, [':idclient' => $idclient]);
     }
     public function fx_RechercheClientRccm($rccm){
-        $query = "SELECT c.idclient, s.idsite,libsite, den_social, rccm, numeroimpot, emailclient, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite where idclient = :idclient";
+        $query = "SELECT c.idclient, s.idsite,libsite, den_social, rccm, numeroimpot, emailclient, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat FROM client c inner join site s on s.idsite=c.idsite where rccm = :rccm";
         return $this->executeQuery($query, [':rccm' => $rccm]);
     }
     public function listeSite() {
