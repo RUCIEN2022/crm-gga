@@ -64,6 +64,12 @@ switch ($request) {
     case 'clients':
             include 'clients/index.php';
             break;
+    case 'taches':
+            include 'taches/index.php';
+            break; 
+    case 'taches/creation':
+            include 'taches/creation.php';
+            break; 
     default:
         // Vérifiez si le fichier 404.php existe avant de l'inclure
         if (file_exists('404.php')) {

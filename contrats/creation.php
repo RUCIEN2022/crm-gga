@@ -384,7 +384,7 @@ $userPrenom = $_SESSION['prenom'];
     <script src="script.js"></script>
     
     <script>
-        $(document).ready(function () {
+$(document).ready(function () {
     const selectPays = $('#pays');
     // Charger les pays
     fetch('https://flagcdn.com/fr/codes.json')
