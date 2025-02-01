@@ -345,10 +345,6 @@ if (analyseAssureurs && analyseAssureurs.length > 0) {
         }
     });
 }
-
-
-
-
                 } else {
                     alert('Une erreur est survenue lors de la récupération des données.');
                 }

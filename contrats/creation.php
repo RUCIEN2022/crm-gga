@@ -404,10 +404,31 @@ $userPrenom = $_SESSION['prenom'];
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
     <script src="script.js"></script>
     <script>
+<<<<<<< HEAD
 function handleSubmit(event) {
     event.preventDefault();  // Empêche la soumission du formulaire par défaut
     // Afficher le loader
     document.getElementById('loader').style.display = 'flex';
+=======
+$(document).ready(function () {
+    const selectPays = $('#pays');
+    // Charger les pays
+    fetch('https://flagcdn.com/fr/codes.json')
+        .then(response => response.json())
+        .then(countries => {
+            selectPays.empty();
+            for (const [code, name] of Object.entries(countries)) {
+                const option = new Option(name, code);
+                selectPays.append(option);
+            }
+            selectPays.select2({
+                placeholder: '--choisir un pays--',
+                allowClear: true
+            });
+        })
+        .catch(error => console.error('Erreur lors du chargement des pays :', error));
+});
+>>>>>>> d60a8632ff91846efb6b7997d1252508779f844d
 
     // Récupérer les valeurs des champs du formulaire
     const typecontrat = document.getElementById('typecontrat').value;

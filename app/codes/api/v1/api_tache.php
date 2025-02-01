@@ -4,9 +4,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 header("Content-Type: application/json");
-include_once(__DIR__ . '/../../models/ClassClient.php');
+include_once(__DIR__ . '/../../models/ClassTache.php');
 
-$cli = new Client();
+$tache = new Tache();
 
 // méthode HTTP
 $method = $_SERVER['REQUEST_METHOD'];
@@ -22,38 +22,21 @@ $response = ['status' => 404, 'message' => 'Endpoint non trouvé'];
 try {
     switch ($method) {
         case 'GET':
-            if ($action === 'rccm') {
-                if ($id) {
-                    // Décoder l'ID (RCCM) dans l'URL pour gérer les caractères spéciaux
-                    $rccm = urldecode($id);
-        
-                    //expression régulière pour valider le format du RCCM
-                    if (preg_match('/^[A-Z]{2}\/[A-Z]{3}\/RCCM\/[0-9]{2}-[A-Z]{1}-[0-9]{5}$/', $rccm)) {
-                        // Si le RCCM est valide, procéder à la recherche
-                        $response = $cli->fx_RechercheClientRccm($rccm);
-                        
-                        // Si aucune donnée n'est trouvée
-                        if (empty($response)) {
-                            $response = ['error' => 'Aucun client trouvé pour ce RCCM'];
-                        }
-                    } else {
-                        // Si le RCCM n'est pas valide, retourner une erreur
-                        $response = ['error' => 'RCCM invalide'];
-                    }
-                } else {
-                    $response = $cli->ListeGlobalClient();
-                }
-            } elseif ($action === 'clients') {
-                if ($id) {
-                    // Récupérer les détails d'un contrat spécifique
-                    $response = $cli->fx_RechercheClientID($id);
-                }
-            }elseif ($action === 'site') {
-                $response = $cli->listeSite();
-            }
-            break;
-        
+            if ($action === 'rtache') {
+                $taches = [
+                    'total' => $tache->getTotalTaches() ?? 0,
+                    'en_cours' => $tache->getTachesEnCours() ?? 0,
+                    'terminees' => $tache->getTachesTerminees() ?? 0,
+                    'retard' => $tache->getTachesRetard() ?? 0,
+                ];
+                $response =[
+                    'success' => true,
+                    'data' => $taches
 
+                ];
+            } 
+            break;
+    
         case 'POST':
             if ($action === 'create') {
                 // Créer un partenaire
@@ -66,7 +49,7 @@ try {
                 
                 // Enregistrer les données reçues pour debug
               //  file_put_contents("log_api.txt", print_r($data, true), FILE_APPEND);
-                $response = $cli->fx_CreerClient($data);
+                $response = $tache->creerTache($data);
                 if($response){
                     $response=['Statut' =>200, 'message' => 'Client enregistré'];
                 }else{
@@ -83,7 +66,7 @@ try {
                     // Récup data envoyées
                     $data = json_decode(file_get_contents("php://input"), true);
                     if ($data) {
-                        $response = $cli->fx_UpdateClient($id, $data);
+                        $response = $tache->UpdateTache($id, $data);
                     } else {
                         $response = ['status' => 400, 'message' => 'Données manquantes pour la mise à jour'];
                     }
@@ -94,9 +77,9 @@ try {
                 //Suppression
             case 'DELETE':
                     if ($action === 'suppcontrat' && $id) {//j'appel l'action + id 
-                        $response = $cli->DeleteClient($id);
+                        $response = $tache->DeleteTache($id);
                         if ($response) {
-                            $response = ['status' => 200, 'message' => 'Le Contrat est supprimé avec succès!'];
+                            $response = ['status' => 200, 'message' => 'Le tache est supprimée avec succès!'];
                         } else {
                             $response = ['status' => 500, 'message' => 'Echec de suppression du contrat'];
                         }
