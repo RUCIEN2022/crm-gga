@@ -23,8 +23,28 @@ class Contrat {
             return false;
         }
     }
-
-    // Création contrat autofin
+    //insertion client
+    public function fx_CreerClient($data) {//data sera notre tableau qui va recevoir les données de paramètre
+        $query = "INSERT INTO client (
+            idsite, den_social, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, 
+            telephone_client, nom_respon, email_respon, telephone_respo, numclasseur, datecrea, etat, RCCM, numeroimpot, emailclient) 
+            VALUES (
+            :idsite, :den_social, :pays_entr, :ville_entr, :adresse_entr, :code_interne, :id_nat, 
+            :telephone_client, :nom_respon, :email_respon, :telephone_respo, :numclasseur, :datecrea, :etat, :RCCM, :numeroimpot, :emailclient
+        )";
+      return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
+        
+    }
+     // insertion contrat
+     public function creerPoliceContrat($data) {
+        $query = "INSERT INTO police_contrat (
+            idclient, code_partenaire, type_contrat, etat_contrat,frais_gest_gga,cocher_couv_nat,cocher_couvr_inter
+        ) VALUES (
+            :idclient, :code_partenaire, :type_contrat, :etat_contrat, :frais_gest_gga, :cocher_couv_nat, :cocher_couvr_inter
+        )";
+        return $this->executeQuery($query, $data);
+    }
+    // insertion contrat du type autofinancement
     public function creerContratAutoFinance($data) {//data sera notre tableau qui va recevoir les données de paramètre
         $query = "INSERT INTO contrat_autofinance (
             budget_total, modalite_AF, appel_fond_init, seuil_Sinis_declenAF, frais_gest_gga, 
@@ -36,7 +56,7 @@ class Contrat {
         return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
     }
 
-    // Création police d'assurance
+    // insertion contrat du type assurance
     public function creerPoliceAssurance($data) {
         $query = "INSERT INTO police_assurance (
             effectif_agent, effectif_conjoint, effectif_enfant, effectif_Benef, date_effet, 
@@ -51,16 +71,62 @@ class Contrat {
         )";
         return $this->executeQuery($query, $data);
     }
-
-    // Création contrat de police
-    public function creerPoliceContrat($data) {
-        $query = "INSERT INTO police_contrat (
-            idclient, code_partenaire, type_contrat, etat_contrat,frais_gest_gga,cocher_couv_nat,cocher_couvr_inter
+    public function creerFacture_FraisGGA($data) {
+        $query = "INSERT INTO facture (
+            numfact, datefact, idpolice, amount_contrat, frais_gga, 
+            tva, modalite, create_by, etatfact, code, 
+            idutile
         ) VALUES (
-            :idclient, :code_partenaire, :type_contrat, :etat_contrat, :frais_gest_gga, :cocher_couv_nat, :cocher_couvr_inter
+            :numfact, CURRENT_TIMESTAMP :idpolice, :amount_contrat, :frais_gga, :tva, 
+            :modalite, :create_by, :etatfact, :code, :idutile
         )";
         return $this->executeQuery($query, $data);
     }
+    public function enregistrerClientEtContrat($clientData, $contratData) {
+        // Démarre une transaction
+        try {
+            $this->conn->beginTransaction();
+    
+            // Étape 1 : Enregistrer le client
+            $resultClient = $this->fx_CreerClient($clientData);
+            if (!$resultClient) {
+                throw new Exception("Erreur lors de l'enregistrement du client.");
+            }
+    
+            // Récupérer l'identifiant du client nouvellement inséré
+            $clientId = $this->conn->lastInsertId();
+            if (!$clientId) {
+                throw new Exception("Impossible de récupérer l'ID du client.");
+            }
+    
+            // Étape 2 : Préparer les données du contrat
+            $contratData['idclient'] = $clientId;
+    
+            // Étape 3 : Enregistrer le contrat
+            $resultContrat = $this->creerPoliceContrat($contratData);
+            if (!$resultContrat) {
+                throw new Exception("Erreur lors de l'enregistrement du contrat.");
+            }
+    
+            // Si tout est OK, valider la transaction
+            $this->conn->commit();
+            return [
+                "success" => true,
+                "message" => "Client et contrat enregistrés avec succès.",
+                "clientId" => $clientId
+            ];
+        } catch (Exception $e) {
+            // En cas d'erreur, annuler la transaction
+            $this->conn->rollBack();
+            return [
+                "success" => false,
+                "message" => $e->getMessage()
+            ];
+        }
+    }
+    
+   
+
     // mise à jour police contrat
     public function fx_UpdateContrat($data) {
         $Rqte = "UPDATE police_contrat SET ";
@@ -279,7 +345,7 @@ public function totalGlobalContratsAssuranceMoisEncours() {
         return $this->executeQuery($query);
     }
     public function effectifGlobalBeneficiairesAssur() {
-        $query = "SELECT SUM(effectif_Benef) AS total_benefAssur FROM police_contrat WHERE type_contrat=1 etat_contrat=1";
+        $query = "SELECT SUM(effectif_Benef) AS total_benefAssur FROM police_contrat WHERE type_contrat=1 AND etat_contrat=1";
         return $this->executeQuery($query);
     }
     public function effectifGlobalBeneficiairesAutofin() {
@@ -394,43 +460,53 @@ public function totalGlobalContratsAssuranceMoisEncours() {
     public function etatEtChiffreAffaireParAssureur() {
         $sql = "
             SELECT 
-                p.denom_social AS assureur,
-                COUNT(pc.idpolice) AS total_contrats,
-                SUM(CASE 
-                    WHEN pc.etat_contrat = 'actif' THEN 1 
-                    ELSE 0 
-                END) AS contrats_actifs,
-                SUM(CASE 
-                    WHEN pc.etat_contrat = 'expiré' THEN 1 
-                    ELSE 0 
-                END) AS contrats_expires,
-                SUM(pc.frais_gest_gga) AS chiffre_affaire
-            FROM 
-                police_contrat pc
-            JOIN 
-                partenaire p ON pc.code_partenaire = p.idpartenaire
-            GROUP BY 
-                p.denom_social
-            ORDER BY 
-                chiffre_affaire DESC
-        ";
+    p.denom_social AS assureur,
+    COUNT(pc.idpolice) AS total_contrats,
+    SUM(COALESCE(pc.val_frais_gest, 0)) AS frais_gestion_gga,
+    SUM(COALESCE(pa.prime_ttc, ca.budget_total)) AS chiffre_affaire,
+    SUM(
+        COALESCE(pc.effectif_Benef, 0)
+    ) AS total_assures
+FROM 
+    police_contrat pc
+JOIN 
+    partenaire p ON pc.code_partenaire = p.idpartenaire
+LEFT JOIN 
+    police_assurance pa ON pc.idpolice = pa.idpolice
+LEFT JOIN 
+contrat_autofinance ca ON pc.idpolice=ca.idpolice
+GROUP BY 
+    p.denom_social
+ORDER BY 
+    total_contrats DESC, chiffre_affaire DESC;
+";
+
         return $this->executeQuery($sql);
     }
 //analyse comparative de chaque etat de production
 public function analyseComparativeParAssureur() {
     $sql = "
-        SELECT 
-            p.denom_social AS assureur,
-            COUNT(pc.idpolice) AS total_contrats,
-            SUM(pc.frais_gest_gga) AS chiffre_affaire
-        FROM 
-            police_contrat pc
-        JOIN 
-            partenaire p ON pc.code_partenaire = p.idpartenaire
-        GROUP BY 
-            p.denom_social
-        ORDER BY 
-            p.denom_social, total_contrats DESC
+       SELECT 
+    p.denom_social AS assureur,
+    COUNT(pc.idpolice) AS total_contrats,
+    SUM(COALESCE(pc.val_frais_gest, 0)) AS frais_gestion_gga,
+    SUM(COALESCE(pa.prime_ttc, ca.budget_total)) AS chiffre_affaire,
+    SUM(
+        COALESCE(pc.effectif_Benef, 0)
+    ) AS total_assures
+FROM 
+    police_contrat pc
+JOIN 
+    partenaire p ON pc.code_partenaire = p.idpartenaire
+LEFT JOIN 
+    police_assurance pa ON pc.idpolice = pa.idpolice
+LEFT JOIN 
+contrat_autofinance ca ON pc.idpolice=ca.idpolice
+GROUP BY 
+    p.denom_social
+ORDER BY 
+    total_contrats DESC, chiffre_affaire DESC;
+
     ";
     
     // Exécution de la requête
@@ -463,7 +539,7 @@ public function analyseComparativeParAssureur() {
 
     // Total FG previsionnel
     public function TotalFrais_de_Gestion_prevision() {
-        $query = "SELECT COUNT(*) AS total_contrats, SUM(frais_gest_gga) AS frais_gest FROM police_contrat WHERE etat_contrat = 1";
+        $query = "SELECT COUNT(*) AS total_contrats, SUM(val_frais_gest) AS frais_gest FROM police_contrat WHERE etat_contrat = 1";
         return $this->executeQuery($query);
     }
     // Total FG perçu *** J'y reviendrai lors de la mise en place du module finance ***

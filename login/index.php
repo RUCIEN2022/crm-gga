@@ -12,12 +12,12 @@
       background-color: #ffffff;
     }
     .card {
-      border: 1px solid #e3342f;
+      border: 1px solid #923a4d;
       border-radius: 10px;
     }
     .btn-primary {
-      background-color: rgb(147, 16, 12);
-      border-color: #e3342f;
+      background-color: rgb(146,58,77);
+      border-color: #923a4d;
     }
     .btn-primary:hover {
       background-color: rgb(60, 5, 4);
@@ -40,7 +40,7 @@
       <img src="logo.png" alt="Logo CRM-GGA" class="img-fluid" style="max-width: 150px;">
     </div>
     <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
-      <h3 class="text-center mb-4" style="color: rgb(171, 16, 10);">CRM-Login</h3>
+      <h3 class="text-center mb-4" style="color: #923a4d;">CRM-Login</h3>
       <form id="loginForm" method="POST">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
@@ -192,7 +192,7 @@
       const simulateDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
       await simulateDelay(3000);
       try {
-        const response = await fetch("http://localhost:8080/crm-gga/app/codes/api/v1/api_user.php/login", {
+        const response = await fetch("http://localhost/crm-gga/app/codes/api/v1/api_user.php/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(requestData),

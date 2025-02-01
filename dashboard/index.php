@@ -28,6 +28,7 @@ $userPrenom = $_SESSION['prenom'];
 body{
     font-family: tahoma,sans-serif;
     font-size: 12px;
+    background-color:#f4f4f9;
 }
 .spinner {
   border: 8px solid #f3f3f3; /* Couleur de fond */
@@ -89,7 +90,7 @@ body{
 }
 
 .bg-orange {
-    background-color: #d71828; /* Orange */
+    background-color: #923a4d; /* Orange */
 }
 .user-info {
     display: flex;
@@ -106,7 +107,16 @@ body{
     font-size: 1.5em;
     color: gray; /* Ajoute une couleur plus discrète pour l'heure */
 }
-
+.circle-value, .circle-value-small {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        padding-top: 10px;
+    }
 
     </style>
 </head>
@@ -123,7 +133,7 @@ body{
             <div class="row mt-2">
                 <div class="col-md-4">
                     <div class="card card-contrats">
-                        <div class="card-body">
+                        <div class="card-body" style="background-color: #923a4d;">
                             <h5><i class="bi bi-folder"></i> Contrats</h5>
                             <h4><span class="badge bg-white text-danger" id="totalContrats" class="number">...</span></h4>
                             <div class="details">
@@ -137,7 +147,7 @@ body{
                     <div class="card card-assurance">
                         <div class="card-body">
                             <h5><i class="bi bi-shield"></i> Assurance</h5>
-                            <h4><span class="badge bg-danger" id="totalContratsAssur" class="number">...</span></h4>
+                            <h4><span class="badge" style="background-color: #923a4d;" id="totalContratsAssur" class="number">...</span></h4>
                             <div class="details">
                             <span class="text-danger" id="contratsAssurMois">Mois en cours : ...</span>
                             </div>
@@ -148,7 +158,7 @@ body{
                     <div class="card card-autofinancement">
                         <div class="card-body">
                             <h5><i class="bi bi-currency-dollar"></i> Autofinancement</h5>
-                          <h4><span class="badge bg-danger" id="totalContratsAutofin" class="number">...</span></h4>  
+                          <h4><span class="badge" style="background-color: #923a4d;" id="totalContratsAutofin" class="number">...</span></h4>  
                             <div class="details">
                               <span class="text-danger" id="contratsAutofinMois">Mois en cours : ...</span>
                             </div>
@@ -169,15 +179,36 @@ body{
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <div class="couverture bg-white p-2 mb-2" style="border-radius: 15px;">
+                    <div class="row">
+                        <div class="col-md-8">
+                        <div class="card bg-white p-3 mb-2" style="border-radius: 15px;">
+                       
                         <div class="task-item d-flex justify-content-between">
                             <span>Couverture nationale</span>
-                            <span class="badge bg-danger" id="totalCouvNat">...</span>
+                            <span class="badge" style="background-color: #923a4d;" id="totalCouvNat">...</span>
                         </div>
                         <div class="task-item d-flex justify-content-between">
                             <span>Couverture internationale</span>
-                            <span class="badge bg-danger" id="totalCouvInternat">...</span>
+                            <span class="badge" style="background-color: #923a4d;" id="totalCouvInternat">...</span>
                         </div>
+                    </div>
+                        </div>
+                        <!-- carte demandes de cotation -->
+                        <div class="col-md-4">
+                        <a href="cotations.php" class="text-decoration-none">
+                            <div class="card border shadow hover-effect" style="background-color: #923a4d;">
+                                <div class="card-body">
+                                    <h6 class="card-title text-light text-center">
+                                        <i class="bi bi-calculator text-light"></i> Cotations
+                                    </h6>
+                                    <div class="circle-value text-center bg-light shadow text-danger mx-auto">
+                                       <h5>10</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <!-- carte demandes de cotation -->
                     </div>
                     <div class="card">
                         <div class="card-body">
@@ -199,7 +230,7 @@ body{
                                 </div>
                                 <div class="task-item d-flex justify-content-between">
                                     <span class="text-danger">En retard</span>
-                                    <span class="badge bg-danger text-white" id="tachesRetard">...</span>
+                                    <span class="badge text-white" style="background-color: #923a4d;" id="tachesRetard">...</span>
                                 </div>
                             </div>
                         </div>
@@ -219,31 +250,23 @@ body{
 document.addEventListener("DOMContentLoaded", function() {
     
     // URL du endpoint backend
-    const apiUrl = 'http://localhost:8080/crm-gga/app/codes/api/v1/dashboard.php';
-
+    const apiUrl = 'http://localhost/crm-gga/app/codes/api/v1/dashboard.php';
     // Fonction pour récupérer les données du backend
     function fetchDashboardData() {
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 console.log(data);  // Log de la réponse pour déboguer
-                
-
                 if (data.success) {
                     // Accéder aux données et les afficher
-                    
                     // totalContrats (tableau contenant un objet)
                     document.getElementById('totalContrats').textContent = data.data.totalContrats[0].total_contrats;
-
                     // fraisGestion (tableau contenant un objet)
                     document.getElementById('fraisGestion').textContent = 'Frais de Gestion : ' + parseFloat(data.data.fraisGestion[0].frais_gest).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '$';
-
                     // totalBeneficiaires (tableau contenant un objet)
                     document.getElementById('totalBeneficiaires').textContent = 'Total des Bénéficiaires : ' + data.data.totalBeneficiaires[0].total_beneficiaires;
-
                     // totalContratsAssurance (tableau contenant un objet)
                     document.getElementById('totalContratsAssur').textContent = data.data.totalContratsAssurance[0].total_contratsAss;
-
                    // contratsAssuranceMois (tableau contenant un objet)
                     if (data.data.contratsAssuranceMois && data.data.contratsAssuranceMois.length > 0) {
                         document.getElementById('contratsAssurMois').textContent = 
@@ -267,56 +290,64 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Couverture nationale
                     const couvNat = data.data.couvnat?.[0]?.total_couvNat || '0';
                     document.getElementById('totalCouvNat').textContent = couvNat;
-
                     // Couverture internationale
                     const couvInter = data.data.couvinter?.[0]?.total_couvInterNat || '0';
                     document.getElementById('totalCouvInternat').textContent = couvInter;
-                    
-
-
                     // Tâches
                     document.getElementById('totalTaches').textContent = data.data.taches.total[0].total_taches;
                     document.getElementById('tachesEnCours').textContent = data.data.taches.en_cours.length ? data.data.taches.en_cours.length : '0';
                     document.getElementById('tachesTerminees').textContent = data.data.taches.terminees.length ? data.data.taches.terminees.length : '0';
                     document.getElementById('tachesRetard').textContent = data.data.taches.retard.length ? data.data.taches.retard.length : '0';
                     document.getElementById('totalnewcontrat').textContent = data.data.totalNewContrats[0]?.total_newcontrats || '0';
-
                     // Graphique des assureurs (analyser et afficher les données)
-                    const analyseAssureurs = data.data.analyseAssureurs;
-                    if (analyseAssureurs && analyseAssureurs.length > 0) {
-                        // Extraire les labels (assureurs) et les chiffres d'affaires
-                        const labels = analyseAssureurs.map(item => item.assureur);
-                        const chiffresAffaires = analyseAssureurs.map(item => item.chiffre_affaire);
+                    const analyseAssureurs = data.data.analyseAssureurs; 
+if (analyseAssureurs && analyseAssureurs.length > 0) {
+    // Extraire les labels (assureurs), chiffres d'affaires et frais de gestion
+    const labels = analyseAssureurs.map(item => item.assureur);
+    const chiffresAffaires = analyseAssureurs.map(item => item.chiffre_affaire);
+    const fraisGestion = analyseAssureurs.map(item => item.frais_gestion_gga);
 
-                        // Créer le graphique
-                        const ctx = document.getElementById('chartAssureur').getContext('2d');
-                        new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: labels, // Labels des assureurs
-                                datasets: [{
-                                    label: 'Chiffres d\'Affaires ($)', // Légende du dataset
-                                    data: chiffresAffaires, // Données des chiffres d'affaires
-                                    backgroundColor: '#e94364',
-                                    borderColor: '#e94364',
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        ticks: {
-                                            callback: function(value) {
-                                                return value.toLocaleString(); // Affichage des valeurs avec séparateur de milliers
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        });
+    // Créer le graphique
+    const ctx = document.getElementById('chartAssureur').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels, // Labels des assureurs
+            datasets: [
+                {
+                    label: 'Chiffres d\'Affaires ($)', // Légende du dataset Chiffres d'affaires
+                    data: chiffresAffaires, // Données des chiffres d'affaires
+                    backgroundColor: '#923a4d',
+                    borderColor: '#e94364',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Frais de Gestion GGA ($)', // Légende du dataset Frais de gestion
+                    data: fraisGestion, // Données des frais de gestion
+                    backgroundColor: '#303670',
+                    borderColor: '#4285F4',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toLocaleString(); // Affichage des valeurs avec séparateur de milliers
+                        }
                     }
+                }
+            }
+        }
+    });
+}
+
+
+
 
                 } else {
                     alert('Une erreur est survenue lors de la récupération des données.');

@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #8b1e3f;
+    --primary-color: rgb(146,58,77);
     --secondary-color: #e94364;
     --text-color: #213547;
     --sidebar-width: 150px;
@@ -163,7 +163,7 @@ body {
 }
 
 .card-contrats {
-    background: linear-gradient(135deg, #ff6b6b, var(--secondary-color));
+    background: linear-gradient(135deg, rgb(146,58,77), var(--secondary-color));
     color: white;
 }
 
