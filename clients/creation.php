@@ -302,7 +302,7 @@ $userPrenom = $_SESSION['prenom'];
 
         button.disabled = true;
         spinner.style.display = "inline-block";
-        console.log("Données envoyées :", formData);
+       // console.log("Données envoyées :", formData);
 
         fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_client.php/create', {
             method: 'POST',

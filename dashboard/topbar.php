@@ -5,13 +5,22 @@
                     </button>
                     <div class="d-flex justify-content-between w-100 align-items-center">
                         <h2>Tableau de bord</h2>
-                        <div class="user-info">
-                            <span class="user-name">Bonjour, <?= htmlspecialchars($userPrenom . ' ' . $userNom) ?></span>
-                            <span class="time" id="currentTime"></span>
-                        </div>
+                        <div class="user-info dropdown">
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px;">
+                            Bonjour, <?= htmlspecialchars($userPrenom . ' ' . $userNom) ?>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="profile.php"><i class="bi bi-person"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="change_password.php"><i class="bi bi-lock"></i> Changer mot de passe</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="../logout.php"><i class="bi bi-box-arrow-right"></i> Se Déconnecter</a></li>
+                        </ul>
+                        <span class="time" id="currentTime"></span>
+                    </div>
+
                         <div class="position-relative animate-notification">
                             <a href="" class="text-white" style="text-decoration: none;">
-                           <span class="badged rounded p-2 bg-danger">
+                           <span class="badged rounded p-2" style="background-color: #923a4d;">
                            
                            <i class="bi bi-folder text-orange" style="font-size: 1.5rem;">
                             

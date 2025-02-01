@@ -67,22 +67,39 @@ try {
             break;
         
 
-        case 'POST':
-            if ($action === 'create') {
-                // Créer un contrat
-                $data = json_decode(file_get_contents("php://input"), true);
-                if (isset($data['type'])) {
-                    if ($data['type'] === 'autofin') {
-                        $response = $contrat->creerContratAutoFinance($data);
-                    } elseif ($data['type'] === 'assurance') {
-                        $response = $contrat->creerPoliceAssurance($data);
-                    } else {
-                        $response = ['status' => 400, 'message' => 'Type de contrat invalide'];
+            case 'POST':
+                if ($action === 'create') {
+                    // Créer un contrat
+                    $data = json_decode(file_get_contents("php://input"), true);
+            
+                    // Vérification des données reçues
+                    if (empty($data['contrat']) || !is_array($data['contrat'])) {
+                        echo json_encode([
+                            "success" => false,
+                            "message" => "Les données du contrat sont obligatoires."
+                        ]);
+                        exit;
                     }
-                } else {
-                    $response = ['status' => 400, 'message' => 'Type de contrat manquant'];
+            
+                    $contratData = $data['contrat'];
+            
+                    try {
+                        // Instance de la classe Contrat
+                        $contrat = new Contrat();
+            
+                        // Appel de la méthode pour enregistrer le contrat
+                        $result = $contrat->enregistrerContrat($contratData);
+            
+                        // Retour du résultat sous format JSON
+                        echo json_encode($result);
+                    } catch (Exception $e) {
+                        // Gestion des erreurs internes du serveur
+                        echo json_encode([
+                            "success" => false,
+                            "message" => "Erreur interne du serveur : " . $e->getMessage()
+                        ]);
+                    }
                 }
-            }
             break;
             //Mise à jour contrat
             case 'PUT':
