@@ -47,7 +47,7 @@ try {
         case 'POST':
             if ($action === 'create') {
                 // Créer un partenaire
-               // $data = json_decode(file_get_contents("php://input"), true);
+               $data = json_decode(file_get_contents("php://input"), true);
 
                 // Vérifier si JSON est bien reçu
                 //if (!$data) {

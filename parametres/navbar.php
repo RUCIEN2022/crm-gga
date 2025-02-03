@@ -4,10 +4,10 @@
                 <h4 class="text-white fw-bold p-3">CRM-GGA</h4>
             </div>
             <ul class="list-unstyled components">
-            <li class="active" data-section="dashboard">
-    <a href="./"><i class="bi bi-house-door"></i><span>Dashboard</span></a>
+            <li class="" data-section="dashboard">
+    <a href="../dashboard/"><i class="bi bi-house-door"></i><span>Dashboard</span></a>
 </li>
-<li data-section="contrats">
+<li class="active" data-section="production">
     <a href="../contrats/"><i class="bi bi-folder-plus"></i><span>Production</span></a>
 </li>
 <li data-section="administration">
@@ -41,6 +41,7 @@
                 
                
             </ul>
+           
             <div class="sidebar-footer bg-danger">
             <a href="../logout.php"><i class="bi bi-box-arrow-right"></i><span> Déconnexion</span></a>
 

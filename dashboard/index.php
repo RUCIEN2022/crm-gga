@@ -250,7 +250,7 @@ body{
 document.addEventListener("DOMContentLoaded", function() {
     
     // URL du endpoint backend
-    const apiUrl = 'http://localhost/crm-gga/app/codes/api/v1/dashboard.php';
+    const apiUrl = 'http://localhost:8080/crm-gga/app/codes/api/v1/dashboard.php';
     // Fonction pour récupérer les données du backend
     function fetchDashboardData() {
         fetch(apiUrl)
@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     document.getElementById('totalnewcontrat').textContent = data.data.totalNewContrats[0]?.total_newcontrats || '0';
                     // Graphique des assureurs (analyser et afficher les données)
                     const analyseAssureurs = data.data.analyseAssureurs; 
-if (analyseAssureurs && analyseAssureurs.length > 0) {
+   if (analyseAssureurs && analyseAssureurs.length > 0) {
     // Extraire les labels (assureurs), chiffres d'affaires et frais de gestion
     const labels = analyseAssureurs.map(item => item.assureur);
     const chiffresAffaires = analyseAssureurs.map(item => item.chiffre_affaire);

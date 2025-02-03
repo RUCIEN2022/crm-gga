@@ -18,7 +18,7 @@ $userPrenom = $_SESSION['prenom'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Assurance</title>
+    <title>CRM-GGA Parametre</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet">
@@ -109,7 +109,7 @@ $userPrenom = $_SESSION['prenom'];
         padding: 10px;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 820px;
+        max-width: 900px;
         margin: 20px auto;
     }
 
@@ -234,49 +234,54 @@ $userPrenom = $_SESSION['prenom'];
             <div class="custom-navbar">
                 <ul class="nav-list">
                     <li class="nav-item">
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#userModal">
+                            <i class="bi bi-person-plus"></i> Créer Utilisateur
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#clientModal">
-                            <i class="bi bi-person-plus"></i> Nouveau Client
+                            <i class="bi bi-person-plus"></i> Créer Client
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./creation" class="nav-link">
-                            <i class="bi bi-file-earmark-plus"></i> Créer contrat
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#InterModal">
+                            <i class="bi bi-file-earmark-plus"></i> Créer Intermédiaire
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#gestionContratModal">
-                            <i class="bi bi-file-earmark-text"></i> Gestion contrat
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ParModal">
+                            <i class="bi bi-file-earmark-text"></i> Partenaire
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#formChecklist">
-                            <i class="bi bi-list-check"></i> Check List
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#SiteModal">
+                            <i class="bi bi-list-check"></i> Sites
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#">
-                            <i class="bi bi-calculator"></i> Cotation
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#PosteModal">
+                            <i class="bi bi-calculator"></i> Postes
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#reporting">
-                            <i class="bi bi-clipboard-data"></i> Gestion des rapports
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ProModal">
+                            <i class="bi bi-clipboard-data"></i> Profils
                         </a>
                     </li>
                 </ul>
             </div>
          <hr>
-         <div class="row text-center">
+<div class="row text-center">
     <!-- Total Contrats -->
     <div class="col-md-3">
         <a href="total-contrats.html" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-file-earmark"></i> Total Contrats
+                        <i class="bi bi-file-earmark"></i> Total Utilisateur
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;">
-                        300
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalUtil">
+                        
                     </div>
                 </div>
             </div>
@@ -288,10 +293,10 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-gear"></i> En cours de gestion
+                        <i class="bi bi-gear"></i> Total Client
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;">
-                        180
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalClient">
+                        
                     </div>
                 </div>
             </div>
@@ -303,10 +308,10 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-pause-circle"></i> En suspension
+                        <i class="bi bi-pause-circle"></i> Total Intermédiaire 
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;">
-                        60
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="totalInt">
+                        
                     </div>
                 </div>
             </div>
@@ -318,56 +323,67 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-x-circle text-danger"></i> En résiliation
+                        <i class="bi bi-x-circle text-danger"></i> Total Partenaire
                     </h5>
-                    <div class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;">
-                        40
+                    <div class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;" id="totalPart">
+                        
                     </div>
                 </div>
             </div>
         </a>
     </div>
 </div>
-
-
-<div class="row text-center mt-2">
-    <div class="col-12">
-        <h5 class="text-secondary mb-3">
-            <i class="bi bi-list-check"></i> Contrats Récents
-        </h5>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped">
-                <thead class="table-light">
-                    <tr>
-                        <th>#</th>
-                        <th>Date mise en place</th>
-                        <th>Numéro de Police</th>
-                        <th>Type de Contrat</th>
-                        <th>Total_Frais_gestion</th>
-                        <th>Client</th>
-                        <th>Gestionnaire</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td class="text-start"></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><a href=""><span class="badge bg-info">Ouvrir Classeur</span></a></td>
-                    </tr>
-                    
-                   
-                </tbody>
-            </table>
-        </div>
+<div class="row text-center">
+    <!-- Total Contrats -->
+    <div class="col-md-3">
+        <a href="total-contrats.html" class="text-decoration-none">
+            <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
+                <div class="card-body">
+                    <h5 class="card-title text-secondary">
+                        <i class="bi bi-file-earmark"></i> Total Site
+                    </h5>
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalSite">
+                        
+                    </div>
+                </div>
+            </div>
+        </a>
     </div>
+    <!-- En cours de gestion -->
+    <div class="col-md-3">
+        <a href="en-cours-gestion.html" class="text-decoration-none">
+            <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
+                <div class="card-body">
+                    <h5 class="card-title text-secondary">
+                        <i class="bi bi-gear"></i> Total Poste
+                    </h5>
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalPoste">
+                        
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    <!-- En suspension -->
+    <div class="col-md-3">
+        <a href="en-suspension.html" class="text-decoration-none">
+            <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
+                <div class="card-body">
+                    <h5 class="card-title text-secondary">
+                        <i class="bi bi-pause-circle"></i> Total Profil 
+                    </h5>
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="totalProfil">
+                        
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    
 </div>
-        </div>
+
+
+      </div>
     </div>
 </div>
     </div>
@@ -514,156 +530,317 @@ $userPrenom = $_SESSION['prenom'];
         </div>
     </div>
 </div>
-<!-- Modal Gestion Contrat -->
-<div class="modal fade" id="gestionContratModal" ddata-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+
+
+
+<!-- Modal creation utilisateur -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="gestionContratModalLabel">Gestion de Contrat</h5>
+                <h5 class="modal-title" id="UserModalLabel">Création  d'un utilisateur</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="gestionContratForm">
-                    <!-- Section 1: Incorporation/Radiation -->
-                    <div class="mb-4">
-                        <h6>Incorporation/Radiation</h6>
-                        <div class="col-md-6 form-floating mb-3">
-                            <input type="text" class="form-control" id="numPolice" placeholder="Numéro Police">
-                            <label for="numPolice">Numéro Police</label>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="ajoutBeneficiaire" onclick="toggleSection('incorporationSection', this.checked)">
-                                    <label class="form-check-label" for="ajoutBeneficiaire">Ajouter Bénéficiaire</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="retraitBeneficiaire" onclick="toggleSection('radiationSection', this.checked)">
-                                    <label class="form-check-label" for="retraitBeneficiaire">Retirer Bénéficiaire</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Incorporation Section -->
-                        <div id="incorporationSection" style="display: none;">
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="nbAgentsIncorp" placeholder="Nombre d'agents">
-                                        <label for="nbAgentsIncorp">Nombre d'agents</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="nbConjointsIncorp" placeholder="Nombre de conjoints">
-                                        <label for="nbConjointsIncorp">Nombre de conjoints</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="nbEnfantsIncorp" placeholder="Nombre d'enfants">
-                                        <label for="nbEnfantsIncorp">Nombre d'enfants</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row g-3 mt-3">
+            <form id="UserForm" class="p-3">
+                            <!-- Section 1 -->
+                            <div class="row g-3 mb-1">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="date" class="form-control" id="dateIncorp" placeholder="Date Incorporation">
-                                        <label for="dateIncorp">Date Incorporation</label>
+                                        <select name="site1" id="site1" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="0">--Choisir--</option>
+                                        </select>
+                                        <label for="site1">Site</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="number" step="0.01" class="form-control" id="primeIncorp" placeholder="Prime Nette Incorporation">
-                                        <label for="primeIncorp">Prime Nette Incorporation</label>
+                                            <select name="poste" id="poste" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                                <option value="0">--Choisir--</option>
+                                            </select>
+                                            <label for="site1">Poste</label>
                                     </div>
                                 </div>
+                                
                             </div>
-                        </div>
 
-                        <!-- Radiation Section -->
-                        <div id="radiationSection" style="display: none;" class="mt-4">
-                            <div class="row g-3">
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="number" class="form-control" id="nbAgentsRadiation" placeholder="Nombre d'agents">
-                                        <label for="nbAgentsRadiation">Nombre d'agents</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="date" class="form-control" id="dateRadiation" placeholder="Date Radiation">
-                                        <label for="dateRadiation">Date Radiation</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="ristourneCheckbox" onclick="toggleField('ristourneField', this.checked)">
-                                        <label class="form-check-label" for="ristourneCheckbox">Ristourne de la Prime</label>
-                                    </div>
-                                    <div id="ristourneField" class="form-floating mt-3" style="display: none;">
-                                        <input type="number" step="0.01" class="form-control" id="ristourneAmount" placeholder="Part Prime Nette Ristourne">
-                                        <label for="ristourneAmount">Part Prime Nette Ristourne</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 2: Suspension/Résiliation -->
-                    <div class="mb-4">
-                        <h6>Suspension/Résiliation</h6>
-                       <hr>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="suspensionCheckbox" onclick="toggleSection('suspensionSection', this.checked)">
-                                    <label class="form-check-label" for="suspensionCheckbox">Suspension</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="resiliationCheckbox" onclick="toggleSection('resiliationSection', this.checked)">
-                                    <label class="form-check-label" for="resiliationCheckbox">Résiliation</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Suspension Section -->
-                        <div id="suspensionSection" style="display: none;">
-                            <div class="row g-3">
+                            <!-- Section 2 -->
+                            <div class="row g-3 mb-1">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="date" class="form-control" id="dateSuspension" placeholder="Date Suspension">
-                                        <label for="dateSuspension">Date Suspension</label>
+                                        <input type="text" class="form-control" id="nomutile" placeholder="Nom" required>
+                                        <label for="nomutile">Nom</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="date" class="form-control" id="dateReprise" placeholder="Date Reprise">
-                                        <label for="dateReprise">Date Reprise</label>
+                                        <input type="text" class="form-control" id="prenomutile" placeholder="Adresse Client" required>
+                                        <label for="prenomutile">Prenom</label>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <!-- Section 3 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-12">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email" placeholder="Votre adresse mail" required>
+                                        <label for="email">E-mail</label>
+                                    </div>
+                                </div>
+                            
+                            </div>
+
+                            <!-- Boutons d'action -->
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="button" class="btn btn-success" id="" onclick="submitFormUser()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearFormUser()">
+                                    <i class="bi bi-plus-circle"></i> Nouveau
+                                </button>
+                            </div>
+                        </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal creation site -->
+<div class="modal fade" id="SiteModal" tabindex="-1" aria-labelledby="SiteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="SiteModalLabel">Création  Site</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <form id="UserForm" class="p-3">
+                            <!-- Section 1 -->
+                            
+
+                           
+                            <!-- Section 3 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-12">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="libsite" placeholder="Saisissez le nom du site" required>
+                                        <label for="libsite">Designation </label>
+                                    </div>
+                                </div>
+                            
+                            </div>
+
+                            <!-- Boutons d'action -->
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="button" class="btn btn-success" id="" onclick="submitFormSite()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearFormUser()">
+                                    <i class="bi bi-plus-circle"></i> Nouveau
+                                </button>
+                            </div>
+                        </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal creation intermediaire -->
+<div class="modal fade" id="InterModal" tabindex="-1" aria-labelledby="InterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="InterModalLabel">Création  Intermediaire</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <form id="InterForm" class="p-3">
+                            <!-- Section 1 -->
+                           
+
+                            <!-- Section 2 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="numeroarca" placeholder="Numero ORCA" required>
+                                        <label for="numeroarca">Numero ORCA</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="nomcomplet" placeholder="Nom complet" required>
+                                        <label for="nomcomplet">Nom Complet</label>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <!-- Section 3 -->
+                            
+                            <div class="row g-3 mb-1">
+                                    <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="telephone" placeholder="Téléphone " required>
+                                                <label for="telephone">Téléphone </label>
+                                            </div>
+                                    </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="email1" placeholder="Votre adresse mail" required>
+                                        <label for="email1">E-mail</label>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                             <!-- Section 3 -->
+                            
+                             <div class="row g-3 mb-1">
+                                    <div class="col-md-12">
+                                            <div class="form-floating">
+                                                <input type="text" class="form-control" id="adresse" placeholder="Adresse " required>
+                                                <label for="adresse">Adresse </label>
+                                            </div>
+                                    </div>
+                            
+                            
+                            </div>
+
+                            <!-- Boutons d'action -->
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="button" class="btn btn-success" id="" onclick="submitFormInter()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearFormInter()">
+                                    <i class="bi bi-plus-circle"></i> Nouveau
+                                </button>
+                            </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal Partenaire -->
+
+
+<!-- Modal creation Partenaire -->
+<div class="modal fade" id="ParModal" tabindex="-1" aria-labelledby="ParModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="InterModalLabel">Création  Partenaire</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="ParForm" class="p-3">
+                           <!-- Section 1 -->
+                           <div class="row g-3 mb-1">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="denom_social1" placeholder="Dénomination sociale" required autofocus>
+                                        <label for="denom_social1">Dénomination sociale</label>
+                                    </div>
+                                </div>
+                              
+                                <div class="col-md-4">
+                                    <div class="">
+                                        <label for="pays">Pays</label>
+                                        <select name="pays1" id="pays1" class="form-select" style="border: solid 1px #ccc;">
+                                                <option value="">--choisir--</option>
+                                        </select>
+                                           
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="ville_assu1" placeholder="Ville d'assurance" required>
+                                        <label for="ville_assu1">Ville d'assurance</label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Résiliation Section -->
-                        <div id="resiliationSection" style="display: none;" class="mt-3">
-                            <div class="form-floating">
-                                <input type="date" class="form-control" id="dateResiliation" placeholder="Date Résiliation">
-                                <label for="dateResiliation">Date Résiliation</label>
+                            <!-- Section 2 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="adresse_assu1" placeholder="Adresse" required>
+                                        <label for="adresse_assu1">Adresse</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="code_interne1" placeholder="Code interne" required>
+                                        <label for="code_interne1">Code interne</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="numeroAgree1" placeholder="Numéro d'agrément" required>
+                                        <label for="numeroAgree1">Numéro d'agrément</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Action Buttons -->
-                    <div class="d-flex justify-content-center gap-3">
-                        <button type="submit" class="btn btn-success">Enregistrer</button>
-                        <button type="reset" class="btn btn-secondary">Annuler</button>
-                    </div>
+                            <!-- Section 3 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="Rccm1" placeholder="RCCM" required>
+                                        <label for="Rccm1">RCCM</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="numero_impot1" placeholder="Numéro d'impôt" required>
+                                        <label for="numero_impot1">Numéro d'impôt</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="emailEntre1" placeholder="Email de l'entreprise" required>
+                                        <label for="emailEntre1">Email de l'entreprise</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section 4 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="telephone_Entr1" placeholder="Téléphone de l'entreprise" required>
+                                        <label for="telephone_Entr1">Téléphone de l'entreprise</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="nomRespo1" placeholder="Nom du responsable" required>
+                                        <label for="nomRespo1">Nom du responsable</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" id="emailRespo1" placeholder="Email du responsable" required>
+                                        <label for="emailRespo1">Email du responsable</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Section 5 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-4">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="TelephoneRespo1" placeholder="Téléphone du responsable" required>
+                                        <label for="TelephoneRespo1">Téléphone du responsable</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Boutons d'action -->
+                            <div class="d-flex justify-content-center gap-3 mt-4">
+                                <button type="button" class="btn btn-success" onclick="submitFormPart()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearForm()">
+                                    <i class="bi bi-plus-circle"></i> Nouveau
+                                </button>
+                            </div>
+                             
                 </form>
             </div>
         </div>
@@ -922,7 +1099,7 @@ $userPrenom = $_SESSION['prenom'];
             setTimeout(() => {
                 toast.className = toast.className.replace('show', '');
                 window.location.href = './'
-            }, 4500); // Durée d'affichage de 4,5 secondes
+            }, 1500); // Durée d'affichage de 4,5 secondes
         }
 
         function clearForm() {
@@ -1006,13 +1183,183 @@ $userPrenom = $_SESSION['prenom'];
             }, 3000);
         });
     }
+
+    // clique bouton user
+    function submitFormUser(){
+        const button = document.querySelector("button");
+        const spinner = document.querySelector(".spinner");
+        
+        const formData = {
+            idposte: document.getElementById("poste").value,
+            idsite: document.getElementById("site1").value,
+            nomutile: document.getElementById("nomutile").value,
+            prenomutile: document.getElementById("prenomutile").value,
+            email: document.getElementById("email").value,
+            photo: 'RAS',
+            motpasse: '00000',
+            etatutile:1
+        };
+        //alert('Bonjour');
+        button.disabled = true;
+        spinner.style.display = "inline-block";
+       // console.log("Données envoyées :", formData);
+
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_user.php/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            //console.log("Réponse API :", data);
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                if (data.status === 200) {
+                    showToast('Utilisateur enregistré avec succès!', 'success');
+                   // clearForm();
+                } else {
+                    showToast(data.message || 'Une erreur est survenue.', 'error');
+                }
+            }, 3000);
+        })
+        .catch(error => {
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                showToast('Erreur lors de l\'enregistrement.' + error, 'error');
+              //  console.error('Error:', error);
+            }, 3000);
+        });
+
+       
+
+
+    }
+
+    //cliquer boutoun Intermediaire
+    function submitFormInter(){
+        alert('clique ok');
+        const button = document.querySelector("button");
+        const spinner = document.querySelector(".spinner");
+        
+        const formData = {
+      
+            numeroarca: document.getElementById("numeroarca").value,
+            nomcomplet: document.getElementById("nomcomplet").value,
+            
+            telephone: document.getElementById("telephone").value,
+            email: document.getElementById("email1").value,
+            adresse: document.getElementById("adresse").value,
+            etat: 1
+           
+        };
+       // alert('Bonjour');
+        button.disabled = true;
+        spinner.style.display = "inline-block";
+       // console.log("Données envoyées :", formData);
+
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_parametres.php/create1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            //console.log("Réponse API :", data);
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                if (data.status === 200) {
+                    showToast('Intermediaire enregistré avec succès!', 'success');
+                   // clearForm();
+                } else {
+                    showToast(data.message || 'Une erreur est survenue.', 'error');
+                }
+            }, 3000);
+        })
+        .catch(error => {
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                showToast('Erreur lors de l\'enregistrement.' + error, 'error');
+              //  console.error('Error:', error);
+            }, 3000);
+        });
+
+    }
+
+    function submitFormPart(){
+        const button = document.querySelector("button");
+        const spinner = document.querySelector(".spinner");
+    
+
+        const formData = {
+            denom_social: document.getElementById("denom_social1").value,
+            pays_assu: document.getElementById("pays1").value,
+            ville_assu: document.getElementById("ville_assu1").value,
+            adresse_assu: document.getElementById("adresse_assu1").value,
+            code_interne: document.getElementById("code_interne1").value,
+            numeroAgree: document.getElementById("numeroAgree1").value,
+            Rccm: document.getElementById("Rccm1").value,
+            numero_impot: document.getElementById("numero_impot1").value,
+            emailEntre: document.getElementById("emailEntre1").value,
+            telephone_Entr: document.getElementById("telephone_Entr1").value,
+            nomRespo: document.getElementById("nomRespo1").value,
+            emailRespo: document.getElementById("emailRespo1").value,
+            TelephoneRespo: document.getElementById("TelephoneRespo1").value,
+            etatpartenaire: 1
+        };
+
+        button.disabled = true;
+        spinner.style.display = "inline-block";
+
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                if (data.status === 200) {
+                    showToast('Partenaire enregistré avec succès!', 'success');
+                    clearForm();
+                } else {
+                    showToast(data.message || 'Une erreur est survenue.', 'error');
+                }
+            }, 3000);
+        })
+        .catch(error => {
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                showToast('Erreur lors de l\'enregistrement.', 'error');
+                console.error('Error:', error);
+            }, 3000);
+        });
+    }
+    
     </script>
 
     <script>
         // Les traitement de la page
-
-       
-
         document.addEventListener('DOMContentLoaded', function(){
             // chargeSite
             fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_client.php/site')
@@ -1036,11 +1383,68 @@ $userPrenom = $_SESSION['prenom'];
                             option.textContent = site.libsite;
                             selectSite.appendChild(option);
                         });
+
+                        // pour site utilisateur
+                        const selectSite1 = document.getElementById('site1');
+                        selectSite1.innerHTML = ''; // Nettoyer les options précédentes
+
+                        // Ajouter une option par défaut
+                        const defaultOption1 = document.createElement('option');
+                        defaultOption1.value = '';
+                        defaultOption1.textContent = '--choisir--';
+                        selectSite1.appendChild(defaultOption1);
+
+                        // Ajouter les options récupérées depuis l'API
+                        data.forEach(site1 => {
+                            const option = document.createElement('option');
+                            option.value = site1.idsite;
+                            option.textContent = site1.libsite;
+                            selectSite1.appendChild(option);
+                        });
+
+
+
                     } else {
                         console.error('Structure inattendue de la réponse:', data);
                     }
                 })
                 .catch(error => console.error('Erreur lors du chargement des sites:', error));
+
+
+
+                //J'arrive 
+                // charger poste
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_parametres.php/poste')
+                .then(response => response.json())
+                .then(data => {
+                    // Vérifier si la réponse est un tableau
+                    if (Array.isArray(data)) {
+                        const selectPoste = document.getElementById('poste');
+                        selectPoste.innerHTML = ''; // Nettoyer les options précédentes
+
+                        // Ajouter une option par défaut
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = '--choisir--';
+                        selectPoste.appendChild(defaultOption);
+
+                        // Ajouter les options récupérées depuis l'API
+                        data.forEach(poste => {
+                            const option = document.createElement('option');
+                            option.value = poste.idposte;
+                            option.textContent = poste.libposte;
+                            selectPoste.appendChild(option);
+                        });
+
+                        
+
+
+                    } else {
+                        console.error('Structure inattendue de la réponse:', data);
+                    }
+                })
+                .catch(error => console.error('Erreur lors du chargement des sites:', error));
+
             
 
         });
@@ -1062,6 +1466,45 @@ $userPrenom = $_SESSION['prenom'];
                     });
                 })
                 .catch(error => console.error('Erreur lors du chargement des pays :', error));
+            // pays partenaire
+            const selectPays1 = $('#pays1');
+            // Charger les pays
+            fetch('https://flagcdn.com/fr/codes.json')
+                .then(response => response.json())
+                .then(countries => {
+                    selectPays1.empty();
+                    for (const [code, name] of Object.entries(countries)) {
+                        const option = new Option(name, code);
+                        selectPays1.append(option);
+                    }
+                    selectPays1.select2({
+                        placeholder: '--choisir un pays--',
+                        allowClear: true
+                    });
+                })
+                .catch(error => console.error('Erreur lors du chargement des pays :', error));
+
+        });
+    </script>
+    <script>
+        // chargement de la page affichage de statistiques
+        document.addEventListener('DOMContentLoaded', function(){
+            // chargeSite
+            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_parametres.php/total')
+                .then(response => response.json())
+                .then(data => {
+                    // recuperation de statistiques
+                    document.getElementById('totalUtil').textContent = data.data.totalUtile[0].total_user;
+                    document.getElementById('totalClient').textContent = data.data.totalClient[0].total_client;
+                    document.getElementById('totalInt').textContent = data.data.totalInt[0].total_inter;
+                    document.getElementById('totalPart').textContent = data.data.totalPart[0].total_part;
+                    document.getElementById('totalSite').textContent = data.data.totalSite[0].total_site;
+                    document.getElementById('totalPoste').textContent = data.data.totalPoste[0].total_poste;
+                    document.getElementById('totalProfil').textContent = data.data.totalProfil[0].total_profil;
+                })
+                .catch(error => console.error('Erreur lors du chargement des parametre:', error));
+            
+
         });
     </script>
     
