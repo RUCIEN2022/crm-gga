@@ -208,7 +208,7 @@ $userPrenom = $_SESSION['prenom'];
                         <select name="assureur" id="assureur" class="form-select fw-bold" style="font-size: 12px;">
                             
                         </select>
-                        </div>
+                    </div>
                     
                     <div class="col-md-4">
                         <label for="dateEffet" class="form-label">Date d'effet</label>

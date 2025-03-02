@@ -47,7 +47,12 @@ switch ($request) {
     case 'parametres':
         include 'parametres/index.php';
         break;
-    
+    case 'admin':
+        include 'admin/index.php';
+        break;
+    case 'finance':
+        include 'parametres/index.php';
+        break;
     case 'facture':
         include 'facture/index.php';
         break;
