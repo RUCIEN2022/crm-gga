@@ -88,7 +88,7 @@ try {
                         $contrat = new Contrat();
             
                         // Appel de la méthode pour enregistrer le contrat
-                        $result = $contrat->enregistrerContrat($contratData);
+                       // $result = $contrat->enregistrerContrat($contratData);
             
                         // Retour du résultat sous format JSON
                         echo json_encode($result);

@@ -235,39 +235,33 @@ $userPrenom = $_SESSION['prenom'];
                 <ul class="nav-list">
                     <li class="nav-item">
                         <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#userModal">
-                            <i class="bi bi-person-plus"></i> Créer Utilisateur
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#clientModal">
-                            <i class="bi bi-person-plus"></i> Créer Client
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#InterModal">
-                            <i class="bi bi-file-earmark-plus"></i> Créer Intermédiaire
+                            <i class="bi bi-person-plus"></i> Décomptes validés
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ParModal">
-                            <i class="bi bi-file-earmark-text"></i> Partenaire
+                            <i class="bi bi-file-earmark-text"></i> Fonds de déroulement 
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#SiteModal">
-                            <i class="bi bi-list-check"></i> Sites
+                        <a href="#" class="nav-link" >
+                            <i class="bi bi-file-earmark-text"></i> Journal de Caisse
                         </a>
                     </li>
+                    
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#PosteModal">
-                            <i class="bi bi-calculator"></i> Postes
+                        <a href="#" class="nav-link" >
+                            <i class="bi bi-file-earmark-text"></i> Journal de Banque
                         </a>
                     </li>
+                   
+                 
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ProModal">
-                            <i class="bi bi-clipboard-data"></i> Profils
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ParModal">
+                            <i class="bi bi-file-earmark-text"></i> REPORTING
                         </a>
                     </li>
+
                 </ul>
             </div>
          <hr>
@@ -278,9 +272,9 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-file-earmark"></i> Total Utilisateur
+                        <i class="bi bi-file-earmark"></i> Total Décomptes validés
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalUtil">
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="Totaldv">
                         
                     </div>
                 </div>
@@ -293,9 +287,9 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-gear"></i> Total Client
+                        <i class="bi bi-gear"></i> Solde Caisse
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalClient">
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="Totaljc">
                         
                     </div>
                 </div>
@@ -308,9 +302,9 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-pause-circle"></i> Total Intermédiaire 
+                        <i class="bi bi-pause-circle"></i> Solde Banque 
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="totalInt">
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="Totaljb">
                         
                     </div>
                 </div>
@@ -323,9 +317,9 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-x-circle text-danger"></i> Total Partenaire
+                        <i class="bi bi-x-circle text-danger"></i> Total Solde
                     </h5>
-                    <div class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;" id="totalPart">
+                    <div class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;" id="Totalsolde">
                         
                     </div>
                 </div>
@@ -333,194 +327,156 @@ $userPrenom = $_SESSION['prenom'];
         </a>
     </div>
 </div>
-<div class="row text-center">
-    <!-- Total Contrats -->
-    <div class="col-md-3">
-        <a href="total-contrats.html" class="text-decoration-none">
-            <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
-                <div class="card-body">
-                    <h5 class="card-title text-secondary">
-                        <i class="bi bi-file-earmark"></i> Total Site
-                    </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalSite">
-                        
-                    </div>
-                </div>
-            </div>
-        </a>
+
+
+<!-- Tableau Journal de transaction du jour -->
+
+<div class="row text-center mt-2">
+    <div class="col-12">
+        <h5 class="text-secondary mb-3" id="titreTransaction">
+            <i class="bi bi-list-check"></i> Journal de transaction du ...
+        </h5>
+       
+
+        <div class="table-responsive">
+        <h5 class="text-secondary mb-3 d-flex justify-content-between align-items-center" >
+           
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#clientModal" >
+                <i class="bi bi-plus-circle"></i> Nouvelle Transaction
+            </button>
+        </h5>
+        
+            <table class="table table-bordered table-hover table-striped">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Date du jour </th>
+                        <th>Type Operation</th>
+                        <th>Compte</th>
+                        <th>Credit</th>
+                        <th>Debit</th>
+                        <th>Solde</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td class="text-start"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><a href=""><span class="badge bg-info">Ouvrir Classeur</span></a></td>
+                    </tr>
+                    
+                   
+                </tbody>
+            </table>
+        </div>
     </div>
-    <!-- En cours de gestion -->
-    <div class="col-md-3">
-        <a href="en-cours-gestion.html" class="text-decoration-none">
-            <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
-                <div class="card-body">
-                    <h5 class="card-title text-secondary">
-                        <i class="bi bi-gear"></i> Total Poste
-                    </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalPoste">
-                        
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-    <!-- En suspension -->
-    <div class="col-md-3">
-        <a href="en-suspension.html" class="text-decoration-none">
-            <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
-                <div class="card-body">
-                    <h5 class="card-title text-secondary">
-                        <i class="bi bi-pause-circle"></i> Total Profil 
-                    </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="totalProfil">
-                        
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-    
 </div>
-
-
+<!-- Fin Tableau -->
       </div>
     </div>
 </div>
     </div>
 </div>
-<!-- Modal Static Content -->
+
+
+
+<!-- Modal Journal -->
 <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="clientModalLabel">Création d'un Nouveau Client</h5>
+                <h5 class="modal-title" id="clientModalLabel">Journal des transactions</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             <form id="clientForm" class="p-3">
                             <!-- Section 1 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-4">
+                                
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select name="site" id="site" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                        <input type="date" class="form-control" id="datejour" placeholder="" required>
+                                        <label for="datejour">Date</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <select name="typeOperation" id="typeOperation" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
                                             <option value="0">--Choisir--</option>
+                                            <option value="1">Recette</option>
+                                            <option value="2">Depense</option>
                                         </select>
-                                        <label for="site">Site</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="den_social" placeholder="Dénomination sociale" required>
-                                        <label for="den_social">Dénomination sociale</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="">
-                                        <label for="pays">Pays</label>
-                                        <select name="pays" id="pays" class="form-select" style="border: solid 1px #ccc;">
-                                                <option value="">--choisir--</option>
-                                        </select>
-                                           
+                                        <label for="typeOperation">Type Operation</label>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Section 2 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="ville_entr" placeholder="Ville" required>
-                                        <label for="ville_entr">Ville</label>
+                                <div class="col-md-6">
+                                   <div class="form-floating">
+                                        <select name="idcompte" id="idcompte" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="0">--Choisir--</option>
+                                        </select>
+                                        <label for="idcompte">Compte    | Solde disponible : <input type="text" id="solde" value="0" readonly ></label>
+                                       
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <!-- banque-->
+                                <div class="col-md-6" id="bankSelectContainer" style="display:none;">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="adresse_entr" placeholder="Adresse Client" required>
-                                        <label for="adresse_entr">Adresse Client</label>
+                                        <select name="bankList" id="bankList" class="form-select" style="font-size: 12px;border: solid 1px #ccc;">
+                                            <option value="0">--Choisir une banque--</option>
+                                        </select>
+                                        <label for="bankList">Banque</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+
+
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="code_interne" placeholder="Code Interne" required>
-                                        <label for="code_interne">code_interne</label>
+                                        <input type="text" class="form-control" id="motif" placeholder="Motif" required>
+                                        <label for="motif">Motif</label>
                                     </div>
                                 </div>
+                               
                             </div>
 
                             <!-- Section 3 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="id_nat" placeholder="Identifiant National [id nat]" required>
-                                        <label for="id_nat">Identifiant National [id nat]</label>
+                                        <input type="text" class="form-control" id="beneficiaire" placeholder="Source / Beneficiaire " required>
+                                        <label for="beneficiaire">Source/Beneficiaire </label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="telephone_client" placeholder="Telephone Client" required>
-                                        <label for="telephone_client">Telephone Client</label>
+                                        <input type="text" class="form-control" id="ref_oper" placeholder="Reference " required>
+                                        <label for="ref_oper">Reference </label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                   <div class="form-floating">
-                                        <input type="email" class="form-control" id="emailclient" placeholder="Email Client" required>
-                                        <label for="emailclient">Email Client</label>
-                                    </div>
-    
-                                </div>
-                            </div>
-
-                            <!-- Section 4 -->
-                            <div class="row g-3 mb-1">
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="nom_respon" placeholder="Nom du responsable" required>
-                                        <label for="nom_respon">Nom du responsable</label>
-                                    </div>
-                                    
-                                </div>
-                                <div class="col-md-4">
-                                   
-                                   <div class="form-floating">
-                                        <input type="text" class="form-control" id="telephone_respo" placeholder="Telephone du responsable" required>
-                                        <label for="telephone_respo">Telephone du responsable</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                      <div class="form-floating">
-                                        <input type="email" class="form-control" id="email_respon" placeholder="Email du responsable" required>
-                                        <label for="email_respon">Email du responsable</label>
-                                    </div>    
                                 
-                                </div>
                             </div>
-
-                            <!-- Section 5 -->
-                            <div class="row g-3 mb-1">
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="RCCM" placeholder="RCCM" required>
-                                        <label for="RCCM">RCCM</label>
-                                    </div>
-                                </div>
-                              
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="numeroimpot" placeholder="Numero Impot" required>
-                                        <label for="numeroimpot">Numero Impot</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="numclasseur" placeholder="Numero Classeur" required>
-                                        <label for="numclasseur">Numero Classeur</label>
-                                    </div>
-                                </div>
-                            </div>
+                               <!-- Section 3 -->
+                               <div class="row g-3 mb-1">
+                                   <div class="col-md-12">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" id="montant" placeholder="Montant" required style="text-align: right;">
+                                            <label for="montant">Montant </label>
+                                        </div>
+                                   </div>
+                               </div>
 
                             <!-- Boutons d'action -->
                             <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button type="button" class="btn btn-success" id="" onclick="submitForm()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-success" id="" onclick="submitFormJournal()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
                                 <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearForm()">
                                     <i class="bi bi-plus-circle"></i> Nouveau
                                 </button>
@@ -538,27 +494,27 @@ $userPrenom = $_SESSION['prenom'];
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="UserModalLabel">Création  d'un utilisateur</h5>
+                <h5 class="modal-title" id="UserModalLabel">Décompte  Valide</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             <form id="UserForm" class="p-3">
                             <!-- Section 1 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-6">
+                               <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select name="site1" id="site1" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                        <select name="annee" id="annee" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
                                             <option value="0">--Choisir--</option>
                                         </select>
-                                        <label for="site1">Site</label>
+                                        <label for="annee">Annee</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                            <select name="poste" id="poste" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
-                                                <option value="0">--Choisir--</option>
-                                            </select>
-                                            <label for="site1">Poste</label>
+                                        <select name="id_prestataire" id="id_prestataire" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="0">--Choisir--</option>
+                                        </select>
+                                        <label for="site1">Prestataire</label>
                                     </div>
                                 </div>
                                 
@@ -568,14 +524,18 @@ $userPrenom = $_SESSION['prenom'];
                             <div class="row g-3 mb-1">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="nomutile" placeholder="Nom" required>
-                                        <label for="nomutile">Nom</label>
+                                        <select name="id_assureur" id="id_assureur" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="0">--Choisir--</option>
+                                        </select>
+                                        <label for="id_assureur">Assureur</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="prenomutile" placeholder="Adresse Client" required>
-                                        <label for="prenomutile">Prenom</label>
+                                        <select name="id_contrat" id="id_contrat" class="form-select" style="font-size: 12px;border: solid 1px #ccc;">
+                                            <option value="0">--Choisir--</option>
+                                        </select>
+                                        <label for="id_contrat">Contrat</label>
                                     </div>
                                 </div>
                                 
@@ -583,18 +543,51 @@ $userPrenom = $_SESSION['prenom'];
 
                             <!-- Section 3 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Votre adresse mail" required>
-                                        <label for="email">E-mail</label>
+                                        <input type="date" class="form-control" id="date_soin" placeholder="Date Soin" required>
+                                        <label for="date_soin">Date Soin</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="montant_paye" placeholder="Montant Payé" required>
+                                        <label for="montant_paye">Montant Payé</label>
                                     </div>
                                 </div>
                             
                             </div>
+                            <!-- Section 4 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control" id="date_paiement" placeholder="Date Paiement" required>
+                                        <label for="date_paiement">Date Paiement</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="date" class="form-control" id="date_reception" placeholder="Date Réception" required>
+                                        <label for="date_reception">Date Réception</label>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                            <!-- Section 4 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="observation" placeholder="Observation" required>
+                                        <label for="observation">Observation</label>
+                                    </div>
+                                </div>
+                       
+                            </div>
+                            <input type="text" id="user" value="<?php if(isset($userId)) echo $userId; ?>" hidden>
 
                             <!-- Boutons d'action -->
                             <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button type="button" class="btn btn-success" id="" onclick="submitFormUser()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-success" id="" onclick="submitFormDecompte()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
                                 <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearFormUser()">
                                     <i class="bi bi-plus-circle"></i> Nouveau
                                 </button>
@@ -721,121 +714,77 @@ $userPrenom = $_SESSION['prenom'];
 <!-- Modal Partenaire -->
 
 
-<!-- Modal creation Partenaire -->
+<!-- Modal creation Fond deroulement -->
 <div class="modal fade" id="ParModal" tabindex="-1" aria-labelledby="ParModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="InterModalLabel">Création  Partenaire</h5>
+                <h5 class="modal-title" id="InterModalLabel">Mise à jour fonds de déroulement</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="ParForm" class="p-3">
                            <!-- Section 1 -->
                            <div class="row g-3 mb-1">
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="denom_social1" placeholder="Dénomination sociale" required autofocus>
-                                        <label for="denom_social1">Dénomination sociale</label>
+                                <div class="col-md-6">
+                                   <div class="form-floating">
+                                        <select name="id_assureur1" id="id_assureur1" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="0">--Choisir--</option>
+                                        </select>
+                                        <label for="id_assureur1">Assureur</label>
                                     </div>
                                 </div>
                               
-                                <div class="col-md-4">
-                                    <div class="">
-                                        <label for="pays">Pays</label>
-                                        <select name="pays1" id="pays1" class="form-select" style="border: solid 1px #ccc;">
-                                                <option value="">--choisir--</option>
+                                <div class="col-md-6">
+                                   <div class="form-floating">
+                                        <select name="id_contrat1" id="id_contrat1" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="0">--Choisir--</option>
                                         </select>
-                                           
+                                        <label for="id_contrat1">Contrat</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="ville_assu1" placeholder="Ville d'assurance" required>
-                                        <label for="ville_assu1">Ville d'assurance</label>
-                                    </div>
-                                </div>
+                              
                             </div>
 
                             <!-- Section 2 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="adresse_assu1" placeholder="Adresse" required>
-                                        <label for="adresse_assu1">Adresse</label>
+                                        <input type="numeric" class="form-control" id="fonds_recus" placeholder="Fonds Reçu" required>
+                                        <label for="fonds_recus">Fonds Reçus</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="code_interne1" placeholder="Code interne" required>
-                                        <label for="code_interne1">Code interne</label>
+                                        <input type="text" class="form-control" id="sinistre_paye" placeholder="Sinistre Payé" required>
+                                        <label for="sinistre_paye">Sinistre Payé</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="numeroAgree1" placeholder="Numéro d'agrément" required>
-                                        <label for="numeroAgree1">Numéro d'agrément</label>
-                                    </div>
-                                </div>
+                                
                             </div>
 
                             <!-- Section 3 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="Rccm1" placeholder="RCCM" required>
-                                        <label for="Rccm1">RCCM</label>
+                                        <input type="text" class="form-control" id="sinistre_encours" placeholder="Sinistre encours" required>
+                                        <label for="sinistre_encours">Sinistre encours</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="numero_impot1" placeholder="Numéro d'impôt" required>
-                                        <label for="numero_impot1">Numéro d'impôt</label>
+                                        <input type="text" class="form-control" id="fonds_disponibles" placeholder="Fonds disponibles" required>
+                                        <label for="fonds_disponibles">Fonds disponibles</label>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" id="emailEntre1" placeholder="Email de l'entreprise" required>
-                                        <label for="emailEntre1">Email de l'entreprise</label>
-                                    </div>
-                                </div>
+                                
                             </div>
 
                             <!-- Section 4 -->
-                            <div class="row g-3 mb-1">
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="telephone_Entr1" placeholder="Téléphone de l'entreprise" required>
-                                        <label for="telephone_Entr1">Téléphone de l'entreprise</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="nomRespo1" placeholder="Nom du responsable" required>
-                                        <label for="nomRespo1">Nom du responsable</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" id="emailRespo1" placeholder="Email du responsable" required>
-                                        <label for="emailRespo1">Email du responsable</label>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Section 5 -->
-                            <div class="row g-3 mb-1">
-                                <div class="col-md-4">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="TelephoneRespo1" placeholder="Téléphone du responsable" required>
-                                        <label for="TelephoneRespo1">Téléphone du responsable</label>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Boutons d'action -->
                             <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button type="button" class="btn btn-success" onclick="submitFormPart()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-success" onclick="submitFormFD()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
                                 <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearForm()">
                                     <i class="bi bi-plus-circle"></i> Nouveau
                                 </button>
@@ -1185,26 +1134,29 @@ $userPrenom = $_SESSION['prenom'];
     }
 
     // clique bouton user
-    function submitFormUser(){
+    function submitFormDecompte(){
+        alert("Bonjour :");
         const button = document.querySelector("button");
         const spinner = document.querySelector(".spinner");
         
         const formData = {
-            idposte: document.getElementById("poste").value,
-            idsite: document.getElementById("site1").value,
-            nomutile: document.getElementById("nomutile").value,
-            prenomutile: document.getElementById("prenomutile").value,
-            email: document.getElementById("email").value,
-            photo: 'RAS',
-            motpasse: '00000',
-            etatutile:1
+            annee: document.getElementById("annee").value,
+            id_prestataire: document.getElementById("id_prestataire").value,
+            id_assureur: document.getElementById("id_assureur").value,
+            id_contrat: document.getElementById("id_contrat").value,
+            date_soin: document.getElementById("date_soin").value,
+            montant_paye: document.getElementById("montant_paye").value,
+            date_reception: document.getElementById("date_reception").value,
+            date_paiement: document.getElementById("date_paiement").value,
+            observation: document.getElementById("observation").value,
+            user: document.getElementById("user").value
         };
         //alert('Bonjour');
         button.disabled = true;
         spinner.style.display = "inline-block";
        // console.log("Données envoyées :", formData);
 
-        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_user.php/create', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/create_decompte', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1220,12 +1172,12 @@ $userPrenom = $_SESSION['prenom'];
                 spinner.style.display = "none";
 
                 if (data.status === 200) {
-                    showToast('Utilisateur enregistré avec succès!', 'success');
+                    showToast('Décompte valide enregistré avec succès!', 'success');
                    // clearForm();
                 } else {
                     showToast(data.message || 'Une erreur est survenue.', 'error');
                 }
-            }, 3000);
+            }, 1000);
         })
         .catch(error => {
             setTimeout(() => {
@@ -1234,7 +1186,7 @@ $userPrenom = $_SESSION['prenom'];
 
                 showToast('Erreur lors de l\'enregistrement.' + error, 'error');
               //  console.error('Error:', error);
-            }, 3000);
+            }, 1000);
         });
 
        
@@ -1299,32 +1251,23 @@ $userPrenom = $_SESSION['prenom'];
 
     }
 
-    function submitFormPart(){
+    function submitFormFD(){
         const button = document.querySelector("button");
         const spinner = document.querySelector(".spinner");
     
 
         const formData = {
-            denom_social: document.getElementById("denom_social1").value,
-            pays_assu: document.getElementById("pays1").value,
-            ville_assu: document.getElementById("ville_assu1").value,
-            adresse_assu: document.getElementById("adresse_assu1").value,
-            code_interne: document.getElementById("code_interne1").value,
-            numeroAgree: document.getElementById("numeroAgree1").value,
-            Rccm: document.getElementById("Rccm1").value,
-            numero_impot: document.getElementById("numero_impot1").value,
-            emailEntre: document.getElementById("emailEntre1").value,
-            telephone_Entr: document.getElementById("telephone_Entr1").value,
-            nomRespo: document.getElementById("nomRespo1").value,
-            emailRespo: document.getElementById("emailRespo1").value,
-            TelephoneRespo: document.getElementById("TelephoneRespo1").value,
-            etatpartenaire: 1
+            id_assureur: document.getElementById("id_assureur1").value,
+            id_contrat: document.getElementById("id_contrat1").value,
+            fonds_recus: document.getElementById("fonds_recus").value,
+            sinistre_paye: document.getElementById("sinistre_paye").value,
+            sinistre_encours: document.getElementById("sinistre_encours").value
         };
 
         button.disabled = true;
         spinner.style.display = "inline-block";
 
-        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/create', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/create_fond', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1338,7 +1281,7 @@ $userPrenom = $_SESSION['prenom'];
                 spinner.style.display = "none";
 
                 if (data.status === 200) {
-                    showToast('Partenaire enregistré avec succès!', 'success');
+                    showToast('Fonds de déroulemennt enregistré avec succès!', 'success');
                     clearForm();
                 } else {
                     showToast(data.message || 'Une erreur est survenue.', 'error');
@@ -1361,13 +1304,15 @@ $userPrenom = $_SESSION['prenom'];
     <script>
         // Les traitement de la page
         document.addEventListener('DOMContentLoaded', function(){
+            +
             // chargeSite
-            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_client.php/site')
+            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_annee.php')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
+                    /*
                     if (Array.isArray(data)) {
-                        const selectSite = document.getElementById('site');
+                        const selectSite = document.getElementById('annee');
                         selectSite.innerHTML = ''; // Nettoyer les options précédentes
 
                         // Ajouter une option par défaut
@@ -1377,49 +1322,41 @@ $userPrenom = $_SESSION['prenom'];
                         selectSite.appendChild(defaultOption);
 
                         // Ajouter les options récupérées depuis l'API
-                        data.forEach(site => {
+                        data.annees.forEach(annee => {
                             const option = document.createElement('option');
-                            option.value = site.idsite;
-                            option.textContent = site.libsite;
+                            option.value = annee;
+                            option.textContent = annee;
                             selectSite.appendChild(option);
                         });
-
-                        // pour site utilisateur
-                        const selectSite1 = document.getElementById('site1');
-                        selectSite1.innerHTML = ''; // Nettoyer les options précédentes
-
-                        // Ajouter une option par défaut
-                        const defaultOption1 = document.createElement('option');
-                        defaultOption1.value = '';
-                        defaultOption1.textContent = '--choisir--';
-                        selectSite1.appendChild(defaultOption1);
-
-                        // Ajouter les options récupérées depuis l'API
-                        data.forEach(site1 => {
-                            const option = document.createElement('option');
-                            option.value = site1.idsite;
-                            option.textContent = site1.libsite;
-                            selectSite1.appendChild(option);
-                        });
-
-
 
                     } else {
                         console.error('Structure inattendue de la réponse:', data);
                     }
+                        */
+              
+                    
+                    const select = document.getElementById('annee');
+
+                    data.annees.forEach(annee => {
+                        const option = document.createElement('option');
+                        option.value = annee;
+                        option.textContent = annee;
+                        select.appendChild(option);
+                    });
+                    //fin
                 })
                 .catch(error => console.error('Erreur lors du chargement des sites:', error));
 
 
 
                 //J'arrive 
-                // charger poste
-                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_parametres.php/poste')
+                // charger prestataire
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_admin.php/listePresta')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
                     if (Array.isArray(data)) {
-                        const selectPoste = document.getElementById('poste');
+                        const selectPoste = document.getElementById('id_prestataire');
                         selectPoste.innerHTML = ''; // Nettoyer les options précédentes
 
                         // Ajouter une option par défaut
@@ -1429,10 +1366,10 @@ $userPrenom = $_SESSION['prenom'];
                         selectPoste.appendChild(defaultOption);
 
                         // Ajouter les options récupérées depuis l'API
-                        data.forEach(poste => {
+                        data.forEach(presta => {
                             const option = document.createElement('option');
-                            option.value = poste.idposte;
-                            option.textContent = poste.libposte;
+                            option.value = presta.id_prestataire;
+                            option.textContent = presta.nom_prestataire;
                             selectPoste.appendChild(option);
                         });
 
@@ -1445,9 +1382,182 @@ $userPrenom = $_SESSION['prenom'];
                 })
                 .catch(error => console.error('Erreur lors du chargement des sites:', error));
 
-            
+             
+                // charger assureur
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
+                .then(response => response.json())
+                .then(data => {
+                    // Vérifier si la réponse est un tableau
+                    if (Array.isArray(data)) {
+                        const selectPoste = document.getElementById('id_assureur');
+                        selectPoste.innerHTML = ''; // Nettoyer les options précédentes
+
+                        // Ajouter une option par défaut
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = '--choisir--';
+                        selectPoste.appendChild(defaultOption);
+
+                        // Ajouter les options récupérées depuis l'API
+                        data.forEach(assureur => {
+                            const option = document.createElement('option');
+                            option.value = assureur.idpartenaire;
+                            option.textContent = assureur.denom_social;
+                            selectPoste.appendChild(option);
+                        });
+
+                        // pour fonds de deroulement
+                        // Ajouter une option par défaut
+                        const selectAssu = document.getElementById('id_assureur1');
+                        selectAssu.innerHTML = ''; // Nettoyer les options précédentes
+
+                        // Ajouter une option par défaut
+                        const defaultOption1 = document.createElement('option');
+                        defaultOption1.value = '';
+                        defaultOption1.textContent = '--choisir--';
+                        selectAssu.appendChild(defaultOption);
+
+                        // Ajouter les options récupérées depuis l'API
+                        data.forEach(assureur => {
+                            const option = document.createElement('option');
+                            option.value = assureur.idpartenaire;
+                            option.textContent = assureur.denom_social;
+                            selectAssu.appendChild(option);
+                        });
+
+
+                    } else {
+                        console.error('Structure inattendue de la réponse:', data);
+                    }
+                })
+                .catch(error => console.error('Erreur lors du chargement des sites:', error));
+
+               
+                // charger contrat
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_pc.php')
+                .then(response => response.json())
+                .then(json => {
+                    const select = document.getElementById('id_contrat');
+                    
+                    // Effacer les options précédentes
+                    select.innerHTML = '';
+
+                    if (json.success) {
+                         // Ajouter une option par défaut
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = '';
+                            defaultOption.textContent = '--choisir--';
+                            select.appendChild(defaultOption);
+                        json.data.forEach(contrat => {
+                            const option = document.createElement("option");
+                            option.value = contrat.id;
+                            option.textContent = contrat.label;
+                            select.appendChild(option);
+                        });
+                    } else {
+                        const option = document.createElement("option");
+                        option.textContent = json.message || "Aucun contrat disponible";
+                        option.disabled = true;
+                        select.appendChild(option);
+                    }
+
+                    // Fonds de deroulement
+                    
+                    const selectContrat = document.getElementById('id_contrat1');
+                    
+                    // Effacer les options précédentes
+                    selectContrat.innerHTML = '';
+
+                    if (json.success) {
+                         // Ajouter une option par défaut
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = '';
+                            defaultOption.textContent = '--choisir--';
+                            selectContrat.appendChild(defaultOption);
+                        json.data.forEach(contrat => {
+                            const option = document.createElement("option");
+                            option.value = contrat.id;
+                            option.textContent = contrat.label;
+                            selectContrat.appendChild(option);
+                        });
+                    } else {
+                        const option = document.createElement("option");
+                        option.textContent = json.message || "Aucun contrat disponible";
+                        option.disabled = true;
+                        selectContrat.appendChild(option);
+                    }
+
+
+                })
+                .catch(error => console.error('Erreur lors du chargement des sites:', error));
+
+                // combo compte
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/Compte')
+                .then(response => response.json())
+                .then(data => {
+                    // Vérifier si la réponse est un tableau
+                    if (Array.isArray(data)) {
+                        const selectPoste = document.getElementById('idcompte');
+                        selectPoste.innerHTML = ''; // Nettoyer les options précédentes
+
+                        // Ajouter une option par défaut
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = '--choisir--';
+                        selectPoste.appendChild(defaultOption);
+
+                        // Ajouter les options récupérées depuis l'API
+                        data.forEach(compte => {
+                            const option = document.createElement('option');
+                            option.value = compte.idcompte;
+                            option.textContent = compte.libcompte;
+                            selectPoste.appendChild(option);
+                        });
+
+                        
+
+
+                    } else {
+                        console.error('Structure inattendue de la réponse:', data);
+                    }
+                })
+                .catch(error => console.error('Erreur lors du chargement des sites:', error));
+
+
+                 // combo banque
+                 fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/Banque')
+                .then(response => response.json())
+                .then(data => {
+                    // Vérifier si la réponse est un tableau
+                    if (Array.isArray(data)) {
+                        const selectPoste = document.getElementById('bankList');
+                        selectPoste.innerHTML = ''; // Nettoyer les options précédentes
+
+                        // Ajouter une option par défaut
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = '--Choisir une banque--';
+                        selectPoste.appendChild(defaultOption);
+
+                        // Ajouter les options récupérées depuis l'API
+                        data.forEach(banque => {
+                            const option = document.createElement('option');
+                            option.value = banque.idbanque;
+                            option.textContent = banque.libbanque;
+                            selectPoste.appendChild(option);
+                        });
+
+                     
+                    } else {
+                        console.error('Structure inattendue de la réponse:', data);
+                    }
+                })
+                .catch(error => console.error('Erreur lors du chargement des banque :', error));
 
         });
+
+
+        
        // integration pays
         $(document).ready(function () {
             const selectPays = $('#pays');
@@ -1490,23 +1600,230 @@ $userPrenom = $_SESSION['prenom'];
         // chargement de la page affichage de statistiques
         document.addEventListener('DOMContentLoaded', function(){
             // chargeSite
-            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_parametres.php/total')
+            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/total')
                 .then(response => response.json())
                 .then(data => {
                     // recuperation de statistiques
-                    document.getElementById('totalUtil').textContent = data.data.totalUtile[0].total_user;
-                    document.getElementById('totalClient').textContent = data.data.totalClient[0].total_client;
-                    document.getElementById('totalInt').textContent = data.data.totalInt[0].total_inter;
-                    document.getElementById('totalPart').textContent = data.data.totalPart[0].total_part;
-                    document.getElementById('totalSite').textContent = data.data.totalSite[0].total_site;
-                    document.getElementById('totalPoste').textContent = data.data.totalPoste[0].total_poste;
-                    document.getElementById('totalProfil').textContent = data.data.totalProfil[0].total_profil;
+                    document.getElementById('Totaldv').textContent = data.data.totaldv[0].total_dv;
+                    document.getElementById('Totaljc').textContent = data.data.totaljc[0].total_jc;
+                    document.getElementById('Totaljb').textContent = data.data.totaljb[0].total_jb;
+
+                    // Convertir les valeurs en nombres (float)
+                    let totaljc = parseFloat(data.data.totaljc[0].total_jc) || 0;
+                    let totaljb = parseFloat(data.data.totaljb[0].total_jb) || 0;
+                    // Faire l'addition et afficher le résultat
+                   document.getElementById('Totalsolde').textContent = (totaljc + totaljb).toFixed(2);
                 })
                 .catch(error => console.error('Erreur lors du chargement des parametre:', error));
             
-
+        
         });
+
+
+      
+        // Sélectionnez d'abord l'élément
+        document.getElementById('id_contrat').addEventListener('change', function(event) {
+           
+           
+            const selectedValue = event.target.value;
+
+            alert("combo " + selectedValue);
+        });
+
     </script>
     
+<script>
+    document.getElementById("idcompte").addEventListener('change', function(){
+        const bankContainer = document.getElementById("bankSelectContainer");
+        if(this.value == "1"){
+            bankContainer.style.display = "block";
+        } else {
+            bankContainer.style.display = "none";
+            document.getElementById("bankList").value = "0"; // Réinitialise le choix
+        }
+
+        let idcompte = this.value;
+        let soldeField = document.getElementById('solde');
+
+        if(idcompte == 0){
+            soldeField.value = '';
+            return;
+        }
+
+        fetch(`http://localhost:8080/crm-gga/app/codes/api/v1/api_solde.php?idcompte=${idcompte}`)
+            .then(response => response.json())
+            .then(data => {
+                soldeField.value = data.solde;
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                soldeField.value = 'Erreur';
+        });
+
+
+
+
+
+    });
+
+    function clearForm(){
+        document.getElementById("clientForm").reset();
+        document.getElementById("bankSelectContainer").style.display = "none";
+    }
+
+    function submitFormJournal(){
+
+       
+        // enregistrement journal 
+        // Exemple de récupération des valeurs
+        
+        const button = document.querySelector("button");
+        const spinner = document.querySelector(".spinner");
+
+        //$dataJO = $data['dataJO'];
+        //$dataJB = $data['dataJB'];
+        //$dataJC = $data['dataJC'];
+       const idcompte =parseInt(document.getElementById("idcompte").value, 10);
+
+       let banque = "";
+       banque = document.getElementById("bankList").value;
+      // alert("ecouteur ok" + banque);
+       if(idcompte === 1){
+           banque = document.getElementById("bankList").value;
+            if(banque == "0" || banque == ""){
+                alert("Veuillez sélectionner une banque.");
+                return;
+            }
+      }
+
+        let datejour = document.getElementById("datejour").value;
+        let typeOperation = parseInt(document.getElementById("typeOperation").value, 10);
+        let montant =  parseFloat(document.getElementById("montant").value);
+        let motif = document.getElementById("motif").value;
+        let beneficiaire = document.getElementById("beneficiaire").value;
+        let refer = document.getElementById("ref_oper").value;
+        let montantcredit = 0.0;
+        let montantdebit = 0.0;
+        let liboperation="";
+        let soldeData = parseFloat(document.getElementById("solde").value);
+        
+        //type =1 recette 2= depense
+        if(typeOperation === 1 ) {
+            montantcredit = montant;
+            montantdebit = 0;
+            liboperation="Recette";
+            soldeData= soldeData + montant
+            //alert("ok " + typeOperation + " " + montantcredit + " " + montantdebit + " " + banque );
+        }else if(typeOperation === 2 ){
+            if(soldeData > 0 ){
+                if(soldeData > montant || soldeData === montant){
+                    montantcredit = 0;
+                    montantdebit = montant ;
+                    liboperation = "Depense"
+                    soldeData = soldeData - montant
+                }else{
+                    alert("Le solde est insuffisant pour la depense. ");
+                    return;
+                }
+            }else{
+
+                alert("Le solde est insuffisant pour la depense 0");
+                return;
+            }
+            
+            //alert("ok " + typeOperation );
+        }else{
+          alert("Veuillez sélectionner une opération.");
+        }
+       
+        const dataJO = {
+            idcompte: idcompte,
+            datejour: datejour,
+            typeOperation: liboperation,
+            montant: montant,
+            motif: motif,
+            beneficiaire: beneficiaire,
+            montantcredit: montantcredit,
+            montantdebit: montantdebit,
+            solde: soldeData,
+            ref_oper: refer
+        };
+        const dataJB = {
+            date_operation: datejour,
+            beneficiaire: beneficiaire,
+            entree_fond: montantcredit,
+            sortie_fond: montantdebit,
+            solde: soldeData,
+            refer: refer,
+            idcompte: idcompte,
+            idbanque: banque
+        };
+        const dataJC = {
+            date_operation: datejour,
+            beneficiaire: beneficiaire,
+            entree_fond: montantcredit,
+            sortie_fond: montantdebit,
+            solde: soldeData,
+            refer: refer
+        };
+      
+
+        button.disabled = true;
+        spinner.style.display = "inline-block";
+
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/create_JO', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            //body: JSON.stringify(formData)
+            body: JSON.stringify({
+                dataJO: dataJO,
+                dataJB: dataJB,
+                dataJC: dataJC
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                if (data.status === 200) {
+                    showToast('Transaction enregistrée avec succès!', 'success');
+                    clearForm();
+                } else {
+                    showToast(data.message || 'Une erreur est survenue.', 'error');
+                }
+            }, 1000);
+        })
+        .catch(error => {
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                showToast('Erreur lors de l\'enregistrement.', 'error');
+                console.error('Error:', error);
+            }, 1000);
+        });
+
+    
+    }
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const titreTransaction = document.getElementById('titreTransaction');
+
+    const aujourdHui = new Date();
+    const jour = String(aujourdHui.getDate()).padStart(2, '0');
+    const mois = String(aujourdHui.getMonth() + 1).padStart(2, '0');
+    const annee = aujourdHui.getFullYear();
+    const dateActuelle = `${jour}/${mois}/${annee}`;
+
+    titreTransaction.innerHTML = `<i class="bi bi-list-check"></i> Journal de transaction du ${dateActuelle}`;
+});
+</script>
+
+
 </body>
 </html>

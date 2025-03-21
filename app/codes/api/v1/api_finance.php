@@ -28,7 +28,28 @@ try {
                 $response = $fina->getListeJB(); 
             }elseif($action === 'FD'){
                 $response = $fina->getListeFondDerou(); 
+            }elseif($action === 'Contrat'){
+                $response = $fina->listeContrat(); 
+          
+            }elseif($action === 'Compte'){
+                $response = $fina->getCompte(); 
+          
+            }elseif($action === 'Banque'){
+                $response = $fina->getBanque(); 
+          
+            }elseif ($action === 'total') {
+               
+                // Statistiques ou indicateurs pour le tableau de bord
+                $response = [
+                    'status' => 200,
+                    'data' => [
+                        'totaldv' => $fina->getTotalDecompte() ?? 0,
+                        'totaljc' => $fina->getTotalJC() ?? 0,
+                        'totaljb' => $fina->getTotalJB() ?? 0,
+                    ]
+                ];
             }
+
             break;
         
         case 'POST':
@@ -56,26 +77,15 @@ try {
                 }
             }elseif($action === 'create_JO') {
                 $data = json_decode(file_get_contents("php://input"), true);
-                $dataJO=json_decode(file_get_contents("php://input"), true);
-                $result = $fina->EnregistrerJournal($dataJO,$data);
+                $dataJO = $data['dataJO'];
+                $dataJB = $data['dataJB'];
+                $dataJC = $data['dataJC'];
+           
+                $result = $fina->EnregistrerJournal($dataJO,$dataJB,$dataJC);
                 if($result){
                     $response = ['status' => 200, 'message' => 'Operation enregistree'];
                 }
-                /*
-                if($data['compte'] == 'Caisse'){
-                    $result = $fina->InsertJournalOp($data);
-                    if($result){
-                        $fina->InsertJournalCaisse($data);
-                        $response = ['status' => 200, 'message' => 'Courrier entrant enregistre'];
-                    }
-                }elseif($data['compte'] == 'Banque') {
-                    $result = $fina->InsertJournalOp($data);
-                    if($result){
-                        $fina->InsertJournalBanque($data);
-                        $response = ['status' => 200, 'message' => 'Courrier entrant enregistre'];
-                    }
-                }
-                */
+                
             
             }else {
                 http_response_code(405); // methode non autorisée
