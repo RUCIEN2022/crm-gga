@@ -117,6 +117,7 @@ try {
                         $_SESSION['nom'] = $auth['nomutile'];
                         $_SESSION['prenom'] = $auth['prenomutile'];
                         $_SESSION['etatutile'] = $auth['etatutile'];
+                        $_SESSION['idsite'] = $auth['idsite'];
         
                         $response = [
                             'status' => 200,
@@ -127,6 +128,7 @@ try {
                                 'nom' => $auth['nomutile'],
                                 'prenom' => $auth['prenomutile'],
                                 'etatutile' => $auth['etatutile'],
+                                'idsite' => $auth['idsite'],
                             ],
                         ];
                     } else {
@@ -144,10 +146,10 @@ try {
                 if (!isset($data['nomutile'], $data['prenomutile'],$data['email'])) {
                     http_response_code(400);
                     $response = ['status' => 400, 'message' => 'Identifiants requis'];
-                    echo json_encode($response);
+                    //echo json_encode($response);
                     exit;
                 }
-                
+               /* -------------garde pour photo
                 if (isset($data['photo']) && isset($data['nomutile']) && isset($data['prenomutile'])) {
                     // Je crée mainrenant le fichier ici
                     $filename = $data['nomutile'] . '-' . $data['prenomutile'] . '.jpg';
@@ -155,7 +157,7 @@ try {
                     $filePath = saveImage($data['photo'], $filename);   
                     $data['photo']=$filename;      
                 } 
-             
+                */
                 $result = $user->CreerUser($data);
                 if($result){
                     $response = ['status' => 200, 'message' => 'Utilisateur enregistre'];

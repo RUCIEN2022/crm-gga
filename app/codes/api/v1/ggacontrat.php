@@ -80,6 +80,7 @@ try {
     if ($action === 'creation') {
         
 
+
         try {
             // Récupération des données envoyées
             $data = json_decode(file_get_contents("php://input"), true);
@@ -143,7 +144,42 @@ try {
     }
     break;
 
-                
+ 
+            case 'POST':
+                if ($action === 'create') {
+                    // Créer un contrat
+                    $data = json_decode(file_get_contents("php://input"), true);
+            
+                    // Vérification des données reçues
+                    if (empty($data['contrat']) || !is_array($data['contrat'])) {
+                        echo json_encode([
+                            "success" => false,
+                            "message" => "Les données du contrat sont obligatoires."
+                        ]);
+                        exit;
+                    }
+            
+                    $contratData = $data['contrat'];
+            
+                    try {
+                        // Instance de la classe Contrat
+                        $contrat = new Contrat();
+            
+                        // Appel de la méthode pour enregistrer le contrat
+                       // $result = $contrat->enregistrerContrat($contratData);
+            
+                        // Retour du résultat sous format JSON
+                        echo json_encode($result);
+                    } catch (Exception $e) {
+                        // Gestion des erreurs internes du serveur
+                        echo json_encode([
+                            "success" => false,
+                            "message" => "Erreur interne du serveur : " . $e->getMessage()
+                        ]);
+                    }
+                }
+            break;
+
             //Mise à jour contrat
             case 'PUT':
                 if ($action === 'updtcontrat' && $id) { //j'appel l'action + id 

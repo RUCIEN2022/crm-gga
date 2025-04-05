@@ -593,7 +593,7 @@ button:hover {
     <div class="tab-pane fade" id="create-task" role="tabpanel" aria-labelledby="create-task-tab">
         <div class="card shadow">
         <div class="container py-4">
-    <form class="shadow p-4 rounded bg-light">
+    <form >
         <h5 class="mb-4">Créer une nouvelle tâche</h5>
         <div class="row g-4">
             <!-- Colonne 1 -->
@@ -614,9 +614,6 @@ button:hover {
                 <div class="form-floating mb-3">
                     <select class="form-select" id="taskAssignee" aria-label="Responsable">
                         <option selected>Choisir un responsable</option>
-                        <option value="1">Rucien Kindukulu</option>
-                        <option value="2">Adonai Mbula</option>
-                        <option value="3">John Masini</option>
                     </select>
                     <label for="taskAssignee"><i class="bi bi-person-check me-2"></i>Responsable</label>
                 </div>
@@ -625,15 +622,15 @@ button:hover {
                 <div class="mb-3">
                     <label class="form-label"><i class="bi bi-exclamation-triangle me-2"></i>Priorité</label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="highPriority" value="high">
+                        <input class="form-check-input" type="checkbox" id="highPriority" value="1">
                         <label class="form-check-label" for="highPriority">Haute</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="mediumPriority" value="medium">
+                        <input class="form-check-input" type="checkbox" id="mediumPriority" value="1">
                         <label class="form-check-label" for="mediumPriority">Moyenne</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="lowPriority" value="low">
+                        <input class="form-check-input" type="checkbox" id="lowPriority" value="1">
                         <label class="form-check-label" for="lowPriority">Basse</label>
                     </div>
                 </div>
@@ -653,6 +650,7 @@ button:hover {
                     <label for="taskObserver"><i class="bi bi-eyeglasses me-2"></i>Mentionner observateur</label>
                     <ul class="mention-suggestions list-group position-absolute mt-1 d-none">
                         <!-- Suggestions dynamiques apparaîtront ici -->
+
                     </ul>
                 </div>
 
@@ -660,10 +658,11 @@ button:hover {
                 <div class="mb-4">
                     <label for="taskFile" class="form-label"><i class="bi bi-file-earmark-arrow-up me-2"></i>Ajouter un fichier/document</label>
                     <input class="form-control" type="file" id="taskFile">
+                
                 </div>
 
                 <!-- Bouton de soumission -->
-                <button type="submit" class="btn btn-danger w-100">
+                <button type="button" class="btn btn-danger w-100" onclick="submitForm()">
                     <i class="bi bi-save me-2"></i>Créer la tâche
                 </button>
             </div>
@@ -838,19 +837,39 @@ button:hover {
     document.addEventListener("DOMContentLoaded", () => {
     const mentionInput = document.querySelector(".mention-input");
     const suggestionList = document.querySelector(".mention-suggestions");
+    //-----------integration api ------------
 
-    const agents = ["Rucien Kindukulu", "Adonai Mbula", "John Masini", "Maelle Rhode", "Mike Bakala"]; // Liste d'agents à recuperer dans l'api agents
+    //const agents = ["Rucien Kindukulu", "Adonai Mbula", "John Masini", "Maelle Rhode", "Mike Bakala"]; // Liste d'agents à recuperer dans l'api agents
+    let agents=[];
+    fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_tache.php/agent')
+                .then(response => response.json())
+                .then(data => {
+                    // Construire un tableau formaté avec noms complets
+                    agents = data.map(agent => ({
+                        id: agent.idagent,
+                        fullName: `${agent.nomagent} ${agent.postnomagent} ${agent.prenomagent}`
+                    }));
+                })
+                .catch(error => console.error('Erreur lors du chargement des sites:', error));
+               
 
+  
+    //---------@-------
     mentionInput.addEventListener("input", (e) => {
         const value = e.target.value.trim();
         if (value.startsWith("@")) {
             const searchTerm = value.substring(1).toLowerCase();
-            const filteredAgents = agents.filter((agent) =>
-                agent.toLowerCase().includes(searchTerm)
+           //const filteredAgents = agents.filter((agent) =>
+             //   agent.toLowerCase().includes(searchTerm)
+            //);
+            const filteredAgents = agents.filter(agent =>
+                agent.fullName.toLowerCase().includes(searchTerm)
             );
 
             suggestionList.innerHTML = filteredAgents
-                .map((agent) => `<li class="list-group-item">${agent}</li>`)
+               // .map((agent) => `<li class="list-group-item">${agent.nomagent}</li>`)
+                //.join("");
+                .map(agent => `<li class="list-group-item" data-id="${agent.id}">${agent.fullName}</li>`)
                 .join("");
 
             suggestionList.classList.remove("d-none");
@@ -893,6 +912,164 @@ function showDetails(task, createdBy, responsible, status, progress) {
             // Implémentez la logique d'édition ici
         }
 </script>
+<script>
+    //-----------RK-----------
 
+
+
+    function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.className = `toast ${type} show`;
+            toast.innerText = message;
+
+            setTimeout(() => {
+                toast.className = toast.className.replace('show', '');
+                window.location.href = './'
+            }, 4500); // Durée d'affichage de 4,5 secondes
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            // chargeAgent
+            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_tache.php/agent')
+                .then(response => response.json())
+                .then(data => {
+                    // Vérifier si la réponse est un tableau
+                    if (Array.isArray(data)) {
+                        const selectAgent = document.getElementById('taskAssignee');
+                        selectAgent.innerHTML = ''; // Nettoyer les options précédentes
+
+                        // Ajouter une option par défaut
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = '--choisir--';
+                        selectAgent.appendChild(defaultOption);
+
+                        // Ajouter les options récupérées depuis l'API
+                        data.forEach(agent => {
+                            const option = document.createElement('option');
+                            option.value = agent.idagent;
+                            option.textContent = agent.nomagent + ' ' +  agent.postnomagent + ' ' +  agent.prenomagent;
+                            selectAgent.appendChild(option);
+                        });
+                    } else {
+                        console.error('Structure inattendue de la réponse:', data);
+                    }
+                })
+                .catch(error => console.error('Erreur lors du chargement des sites:', error));
+            
+
+        });
+
+        // Gestion de fichier a joindre
+        /*document.getElementById("taskFile").addEventListener("change", function () {
+                    const fileInput = this;
+                    const previewDiv = document.getElementById("filePreview");
+                    previewDiv.innerHTML = ""; // Réinitialise l'aperçu
+
+                    if (fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        const fileType = file.type;
+                        const reader = new FileReader();
+
+                        reader.onload = function (e) {
+                            if (fileType.startsWith("image")) {
+                                previewDiv.innerHTML = `<img src="${e.target.result}" alt="Aperçu du fichier" style="max-width: 200px; display: block; margin-top: 10px;">`;
+                            } else {
+                                previewDiv.innerHTML = `<p><i class="bi bi-file-earmark"></i> ${file.name}</p>`;
+                            }
+                        };
+
+                        reader.readAsDataURL(file);
+                    }
+        });*/
+    //---------boutoun save
+    function submitForm() {
+        event.preventDefault();   // Empêche le rechargement de la page
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        const checkboxes = document.querySelectorAll(".form-check-input");
+        // Pour les cases a cocher.
+        let high, medium, low;
+
+        high = document.getElementById("highPriority").checked ? 1 : 0,
+        medium = document.getElementById("mediumPriority").checked ? 1 : 0,
+        low = document.getElementById("lowPriority").checked ? 1 : 0
+       
+        // recuperation de fille
+        let fileInput = document.getElementById("taskFile");
+        let file = fileInput.files[0];
+
+        if (fileInput.files.length === 0) {
+            alert("Veuillez sélectionner un fichier !");
+            return;
+        }
+        
+
+        //formData.append("taskFile", fileInput.files[0]);
+
+       //alert('' + file);
+       //console.log("Fichier sélectionné : ", file);
+
+        const formData1 = {
+            
+            nomtache: document.getElementById("taskName").value,
+            descript: document.getElementById("taskDescription").value,
+            idresponsable: document.getElementById("taskAssignee").value,
+            datelimite: document.getElementById("taskDeadline").value,
+            observateur: document.getElementById("taskObserver").value,
+            prioritehaute: high,
+            prioritemoyenne: medium,
+            prioritebasse: low,
+            createby: 1,
+            datecreate: formattedDate,
+            statut: "1"
+        };
+
+        // Utilisation de FormData pour envoyer JSON + fichier
+        let formData = new FormData();
+        formData.append("file", file); // Ajout du fichier
+        formData.append("json", JSON.stringify(formData1)); // Ajouter le JSON sous forme de texte
+
+
+
+        //alert('' + formData['fichier']);
+        //console.log("Données envoyées :", formData );
+        //.log("✅ Vérification FormData avant l'envoi :");
+            for (let pair of formData.entries()) {
+                console.log(pair[0], pair[1]); // Affichage clé/valeur
+            }
+        //Integration
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_tache.php/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            //console.log("Réponse API :", data);
+            setTimeout(() => {
+                
+                if (data.status === 200) {
+                    alert('Tâche enregistrée avec succès');
+                } else {
+                    alert('Erreur survenue ');
+                }
+            }, 3000);
+        })
+        .catch(error => {
+            setTimeout(() => {
+                alert('Erreur lors de l\'enregistrement.' + error, 'error');
+
+               
+              console.error('Error:', error);
+            }, 3000);
+        });
+
+           // alert('ecouteur ok' + high );
+    }
+</script>
 </body>
 </html>

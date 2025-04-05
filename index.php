@@ -61,14 +61,25 @@ switch ($request) {
         $id = explode('/', $request)[2];
         include 'contrats/edit.php';
         break;
-
+    case 'parametres':
+        include 'parametres/index.php';
+        break;
+    case 'commercial':
+        include 'commercial/index.php';
+        break;
+    case 'admin':
+        include 'admin/index.php';
+        break;
+    case 'finances':
+        include 'finances/index.php';
+        break;
     case 'facture':
         include 'facture/index.php';
         break;
     case 'notedebit':
        include 'contrats/notedebit.php';
        break;
-
+   
     case 'users':
         include 'users/index.php';
         break;

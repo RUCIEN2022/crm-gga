@@ -3,6 +3,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+
+
+
+
+
 header("Content-Type: application/json");
 include_once(__DIR__ . '/../../models/ClassTache.php');
 
@@ -34,13 +39,15 @@ try {
                     'data' => $taches
 
                 ];
+            }elseif($action === 'agent'){
+                $response = $tache->getAgent();
             } 
             break;
     
         case 'POST':
             if ($action === 'create') {
                 // Créer un partenaire
-                $data = json_decode(file_get_contents("php://input"), true);
+               $data = json_decode(file_get_contents("php://input"), true);
 
                 // Vérifier si JSON est bien reçu
                 //if (!$data) {
@@ -48,12 +55,53 @@ try {
                 //}
                 
                 // Enregistrer les données reçues pour debug
-              //  file_put_contents("log_api.txt", print_r($data, true), FILE_APPEND);
+               // file_put_contents("log_api.txt", print_r($data, true), FILE_APPEND);
+
+                //$uploadDir = "/../../../taches/doc/"; // Dossier de destination
+                $uploadDir = __DIR__ . "doc/"; // Assurez-vous que ce chemin est correct
+                // Récupérer les données JSON
+                $data = json_decode($_POST['json'], true);
+               // if (!is_dir($uploadDir)) {
+                 //   mkdir($uploadDir, 0777, true); // Création du dossier si inexistant
+                //}
+                $file = $_FILES['file'];
+                $fileName = basename($file["name"]);
+                $targetFilePath = $uploadDir . $fileName;
+
+                // Vérifier l'extension du fichier
+                $allowedExtensions = ["jpg", "jpeg", "png", "gif", "pdf", "doc", "docx"];
+                $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+                if (!in_array($fileExtension, $allowedExtensions)) {
+                    //echo "Format de fichier non supporté !";
+                    $response = ['status' => 500, 'message' => 'Format de fichier non supporté'];
+                    exit;
+                }
+                 // Vérifier la taille du fichier (5MB max)
+                if ($file["size"] > 5 * 1024 * 1024) {
+                   //echo "Le fichier est trop volumineux (max 5MB) !";
+                    $response = ['status' => 500, 'message' => 'Le fichier est trop volumineux (max 5MB) !'];
+                    exit;
+                }
+                // Déplacer le fichier dans le dossier de destination
+                if (move_uploaded_file($file["tmp_name"], $targetFilePath)) {
+                   // echo "Fichier uploadé avec succès : " . $fileName;
+                   //$data['fichier'] = $targetFilePath;
+                  // $data = ['fichier' => $targetFilePath];
+                   $data['fichier'] = $targetFilePath; // Ajouter le fichier au JSON
+
+                } else {
+                   // echo "Erreur lors de l'upload du fichier.";
+                    $response = ['status' => 500, 'message' => 'Erreur lors de l\'upload du fichier!'];
+                    exit;
+                }
+               // $data = ['fichier' => $targetFilePath];
                 $response = $tache->creerTache($data);
+               // echo $data;
                 if($response){
-                    $response=['Statut' =>200, 'message' => 'Client enregistré'];
+                    $response=['Statut' =>200, 'message' => 'tache enregistré'];
                 }else{
-                    $response = ['status' => 500, 'message' => 'Echec d\'enregistrement'];
+                    $response = ['status' => 500, 'message' => 'Echec dd\'enregistrement'];
                 }
  
             }else{
@@ -62,7 +110,7 @@ try {
             break;
             //Mise à jour contrat
             case 'PUT':
-                if ($action === 'updtcontrat' && $id) { //j'appel l'action + id 
+                if ($action === 'updtache' && $id) { //j'appel l'action + id 
                     // Récup data envoyées
                     $data = json_decode(file_get_contents("php://input"), true);
                     if ($data) {

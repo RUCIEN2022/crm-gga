@@ -20,12 +20,10 @@
         }
     }
     public function creerTache($data) {//data sera notre tableau qui va recevoir les données de paramètre
-        $query = "INSERT INTO taches (nomtach, description, idresponsable, datelimite, observateur, prioritehaute, prioritemoyenne, prioritebasse, 
-        fichier, createby, datecreate, statut
-        ) VALUES (
-            :nomtach, :description, :idresponsable, :datelimite, :observateur, :prioritehaute, :prioritemoyenne, :prioritebasse, 
-        :fichier, :createby, :datecreate, :statut
-        )";
+        $query = "INSERT INTO taches (nomtache, descript, idresponsable, datelimite, observateur, prioritehaute, prioritemoyenne, prioritebasse, 
+        fichier, createby, datecreate, statut) VALUES (
+            :nomtache, :descript, :idresponsable, :datelimite, :observateur, :prioritehaute, :prioritemoyenne, :prioritebasse, 
+        :fichier, :createby, :datecreate, :statut)";
         return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
     }
     public function UpdateTache($data) {
@@ -48,7 +46,7 @@
 
     }
     public function listeGlobaleTache($offset = 0, $limit = 50) {
-        $query = "SELECT nomtache, description, idresponsable, datelimite, observateur, prioritehaute, prioritemoyenne, prioritebasse, 
+        $query = "SELECT nomtache, descript, idresponsable, datelimite, observateur, prioritehaute, prioritemoyenne, prioritebasse, 
             fichier, createby, datecreate, statut  FROM taches 
             LIMIT :offset, :limit
         ";
@@ -81,7 +79,7 @@
     }
     
     public function getAgent() {
-        $query = "SELECT  matagent, nomagent, postnomagent, prenomagent, sexeagent FROM agent order by nomagent asc";
+        $query = "SELECT  idagent,matagent, nomagent, postnomagent, prenomagent, sexeagent FROM agent order by nomagent asc";
         return $this->executeQuery($query);
     }
 
