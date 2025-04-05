@@ -10,9 +10,6 @@
 <li class="active" data-section="production">
     <a href="../contrats/"><i class="bi bi-folder-plus"></i><span>Production</span></a>
 </li>
-<li data-section="administration">
-    <a href="../administration/"><i class="bi bi-gear"></i><span>Administration</span></a>
-</li>
 <li data-section="sinistre">
     <a href="#"><i class="bi bi-exclamation-triangle"></i><span>Sinistre</span></a>
 </li>
@@ -21,6 +18,9 @@
 </li>
 <li data-section="finances">
     <a href="../finances/"><i class="bi bi-cash-stack"></i><span>Finances</span></a>
+</li>
+<li data-section="administration">
+    <a href="../administration/"><i class="bi bi-gear"></i><span>Administration</span></a>
 </li>
 <li data-section="informatique">
     <a href="../informatique/"><i class="bi bi-pc-display"></i><span>Informatique</span></a>

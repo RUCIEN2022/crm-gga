@@ -31,17 +31,16 @@ class Contrat {
     
     
    
+    
     public function verifierExistenceNumPolice($numPolice) {
-        
-        $query = "
-            SELECT COUNT(*) AS count
-            FROM police_contrat
-            WHERE numero_police = :numPolice
-        ";
-        $result = $this->executeQuery($query, ['numPolice' => $numPolice]);
-        return $result && $result[0]['count'] > 0;
+        $query = "SELECT COUNT(*) AS count FROM police_contrat WHERE numero_police = :numPolice";
+        $params = [":numPolice" => $numPolice];
+        $result = $this->executeQuery($query, $params);
+    
+        return $result[0]['count'] > 0;
     }
-
+    
+  
     public function fx_CreerClient($data) {
         $query = "INSERT INTO client (
             idsite, den_social, pays_entr, ville_entr, adresse_entr, code_interne, id_nat, 
@@ -66,8 +65,8 @@ $val_frais_gest, $tva, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire_id
          '".$numero_police."', '".$effectif_agent."', '".$effectif_conjoint."', '".$effectif_enfant."', 
          '".$pource_frais_gest."', '".$val_frais_gest."', '".$tva."', '".$pource_app_fond."', '".$val_app_fond."', '".$seuil."', '".$gestionnaire_id."', '".$idutile."', CURRENT_TIMESTAMP)";
     //echo $sql;
-    $conn=new connect();
-		$resultat=$conn -> fx_ecriture($sql);
+    $conn=new connect();// preperation de la conexion
+		$resultat=$conn -> fx_ecriture($sql);// execution de la requete
 		if ($resultat){
         	return $resultat;
         }
@@ -84,8 +83,8 @@ $val_frais_gest, $tva, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire_id
             '".$idcontrat."', '".$budget_total."', '".$fg_index_sin."', '".$modalite_compl."'
         )";
     //echo $query;
-    $conn=new connect();
-		$resultat=$conn -> fx_ecriture($query);
+    $conn=new connect();// preperation de la conexion
+		$resultat=$conn -> fx_ecriture($query);// execution de la requete
 		if ($resultat){
         	return $resultat;
         }
@@ -105,8 +104,8 @@ $val_frais_gest, $tva, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire_id
     '".$reassureur."', '".$quote_part_assureur."', '".$quote_part_reassur."', '".$paie_sin_assur."', '".$paie_sin_gga."', '".$dateEffet."', '".$dateEcheance."'
         )";
         //echo $query;
-        $conn=new connect();
-		$resultat=$conn -> fx_ecriture($query);
+        $conn=new connect();// preperation de la conexion
+		$resultat=$conn -> fx_ecriture($query);// execution de la requete
 		if ($resultat){
         	return $resultat;
         }
@@ -118,7 +117,7 @@ $val_frais_gest, $tva, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire_id
     //insert facture
     public function creerFacture_FraisGGA($idcontrat, $num_nd, $date_edit, $amount_contrat, $frais_gga, 
     $tva, $modalite, $etatfact, $idutile) {
-     
+        // Préparer la requête SQL
         $query = "INSERT INTO notedebit (
             idcontrat, num_nd, date_edit, amount_contrat, frais_gga, 
             tva, modalite, etatfact, idutile
@@ -127,215 +126,158 @@ $val_frais_gest, $tva, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire_id
     '".$tva."', '".$modalite."', '".$etatfact."', '".$idutile."'
         )";
        // echo $query;
-        $conn=new connect();
-		$resultat=$conn -> fx_ecriture($query);
+        $conn=new connect();// preperation de la conexion
+		$resultat=$conn -> fx_ecriture($query);// execution de la requete
 		if ($resultat){
         	return $resultat;
         }
         else{
         	return false;
         }
+        // Début du bloc try-catch pour la gestion des erreurs
+    /*    try {
+            // Exécution de la requête avec les données
+            $idFacture = $this->executeQuery($query, true);
+            
+            // Vérifier si l'ID de la facture est retourné
+            if (!$idFacture) {
+                throw new Exception("L'insertion de la facture a échoué.");
+            }
+    
+            // Retourner un tableau avec le statut et l'ID de la facture
+            return ["status" => "success", "idFacture" => $idFacture];
+        } catch (Exception $e) {
+            // Capturer l'erreur et retourner un message détaillé
+            return ["status" => "error", "message" => "Erreur lors de l'insertion : " . $e->getMessage()];
+        }
+            */
     }
-     //insert mouvement
-     public function CreerMouvementContrat($dataMouv) {
-       
-        $idcontrat   = $data['idcontrat'] ?? '';
-        $typeops     = $data['type_operation'] ?? '';
-        $prime       = $data['prime'] ?? 0;
-        $accessoire  = $data['accessoire'] ?? 0;
-        $nbr_agent   = $data['nbr_agent'] ?? 0;
-        $nbr_conj    = $data['nbr_conj'] ?? 0;
-        $nbr_enf     = $data['nbr_enf'] ?? 0;
-        $updateby    = $data['updateby'] ?? 1;
-        $query = "INSERT INTO mouvementcontrat (
-            idcontrat, typeops, prime, accessoire, nbr_agent, nbr_conj, nbr_enf, date_update, updateby
+     //Gestion contrat insert mouvement
+     public function CreerMouvementContrat($idcontrat,$typeops,$prime,$accessoire,$nbr_agent,$nbr_conj,$nbr_enf,$date_update,$updateby) {
+         $query = "INSERT INTO mouvementcontrat (
+             idcontrat,typeops,prime,accessoire,nbr_agent,nbr_conj,nbr_enf,date_update,updateby
+         ) VALUES (
+            '".$idcontrat."', '".$typeops."', '".$prime."', '".$accessoire."','".$nbr_agent."', '".$nbr_conj."', '".$nbr_enf."',CURRENT_TIMESTAMP, '".$updateby."'
+         )";
+         $conn=new connect();
+         $resultat=$conn -> fx_ecriture($query);
+         if ($resultat){
+             return $resultat;
+         }
+         else{
+             return false;
+         } 
+     }
+     //Gestion contrat insert suspension
+     public function CreerSuspensionContrat($idcontrat,$datesusp,$datereprise,$motif,$dateopera,$updateby) {
+        $query = "INSERT INTO suspension (
+            idcontrat,datesusp,datereprise,motif,dateopera,updateby
         ) VALUES (
-            '$idcontrat', '$typeops', '$prime', '$accessoire', '$nbr_agent', '$nbr_conj', '$nbr_enf', CURRENT_TIMESTAMP, '$updateby'
+           '".$idcontrat."', '".$datesusp."', '".$datereprise."', '".$motif."',CURRENT_TIMESTAMP,".$updateby."'
         )";
+        $conn=new connect();
+        $resultat=$conn -> fx_ecriture($query);
+        if ($resultat){
+            return $resultat;
+        }
+        else{
+            return false;
+        } 
+    }
+    //Gestion contrat insert resiliation
+    public function CreerResilisation($idcontrat,$dateresiliation,$dateopera,$motif,$updateby) {
+        $query = "INSERT INTO resiliation (
+            idcontrat,dateresiliation,dateopera,motif,updateby
+        ) VALUES (
+           '".$idcontrat."', '".$dateresiliation."', CURRENT_TIMESTAMP, '".$motif."',".$updateby."'
+        )";
+        $conn=new connect();
+        $resultat=$conn -> fx_ecriture($query);
+        if ($resultat){
+            return $resultat;
+        }
+        else{
+            return false;
+        } 
+    }
+    //modif effectifs
+    public function mettreAJourEffectifs($numero_police, $effectif_agent, $effectif_conjoint, $effectif_enfant, $operation, $idutile) {
+        // Déterminer le signe de l'opération (+ pour ajout, - pour réduction)
+        $signe = ($operation === 'ajout') ? '+' : '-';
+        $sql = "UPDATE police_contrat 
+                SET effectif_Benef = GREATEST(0, effectif_Benef $signe $effectif_agent + $effectif_conjoint + $effectif_enfant), 
+                    effectif_agent = GREATEST(0, effectif_agent $signe $effectif_agent), 
+                    effectif_conjoint = GREATEST(0, effectif_conjoint $signe $effectif_conjoint), 
+                    effectif_enfant = GREATEST(0, effectif_enfant $signe $effectif_enfant), 
+                    idutile = '$idutile', 
+                    datecreate = CURRENT_TIMESTAMP 
+                WHERE numero_police = '$numero_police'";
+    
+        $conn = new connect(); // Connexion à la base
+        $resultat = $conn->fx_ecriture($sql); // Exécution de la requête
+    
+        return $resultat ? true : false;
+    }
+    
+    public function majPrimeAssurance($idcontrat, $prime_nette, $accessoire, $operation) {
+        
+        $signe = ($operation === 'ajout') ? '+' : '-';
+        $query = "UPDATE police_assurance 
+                  SET prime_nette = prime_nette $signe '".$prime_nette."', 
+                      accessoire = accessoire $signe '".$accessoire."',
+                      prime_ttc = (prime_nette + accessoire) 
+                  WHERE idcontrat = '".$idcontrat."'";
+        // Connexion et exécution
+        $conn = new connect();
+        $resultat = $conn->fx_ecriture($query);
+    
+        return $resultat ? $resultat : false;
+    }
+    public function majBudgetAutofinancement($idcontrat, $budget_total,$operation) {
+        
+        $signe = ($operation === 'ajout') ? '+' : '-';
+        $query = "UPDATE contrat_autofinance 
+                  SET budget_total = budget_total $signe '".$budget_total."'
+                  WHERE idcontrat = '".$idcontrat."'";
+    
+        // Connexion et exécution
         $conn = new connect();
         $resultat = $conn->fx_ecriture($query);
     
         return $resultat ? $resultat : false;
     }
     
-     //insert suspension
-     public function CreerSuspensionContrat($data) {
-        $Rqte = "INSERT INTO suspension (
-            idcontrat, datesusp, datereprise, motif, dateopera, updateby
+    
+    
+    public function UpdateEffectif($idcontrat,$dateresiliation,$dateopera,$motif,$updateby) {
+        $query = "INSERT INTO resiliation (
+            idcontrat,dateresiliation,dateopera,motif,updateby
         ) VALUES (
-            :idcontrat, :datesusp, :datereprise, :motif, CURRENT_TIMESTAMP, :updateby
+           '".$idcontrat."', '".$dateresiliation."', CURRENT_TIMESTAMP, '".$motif."',".$updateby."'
         )";
-    
-        $params = [
-            'idcontrat'    => $data['idcontrat'],
-            'datesusp'     => $data['datesusp'],
-            'datereprise'  => $data['datereprise'],
-            'motif'        => $data['motif'],
-            'updateby'     => $data['updateby']
-        ];
-    
-        return $this->executeQuery($Rqte, $params);
-    }
-    
-    
-    //insert resiliation
-    public function CreerResiliation($data) {
-        $Rqte = "INSERT INTO resiliation (
-            idcontrat, dateresiliation, dateopera, motif, updateby
-        ) VALUES (
-            :idcontrat, :dateresiliation, CURRENT_TIMESTAMP, :motif, :updateby
-        )";
-    
-        $params = [
-            'idcontrat'        => $data['idcontrat'],
-            'dateresiliation'  => $data['dateresiliation'],
-            'motif'            => $data['motif'],
-            'updateby'         => $data['updateby']
-        ];
-    
-        return $this->executeQuery($Rqte, $params);
-    }
-    
-    //transaction mise à jour contrat
-    public function TraiterOperationContrat($data) {
-        try {
-            // Démarrage de la transaction
-            $this->conn->beginTransaction();
-        
-            // Type d'opération et type de contrat
-            $typeOperation = $data['type_operation'];
-            $typeContrat = $data['typecontrat'];
-    
-            // Si l'opération est "ajout" ou "retrait", il faut traiter les champs spécifiques
-            if (in_array($typeOperation, ['ajout', 'retrait'])) {
-                // Gestion spécifique pour "ajout" ou "retrait"
-                if ($typeOperation === 'retrait') {
-                    // Filtrer les données liées à l'opération retrait
-                    unset($data['nbragent']);
-                    unset($data['nbrconj']);
-                    unset($data['nbrenf']);
-                }
-    
-                // Création du mouvement de contrat
-                $this->CreerMouvementContrat($data);
-        
-                // Mise à jour du contrat selon son type
-                if ($typeContrat == 2) {
-                    $this->UpdateContratAutofinance($data);
-                } elseif ($typeContrat == 1) {
-                    $this->UpdatePoliceAssurance($data);
-                }
-        
-                $this->UpdatePoliceContrat($data);
-            }
-            // Si l'opération est "suspension"
-            elseif ($typeOperation === 'suspension') {
-                $this->UpdateEtatContrat([
-                    'idcontrat' => $data['idcontrat'],
-                    'etat_contrat' => 3
-                ]);
-        
-                $this->CreerSuspensionContrat($data);
-            }
-            // Si l'opération est "resiliation"
-            elseif ($typeOperation === 'resiliation') {
-                $this->UpdateEtatContrat([
-                    'idcontrat' => $data['idcontrat'],
-                    'etat_contrat' => 4
-                ]);
-        
-                $this->CreerResiliation($data);
-            } else {
-                throw new Exception("Type d'opération non reconnu.");
-            }
-        
-            // Commit de la transaction
-            $this->conn->commit();
-            return ["success" => true, "message" => "Opération réussie"];
-        } catch (Exception $e) {
-            // En cas d'erreur, rollback de la transaction
-            $this->conn->rollBack();
-            return ["success" => false, "message" => "Erreur : " . $e->getMessage()];
+        $conn=new connect();
+        $resultat=$conn -> fx_ecriture($query);
+        if ($resultat){
+            return $resultat;
         }
-    }
-    
-    
-    //modif effectifs
-    public function UpdatePoliceContrat($data) {
-        $signe = ($data['type_operation'] === 'ajout') ? '+' : '-';
-    
-        $Rqte = "UPDATE police_contrat 
-                 SET effectif_Benef = GREATEST(0, effectif_Benef $signe :total),
-                     effectif_agent = GREATEST(0, effectif_agent $signe :agent),
-                     effectif_conjoint = GREATEST(0, effectif_conjoint $signe :conjoint),
-                     effectif_enfant = GREATEST(0, effectif_enfant $signe :enfant),
-                     idutile = :idutile,
-                     datecreate = CURRENT_TIMESTAMP
-                 WHERE numero_police = :numero_police";
-    
-        $params = [
-            'total'          => $data['nbr_agent'] + $data['nbr_conj'] + $data['nbr_enf'],
-            'agent'          => $data['nbr_agent'],
-            'conjoint'       => $data['nbr_conj'],
-            'enfant'         => $data['nbr_enf'],
-            'idutile'        => $data['updateby'],
-            'numero_police'  => $data['numero_police']
-        ];
-    
+        else{
+            return false;
+        } 
+    } 
+    // fx modif police contrat
+    public function fx_UpdateContrat($data) {
+        $Rqte = "UPDATE police_contrat SET ";
+        $dataset = [];
+        $params = [];
+        foreach ($data as $key => $value) {
+            if ($key !== 'idcontrat') {
+                $dataset[] = "$key = :$key";
+            }
+            $params[$key] = $value;
+        }
+        $Rqte .= implode(', ', $dataset) . " WHERE idcontrat = :idcontrat";
         return $this->executeQuery($Rqte, $params);
     }
-    
-    
-    //update police_assurance
-    public function UpdatePoliceAssurance($data) {
-        $signe = ($data['type_operation'] === 'ajout') ? '+' : '-';
-    
-        $Rqte = "UPDATE police_assurance 
-                 SET prime_nette = prime_nette $signe :prime_nette,
-                     accessoire = accessoire $signe :accessoire,
-                     prime_ttc = (prime_nette + accessoire)
-                 WHERE idcontrat = :idcontrat";
-    
-        $params = [
-            'prime_nette' => $data['prime'],
-            'accessoire'  => $data['accessoire'],
-            'idcontrat'   => $data['idcontrat']
-        ];
-    
-        return $this->executeQuery($Rqte, $params);
-    }
-    
-    //update budget_total Autofinance
-    public function UpdateContratAutofinance($data) {
-        $signe = ($data['type_operation'] === 'ajout') ? '+' : '-';
-    
-        $Rqte = "UPDATE contrat_autofinance 
-                 SET budget_total = budget_total $signe :budget_total
-                 WHERE idcontrat = :idcontrat";
-    
-        $params = [
-            'budget_total' => $data['budget_total'],
-            'idcontrat'    => $data['idcontrat']
-        ];
-    
-        return $this->executeQuery($Rqte, $params);
-    }
-    
-    //update etat_contrat
-    public function UpdateEtatContrat($data) {
-        $Rqte = "UPDATE police_contrat 
-                 SET etat_contrat = :etat_contrat,
-                     date_update = CURRENT_TIMESTAMP
-                 WHERE idcontrat = :idcontrat";
-    
-        $params = [
-            'etat_contrat' => $data['etat_contrat'],
-            'idcontrat'    => $data['idcontrat']
-        ];
-    
-        return $this->executeQuery($Rqte, $params);
-    }
-    
    
     public function fx_DeleteContrat($id) {
         $Rqte = "DELETE FROM police_contrat WHERE idcontrat = :idcontrat";
@@ -407,109 +349,6 @@ $val_frais_gest, $tva, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire_id
             return [];
         }
     }
-    // Récupère les initiales d'un agent par son ID
-    public function getInitialesAgent($idAgent) {
-        $query = "
-            SELECT nomagent, postnomagent, prenomagent 
-            FROM agent 
-            WHERE idagent = :id
-        ";
-    
-        $params = [':id' => $idAgent];
-        $result = $this->executeQuery($query, $params);
-    
-        if (!$result || count($result) == 0) {
-            return null; // Agent non trouvé
-        }
-    
-        $agent = $result[0];
-    
-        // Vérifier si chaque champ existe et n'est pas vide
-        $nom = !empty($agent['nomagent']) ? strtoupper(substr($agent['nomagent'], 0, 1)) : "";
-        $postnom = !empty($agent['postnomagent']) ? strtoupper(substr($agent['postnomagent'], 0, 1)) : "";
-        $prenom = !empty($agent['prenomagent']) ? strtoupper(substr($agent['prenomagent'], 0, 1)) : "";
-    
-        // Générer les initiales en fonction des valeurs disponibles
-        $initials = $nom . $postnom . $prenom;
-    
-        return substr($initials, 0, 3); // Prend maximum 3 caractères
-    }
-    
-    
-   // Récupère les initiales d'un client par son ID
-   public function getInitialesClient($idClient) {
-    $query = "
-        SELECT den_social 
-        FROM client 
-        WHERE idclient = :id
-    ";
-
-    $params = [':id' => $idClient];
-    $result = $this->executeQuery($query, $params);
-
-    if (!$result || count($result) == 0) {
-        return null; // Client non trouvé
-    }
-
-    $den_social = trim($result[0]['den_social']);
-    $words = explode(" ", $den_social);
-    $initials = "";
-
-    foreach ($words as $word) {
-        if (!empty($word)) {
-            $initials .= strtoupper(substr($word, 0, 1));
-            if (strlen($initials) >= 3) break; // Max 3 caractères
-        }
-    }
-
-    return substr($initials, 0, 3);
-}
-//site user
-public function getIdSiteByUser($idutile) {
-    $query = "
-        SELECT idsite 
-        FROM utilisateur 
-        WHERE idutile = :idutile
-    ";
-    
-    $params = [':idutile' => $idutile];
-    $result = $this->executeQuery($query, $params);
-    if ($result && count($result) > 0) {
-        return $result[0]['idsite']; // Retourne l'idsite
-    } else {
-        return null; // Aucun site trouvé
-    }
-}
-
-    //dernier contrat
-    public function getLastContratId() {
-        $query = "
-            SELECT MAX(idcontrat) AS last_id
-            FROM police_contrat
-        "; 
-    
-        $result = $this->executeQuery($query);
-        if ($result && isset($result[0]['last_id'])) {
-            return $result[0]['last_id'];
-        }
-        
-        return 0;
-    }
-    //derniere ND
-    public function getLastNoteDebitId() {
-        $query = "
-            SELECT MAX(id_nd) AS last_id
-            FROM notedebit
-        "; 
-    
-        $result = $this->executeQuery($query);
-        if ($result && isset($result[0]['last_id'])) {
-            return $result[0]['last_id'];
-        }
-        return 0;
-    }
-
-       
     public function ComboContrats() {
         $query = "
             SELECT pc.idcontrat, pc.type_contrat, pc.etat_contrat, c.idclient, c.den_social, pc.effectif_Benef, pc.val_frais_gest,pc.tva,pc.numero_police,
@@ -723,58 +562,48 @@ public function getIdSiteByUser($idutile) {
         $results = $this->executeQuery($query);
         return $results ?: [];
     }
-    public function insertCotation($dateCotation, $nomDemandeur, $societe, $email, $telephone, $idtypeContrat, $dateDebut, $dateFin, $beneficiaire, $budget, $couverture, $frequencePay, $modePay, $commentaires, $statut) {
+    public function insertCotation($dateCotation, $nomDemandeur, $societe, $email, $telephone, $typeContrat, $dateDebut, $dateFin, $beneficiaire, $budget, $couverture, $frequencePay, $modePay, $commentaires) {
         $query = "
-        INSERT INTO cotations (
-            datecotation, nomdemandeur, societe, email, telephone, 
-            idtypecontrat, datedebut, datefin, beneficiaire, 
-            budget, couverture, frequencepay, modepay, commentaires, statut
-        ) VALUES (
-            :datecotation, :nomdemandeur, :societe, :email, :telephone,
-            :idtypecontrat, :datedebut, :datefin, :beneficiaire, 
-            :budget, :couverture, :frequencepay, :modepay, :commentaires, :statut
-        )";
-    
+            INSERT INTO cotations (
+                datecotation, nomdemandeur, societe, email, telephone, 
+                typecontrat, datedebut, datefin, beneficiaire, 
+                budget, couverture, frequencepay, modepay, commentaires
+            ) VALUES (
+                :datecotation, :nomdemandeur, :societe, :email, :telephone,
+                :typecontrat, :datedebut, :datefin, :beneficiaire, 
+                :budget, :couverture, :frequencepay, :modepay, :commentaires
+            )
+        ";
+        
         $params = [
             ':datecotation' => $dateCotation,
             ':nomdemandeur' => $nomDemandeur,
             ':societe' => $societe,
             ':email' => $email,
             ':telephone' => $telephone,
-            ':idtypecontrat' => (int) $idtypeContrat, // Force en entier
+            ':typecontrat' => $typeContrat,
             ':datedebut' => $dateDebut,
             ':datefin' => $dateFin,
-            ':beneficiaire' => (int) $beneficiaire, // Force en entier
-            ':budget' => (float) $budget, // Garde un format numérique
+            ':beneficiaire' => $beneficiaire,
+            ':budget' => $budget,
             ':couverture' => $couverture,
             ':frequencepay' => $frequencePay,
             ':modepay' => $modePay,
-            ':commentaires' => $commentaires,
-            ':statut' => (int) $statut // Force en entier
+            ':commentaires' => $commentaires
         ];
-    
-        $result = $this->executeQuery($query, $params);
-
-        if ($result) {
-            return true;
-        } else {
-            error_log("Erreur SQL lors de l'insertion.");
-            return [
-                "status" => "error",
-                "message" => "Échec de l'enregistrement"
-            ];
-        }
         
+        // Exécution de la requête
+        $result = $this->executeQuery($query, $params);
+        
+        return $result ? true : false;
     }
-    
     public function listCotation() {
         $query = "
-          SELECT 
-                cotations.idcotation, cotations.datecotation, cotations.nomdemandeur, cotations.societe, cotations.email, cotations.telephone, 
-                typecontrat.libtype, cotations.datedebut, cotations.datefin, cotations.beneficiaire, 
-                cotations.budget, cotations.couverture, cotations.frequencepay, cotations.modepay, cotations.commentaires
-            FROM cotations, typecontrat
-            WHERE cotations.idtypecontrat=typecontrat.idtype
+            SELECT 
+                idcotation, datecotation, nomdemandeur, societe, email, telephone, 
+                typecontrat, datedebut, datefin, beneficiaire, 
+                budget, couverture, frequencepay, modepay, commentaires
+            FROM cotations
             ORDER BY datecotation DESC
         ";
         
@@ -957,8 +786,49 @@ public function totalGlobalContratsAssuranceMoisEncours() {
         return $this->executeQuery($query, [':idContrat' => $idContrat]);
     }
 
+    // Ajouter bénéf d'un contrat
+    public function ajouterBeneficiaire($idContrat, $nombre) {
+        try {
+            $this->conn->beginTransaction();
+            // Mise à jour de l'effectif
+            $rqtUpdate = "UPDATE police_contrat SET effectif_Benef = effectif_Benef + :nombre WHERE idcontrat = :idContrat";
+            $paramsUpdate = [':nombre' => $nombre, ':idContrat' => $idContrat];
+            $this->executeQuery($rqtUpdate, $paramsUpdate, true);
 
+            // Insert historique mouv
+            $rqtstory = "INSERT INTO mouvementeffect (idpolice, type_ops, nombre, date_ops) VALUES (:idContrat, 'Ajout', :nombre, CURRENT_TIMESTAMP)";
+            $paramStory = [':idContrat' => $idContrat, ':nombre' => $nombre];
+            $this->executeQuery($rqtstory, $paramStory, true);
 
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            throw new Exception("Erreur lors de l'ajout des bénéficiaires : " . $e->getMessage());
+        }
+    }
+
+    // Retrait bénéf d'un contrat
+    public function retraitBeneficiaire($idContrat, $nombre) {
+        try {
+            $this->conn->beginTransaction();
+            // Mise à jour de l'effectif
+            $rqtUpdate = "UPDATE police_assurance SET effectif_Benef = effectif_Benef - :nombre WHERE idpolice = :idContrat";
+            $paramsUpdate = [':nombre' => $nombre, ':idContrat' => $idContrat];
+            $this->executeQuery($rqtUpdate, $paramsUpdate, true);
+
+            // Insertion historique effectif benef
+            $rqtstory = "INSERT INTO mouvementeffect (idcontrat, type_ops, nombre, date_ops) VALUES (:idContrat, 'Retrait', :nombre, CURRENT_TIMESTAMP)";
+            $paramStory = [':idContrat' => $idContrat, ':nombre' => $nombre];
+            $this->executeQuery($rqtstory, $paramStory, true);
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            throw new Exception("Erreur lors du retrait des bénéficiaires : " . $e->getMessage());
+        }
+    }
 
     //historique mouvements des effectifs d'un contrat
     public function historiqueMouvEffectif($idContrat) {

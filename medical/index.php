@@ -231,51 +231,37 @@ $userPrenom = $_SESSION['prenom'];
     <div class="card shadow">
     <div class="card-body">
         <div class="row g-3">
-            <!-- Navigation -->
-            <div class="custom-navbar">
-                <ul class="nav-list">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#clientModal">
-                            <i class="bi bi-person-plus"></i> Nouveau Client
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./creation" class="nav-link">
-                            <i class="bi bi-file-earmark-plus"></i> Créer contrat
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./gestion" class="nav-link">
-                            <i class="bi bi-file-earmark-text"></i> Gestion contrat
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#formChecklist">
-                            <i class="bi bi-list-check"></i> Check List
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="./cotations" class="nav-link" data-bs-toggle="modal" data-bs-target="#">
-                            <i class="bi bi-calculator"></i> Cotation
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="../contrats/rapports" class="nav-link">
-                            <i class="bi bi-clipboard-data"></i> Gestion des rapports
-                        </a>
-                    </li>
-                </ul>
-            </div>
-         <hr>
-<div class="row text-center">
+          
+<div class="row text-center p-3">
+<div class="head d-flex justify-content-end align-items-center mb-2 gap-2">
+    <a href="./classeurs" class="btn text-light d-flex align-items-center gap-2" style="background-color: #923a4d;">
+        <i class="bi bi-file-earmark-text-fill"></i> Complétion facture
+    </a>
+
+    <div class="dropdown">
+        <button class="btn text-light dropdown-toggle d-flex align-items-center gap-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #303670;">
+            <i class="bi bi-pencil-square"></i> Opérations de saisie
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item d-flex align-items-center gap-2" href="./classeurs">
+                <i class="bi bi-file-earmark-text"></i> Saisie demandes
+            </a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2" href="./classeurs">
+                <i class="bi bi-exclamation-circle"></i> Saisie plainte
+            </a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2" href="./classeurs">
+                <i class="bi bi-file-medical"></i> Saisie actes
+            </a></li>
+        </ul>
+    </div>
+</div><hr>
     <!-- Total Contrats -->
     <div class="col-md-3">
         <a href="total-contrats.html" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
-                    <h5 class="card-title text-secondary">
-                    <i class="bi bi-file-earmark-text"></i> Total Contrats
-                    </h5>
+                <i class="bi bi-file-earmark-text-fill text-danger" style="font-size: 2rem;"></i>
+                <h5 class="mt-2">Factures à traiter</h5>
                     <div id="totalContrats" class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"><h4></div>
                 </div>
             </div>
@@ -286,53 +272,39 @@ $userPrenom = $_SESSION['prenom'];
         <a href="en-cours-gestion.html" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
-                    <h5 class="card-title text-secondary">
-                    <i class="bi bi-gear"></i> En cours de gestion
-                    </h5>
+                <i class="bi bi-shield-exclamation text-danger" style="font-size: 2rem;"></i>
+                <h5 class="mt-2">Plaintes à traiter</h5>
                     <div id="encours" class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"></div>
                 </div>
             </div>
         </a>
     </div>
     <!-- En suspension -->
-    <div class="col-md-2">
+    <div class="col-md-3">
         <a href="en-suspension.html" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
-                    <h5 class="card-title text-secondary">
-                    <i class="bi bi-hourglass-split text-warning"></i> En attente
-                    </h5>
+                <i class="bi bi-hourglass-split text-danger" style="font-size: 2rem;"></i>
+                <h5 class="mt-2">Demandes en cours</h5>
                     <div id="attentes" class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"></div>
                 </div>
             </div>
         </a>
     </div>
     <!-- En suspension -->
-    <div class="col-md-2">
+    <div class="col-md-3">
         <a href="en-resiliation.html" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
-                    <h5 class="card-title text-secondary">
-                    <i class="bi bi-pause-circle text-warning"></i> En suspension
-                    </h5>
-                    <div id="suspendus" class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;"></div>
+                <i class="bi bi-file-medical text-danger" style="font-size: 2rem;"></i>
+                <h5 class="mt-2">Actes médicaux</h5>
+                    <div id="suspendus" class="circle-value shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"></div>
                 </div>
             </div>
         </a>
     </div>
     <!-- En résiliation -->
-    <div class="col-md-2">
-        <a href="en-resiliation.html" class="text-decoration-none">
-            <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
-                <div class="card-body">
-                    <h5 class="card-title text-secondary">
-                    <i class="bi bi-slash-circle text-danger"></i> En résiliation
-                    </h5>
-                    <div id="suspendus" class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;"></div>
-                </div>
-            </div>
-        </a>
-    </div>
+    
 </div>
 
 
@@ -340,10 +312,10 @@ $userPrenom = $_SESSION['prenom'];
     <div class="col-12">
     <div class="head d-flex justify-content-between align-items-center mb-2">
     <h5 class="text-secondary mb-3">
-        <i class="bi bi-list-check"></i> Contrats Récents
+        <i class="bi bi-list-check"></i> Factures Récentes
     </h5>
     <a href="./classeurs" class="btn btn-danger d-flex align-items-center gap-2">
-    <i class="bi bi-folder2-open"></i>
+    <i class="bi-file-earmark-text-fill"></i>
 </a>
 
 </div>
@@ -353,13 +325,14 @@ $userPrenom = $_SESSION['prenom'];
                 <thead style="background-color: #923a4d;">
                     <tr>
                         <th>#</th>
-                        <th>Date de création</th>
-                        <th>Numéro de Police</th>
-                        <th>Type de Contrat</th>
-                        <th>Total_Frais_gestion</th>
-                        <th>Client</th>
+                        <th>Date création</th>
+                        <th>Numéro_facture</th>
                         <th>Gestionnaire</th>
+                        <th>Debut</th>
+                        <th>Fin</th>
                         <th>Statut</th>
+                        <th>Actions</th>
+                        
                     </tr>
                 </thead>
                 <tbody></tbody>
@@ -776,10 +749,10 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('suspendus').textContent = data.data.suspendus[0].suspendus;
     }
 
-
+    // Récupérer les contrats correctement
     const contrats = data.data.listcontrat.listcontrat;
     const tableBody = document.querySelector('#contratsTable tbody');
-    tableBody.innerHTML = '';
+    tableBody.innerHTML = ''; // Vider le tableau avant de remplir
 
     if (contrats && contrats.length > 0) {
         contrats.forEach((contrat, index) => {
@@ -787,19 +760,10 @@ document.addEventListener("DOMContentLoaded", function() {
             row.setAttribute('data-id', contrat.idcontrat);
             row.style.cursor = 'pointer'; // Pour montrer que la ligne est cliquable
             row.innerHTML = `
-                <td>${index + 1}</td>
-                <td class="text-start">${formatDate(contrat.datecreate)}</td>
-                <td class="text-start">${contrat.numero_police}</td>
-                <td class="text-start">${contrat.libtype}</td>
-                <td class="text-end">${ (parseFloat(contrat.val_frais_gest) + parseFloat(contrat.tva)).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }$</td>
-                <td class="text-start">${contrat.den_social}</td>
-                <td class="text-start">${contrat.prenomagent} ${contrat.nomagent}</td>
-                <td class="text-start">
-                    ${getStatutLibelle(contrat.etat_contrat)}
-                </td>
+                
             `;
             row.addEventListener('click', () => {
-                window.location.href = `./classeurs?np=${contrat.idcontrat}`;
+                window.location.href = `./classeurs/${contrat.idcontrat}`;
             });
             tableBody.appendChild(row);
         });
@@ -832,29 +796,16 @@ document.addEventListener("DOMContentLoaded", function() {
     function getStatutLibelle(etatContrat) {
         switch (etatContrat) {
         case 1:
-            return '<span class="text-danger fw-bold">En attente</span>';
+            return '<span class="text-warning">En attente</span>';
         case 2:
             return '<span class="text-success">En Cours</span>';
         case 3:
-            return '<span class="text-warning text-dark">En suspension</span>';
+            return '<span class="text-danger text-dark">En suspension</span>';
         default:
             return '<span class="badge bg-secondary">Statut inconnu</span>';
     }
 }
-// Fonction pour formater une date en "jj/mm/aaaa à hh:mm"
-function formatDate(dateString) {
-    if (!dateString) return ''; // Gérer les valeurs nulles ou vides
 
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-    }) + ' à ' + date.toLocaleTimeString('fr-FR', {
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-}
 });
     </script>
 </body>

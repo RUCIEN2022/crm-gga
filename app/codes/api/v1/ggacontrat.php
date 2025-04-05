@@ -1,6 +1,17 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
+
 include_once(__DIR__ . '/../../models/ClasseContrat.php');
+
+session_start(); // Assurez-vous que la session est démarrée
+
+$userId = $_SESSION['user_id'] ?? null;
 
 $contrat = new Contrat();
 
@@ -65,42 +76,74 @@ try {
                 }
             }
             break;
+            case 'POST':
+    if ($action === 'creation') {
         
 
-            case 'POST':
-                if ($action === 'create') {
-                    // Créer un contrat
-                    $data = json_decode(file_get_contents("php://input"), true);
-            
-                    // Vérification des données reçues
-                    if (empty($data['contrat']) || !is_array($data['contrat'])) {
-                        echo json_encode([
-                            "success" => false,
-                            "message" => "Les données du contrat sont obligatoires."
-                        ]);
-                        exit;
-                    }
-            
-                    $contratData = $data['contrat'];
-            
-                    try {
-                        // Instance de la classe Contrat
-                        $contrat = new Contrat();
-            
-                        // Appel de la méthode pour enregistrer le contrat
-                        $result = $contrat->enregistrerContrat($contratData);
-            
-                        // Retour du résultat sous format JSON
-                        echo json_encode($result);
-                    } catch (Exception $e) {
-                        // Gestion des erreurs internes du serveur
-                        echo json_encode([
-                            "success" => false,
-                            "message" => "Erreur interne du serveur : " . $e->getMessage()
-                        ]);
-                    }
-                }
-            break;
+        try {
+            // Récupération des données envoyées
+            $data = json_decode(file_get_contents("php://input"), true);
+            if (!$data) {
+                die("Données JSON invalides.");
+            }
+            var_dump($data);
+         
+            // Vérification si le JSON est valide
+            if (!$data) {
+                throw new Exception("Données JSON invalides.");
+            }
+
+            // Vérification des données requises
+            if (!isset($data['contrat']) || !is_array($data['contrat'])) {
+                throw new Exception("Les données du contrat sont obligatoires et doivent être sous forme de tableau.");
+            }
+
+            $contratData = $data['contrat'];
+
+            // Vérification des champs obligatoires
+            if (empty($contratData['type_contrat'])) {
+                throw new Exception("Le type du contrat est obligatoire.");
+            }
+
+            // Génération des données de la facture
+            $factureData = [
+                'numfact'      => uniqid('FACT-'),
+                'amount_contrat' => $contratData['budget_total'] ?? ($contratData['prime_ttc'] ?? 0),
+                'frais_gga'    => $contratData['totalFraisGestion'] ?? 0,
+                'tva'          => $contratData['tva'] ?? 0,
+                'modalite'     => $contratData['fraisGestionGGA'] ?? 0,
+                'etatfact'     => '1',
+                'code'         => uniqid('pc-'),
+                'idutile'      => $contratData['idutile'] ?? 0
+            ];
+
+            $contrat = new Contrat();
+            $result = $contrat->enregistrerContrat($contratData, $factureData);
+
+            // Vérification du résultat de l'enregistrement
+            if (!$result['success']) {
+                throw new Exception("Erreur lors de la création du contrat : " . $result['message']);
+            }
+
+            // Réponse finale en cas de succès
+            http_response_code(201);
+            echo json_encode([
+                "success"  => true,
+                "message"  => "Contrat, police et facture enregistrés avec succès.",
+                "idcontrat" => $result['idcontrat'],
+                "numfact"  => $factureData['numfact']
+            ]);
+        } catch (Exception $e) {
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+        }
+    }
+    break;
+
+                
             //Mise à jour contrat
             case 'PUT':
                 if ($action === 'updtcontrat' && $id) { //j'appel l'action + id 

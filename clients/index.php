@@ -240,11 +240,6 @@ $userPrenom = $_SESSION['prenom'];
       
     });
 
- 
-  
-
-
-
     // pagination GPT
  // Fonction de mise à jour de la pagination
 function updatePagination() {

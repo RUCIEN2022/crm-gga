@@ -1,7 +1,10 @@
 # Activer le moteur de réécriture
 RewriteEngine On
 
-# Rediriger toutes les requêtes vers index.php
+# Définir la base pour éviter les erreurs sous localhost/crm-gga/
+RewriteBase /crm-gga/
+
+# Rediriger toutes les requêtes vers index.php sauf si c'est un fichier ou un dossier existant
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]

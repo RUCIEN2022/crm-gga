@@ -4,16 +4,16 @@
                 <h4 class="text-white fw-bold p-3">CRM-GGA</h4>
             </div>
             <ul class="list-unstyled components">
-            <li class="active" data-section="dashboard">
-    <a href="./"><i class="bi bi-house-door"></i><span>Dashboard</span></a>
+            <li class="" data-section="dashboard">
+    <a href="../dashboard/"><i class="bi bi-house-door"></i><span>Dashboard</span></a>
 </li>
-<li data-section="contrats">
+<li data-section="production">
     <a href="../contrats/"><i class="bi bi-folder-plus"></i><span>Production</span></a>
 </li>
 <li data-section="sinistre">
     <a href="#"><i class="bi bi-exclamation-triangle"></i><span>Sinistre</span></a>
 </li>
-<li data-section="medical">
+<li class="active" data-section="medical">
     <a href="../medical/"><i class="bi bi-heart-pulse"></i><span>Médical</span></a>
 </li>
 <li data-section="finances">

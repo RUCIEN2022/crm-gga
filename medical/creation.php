@@ -189,7 +189,7 @@ $userPrenom = $_SESSION['prenom'];
         <div id="content">
             <?php include_once('topbar.php'); ?>
             <!-- Cards -->
-            <div class="mt-2">
+            <div class="container mt-2">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="./">Production</a></li>
@@ -204,7 +204,7 @@ $userPrenom = $_SESSION['prenom'];
                 <span class="fw-bold text-danger" style="font-size: 16px;">Mise en place contrat / <span class="fw-bold text-dark" id="typecont" style="font-size: 16px;"></span></span> 
                 <hr>
                 <div class="col-md-3">
-                        <label for="typecontrat" class="form-label">Type Police</label>
+                        <label for="typecontrat" class="form-label">Type contrat</label>
                     <select name="typecontrat" id="typecontrat" class="form-select fw-bold" style="font-size: 12px;" required>
                         <option value="0">...</option>
                     </select>
@@ -224,7 +224,6 @@ $userPrenom = $_SESSION['prenom'];
                 <div class="col-md-3">
                     <label for="numpolice" class="form-label">Num. police</label>
                     <input type="text" class="form-control" id="numpolice" name="numpolice" placeholder="" require style="height: 30px;">
-                    <small id="numeroPoliceLabel" class="text-danger d-none">* Ignorez la saisie, Numéro généré automatiquement par le CRM</small>
                     <div id="alertNumPolice" style="color: red; display: none;">Ce numéro de police existe déjà.</div>
                 </div>
                 <fieldset class="border p-3 mt-3 d-none position-relative" id="diveffectif" style="border-radius: 5px; border: 2px solidrgb(11, 11, 11);background-color:#f4f4f9">
@@ -479,8 +478,6 @@ $userPrenom = $_SESSION['prenom'];
     const effectifs = document.getElementById('diveffectif');
     const appfonds = document.getElementById('appel-fonds');
     const fraisgest = document.getElementById('option-frais-gest');
-    const numeropolice = document.getElementById('numpolice');
-    const numeroPoliceLabel = document.getElementById("numeroPoliceLabel");
     // Réinitialiser la visibilité
     type1Fields.classList.add('d-none');
     type2Fields.classList.add('d-none');
@@ -488,7 +485,6 @@ $userPrenom = $_SESSION['prenom'];
     effectifs.classList.add('d-none');
     appfonds.classList.add('d-none');
     fraisgest.classList.add('d-none');
-    numeroPoliceLabel.classList.add('d-none');
     if (selectedValue === '1') {
         // Afficher les champs pour typecontrat=1
         type1Fields.classList.remove('d-none');
@@ -496,8 +492,6 @@ $userPrenom = $_SESSION['prenom'];
         effectifs.classList.remove('d-none');
         fraisgest.classList.remove('d-none');
         appfonds.classList.remove('d-none');
-        //numeropolice.classList.remove('d-none');
-        numeropolice.removeAttribute("disabled");
     } else if (selectedValue === '2') {
         // Afficher les champs pour typecontrat=2
         type2Fields.classList.remove('d-none');
@@ -505,9 +499,6 @@ $userPrenom = $_SESSION['prenom'];
         effectifs.classList.remove('d-none');
         appfonds.classList.remove('d-none');
         fraisgest.classList.remove('d-none');
-        //numeropolice.classList.remove('d-none');
-        numeropolice.setAttribute("disabled", "true");
-        numeroPoliceLabel.classList.remove('d-none');
     }
 });
 function calculateModaliteAppelFonds() {

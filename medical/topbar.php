@@ -4,7 +4,7 @@
                         <i class="bi bi-list"></i>
                     </button>
                     <div class="d-flex justify-content-between w-100 align-items-center">
-                        <h4>Production</h4>
+                        <h4><i class="bi bi-heart-pulse"></i> Médical</h4>
                         <span class="time" id="currentTime"></span>
                         <div class="user-info dropdown">
                         <button class="btn dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 12px; background-color:#923a4d; color:aliceblue;">

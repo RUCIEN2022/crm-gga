@@ -133,7 +133,7 @@ body{
             <div class="row mt-2">
                 <div class="col-md-4">
                     <div class="card card-contrats">
-                        <div class="card-body" style="background-color: #923a4d;">
+                        <div class="card-body rounded-3" style="background-color: #923a4d;">
                             <h5><i class="bi bi-folder"></i> Contrats</h5>
                             <h4><span class="badge bg-white text-danger" id="totalContrats" class="number">...</span></h4>
                             <div class="details">
@@ -144,7 +144,7 @@ body{
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card card-assurance">
+                    <div class="card card-assurance p-3">
                         <div class="card-body">
                             <h5><i class="bi bi-shield"></i> Assurance</h5>
                             <h4><span class="badge" style="background-color: #923a4d;" id="totalContratsAssur" class="number">...</span></h4>
@@ -155,7 +155,7 @@ body{
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card card-autofinancement">
+                    <div class="card card-autofinancement p-3">
                         <div class="card-body">
                             <h5><i class="bi bi-currency-dollar"></i> Autofinancement</h5>
                           <h4><span class="badge" style="background-color: #923a4d;" id="totalContratsAutofin" class="number">...</span></h4>  
@@ -195,7 +195,7 @@ body{
                         </div>
                         <!-- carte demandes de cotation -->
                         <div class="col-md-4">
-                        <a href="cotations.php" class="text-decoration-none">
+                        <a href="../contrats/cotations" class="text-decoration-none">
                             <div class="card border shadow hover-effect" style="background-color: #923a4d;">
                                 <div class="card-body">
                                     <h6 class="card-title text-light text-center">
@@ -256,25 +256,25 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                console.log(data);  // Log de la réponse pour déboguer
+                console.log(data);
                 if (data.success) {
-                    // Accéder aux données et les afficher
+                  
                     // totalContrats (tableau contenant un objet)
                     document.getElementById('totalContrats').textContent = data.data.totalContrats[0].total_contrats;
-                    // fraisGestion (tableau contenant un objet)
+                    // fraisGestion
                     document.getElementById('fraisGestion').textContent = 'Frais de Gestion : ' + parseFloat(data.data.fraisGestion[0].frais_gest).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '$';
-                    // totalBeneficiaires (tableau contenant un objet)
+                    // totalBeneficiaires
                     document.getElementById('totalBeneficiaires').textContent = 'Total des Bénéficiaires : ' + data.data.totalBeneficiaires[0].total_beneficiaires;
-                    // totalContratsAssurance (tableau contenant un objet)
+                    // totalContratsAssurance
                     document.getElementById('totalContratsAssur').textContent = data.data.totalContratsAssurance[0].total_contratsAss;
-                   // contratsAssuranceMois (tableau contenant un objet)
+                   // contratsAssuranceMois
                     if (data.data.contratsAssuranceMois && data.data.contratsAssuranceMois.length > 0) {
                         document.getElementById('contratsAssurMois').textContent = 
                             'Total du Mois en cours : ' + data.data.contratsAssuranceMois[0].total_contratsAss_mois;
                     } else {
                         document.getElementById('contratsAssurMois').textContent = 'Pas de contrats ce mois-ci';
                     }
-                    // totalContratsAutofinance (tableau contenant un objet)
+                    // totalContratsAutofinance
                     if (data.data.totalContratsAutofinance && data.data.totalContratsAutofinance.length > 0) {
                         document.getElementById('totalContratsAutofin').textContent = 
                             data.data.totalContratsAutofinance[0].total_contratsAutoFin;
@@ -299,31 +299,31 @@ document.addEventListener("DOMContentLoaded", function() {
                     document.getElementById('tachesTerminees').textContent = data.data.taches.terminees.length ? data.data.taches.terminees.length : '0';
                     document.getElementById('tachesRetard').textContent = data.data.taches.retard.length ? data.data.taches.retard.length : '0';
                     document.getElementById('totalnewcontrat').textContent = data.data.totalNewContrats[0]?.total_newcontrats || '0';
-                    // Graphique des assureurs (analyser et afficher les données)
-                    const analyseAssureurs = data.data.analyseAssureurs; 
-if (analyseAssureurs && analyseAssureurs.length > 0) {
-    // Extraire les labels (assureurs), chiffres d'affaires et frais de gestion
-    const labels = analyseAssureurs.map(item => item.assureur);
-    const chiffresAffaires = analyseAssureurs.map(item => item.chiffre_affaire);
-    const fraisGestion = analyseAssureurs.map(item => item.frais_gestion_gga);
-
-    // Créer le graphique
-    const ctx = document.getElementById('chartAssureur').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
+                    // Graphique analyse des assureurs
+            const analyseAssureurs = data.data.analyseAssureurs; 
+            if (analyseAssureurs && analyseAssureurs.length > 0) {
+                // chiffres d'affaires et frais de gestion
+                const labels = analyseAssureurs.map(item => item.assureur);
+                const chiffresAffaires = analyseAssureurs.map(item => item.chiffre_affaire);
+                const fraisGestion = analyseAssureurs.map(item => item.frais_gestion_gga);
+                
+                // Création graphique
+                const ctx = document.getElementById('chartAssureur').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
             labels: labels, // Labels des assureurs
             datasets: [
                 {
-                    label: 'Chiffres d\'Affaires ($)', // Légende du dataset Chiffres d'affaires
-                    data: chiffresAffaires, // Données des chiffres d'affaires
+                    label: 'Chiffres d\'Affaires ($)',
+                    data: chiffresAffaires,
                     backgroundColor: '#923a4d',
                     borderColor: '#e94364',
                     borderWidth: 1
                 },
                 {
-                    label: 'Frais de Gestion GGA ($)', // Légende du dataset Frais de gestion
-                    data: fraisGestion, // Données des frais de gestion
+                    label: 'Frais de Gestion GGA ($)',
+                    data: fraisGestion,
                     backgroundColor: '#303670',
                     borderColor: '#4285F4',
                     borderWidth: 1
@@ -337,7 +337,7 @@ if (analyseAssureurs && analyseAssureurs.length > 0) {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return value.toLocaleString(); // Affichage des valeurs avec séparateur de milliers
+                            return value.toLocaleString();
                         }
                     }
                 }
@@ -345,6 +345,7 @@ if (analyseAssureurs && analyseAssureurs.length > 0) {
         }
     });
 }
+
                 } else {
                     alert('Une erreur est survenue lors de la récupération des données.');
                 }
@@ -355,7 +356,7 @@ if (analyseAssureurs && analyseAssureurs.length > 0) {
             });
     }
 
-    // Appel initial pour charger les données au démarrage de la page
+    // Chargement des données au démarrage
     fetchDashboardData();
 });
 </script>

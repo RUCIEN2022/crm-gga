@@ -1,0 +1,18 @@
+Array
+(
+    [idcontrat] => 4
+    [actionType] => ajout
+    [nbagent] => 5
+    [nbconjoint] => 3
+    [nbenf] => 5
+    [dateincorp] => 2025-04-05
+    [prime] => 1200
+    [accessoire] => 12
+    [dateradiat] => 
+    [datesusp] => 
+    [datereprise] => 
+    [motifreprise] => 
+    [dateresiliation] => 
+    [motifresil] => 
+    [type_operation] => ajout
+)
