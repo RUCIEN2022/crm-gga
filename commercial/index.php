@@ -18,7 +18,7 @@ $userPrenom = $_SESSION['prenom'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM-GGA Parametre</title>
+    <title>CRM-GGA Commercial</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet">
@@ -109,7 +109,7 @@ $userPrenom = $_SESSION['prenom'];
         padding: 10px;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 950px;
+        max-width: 650px;
         margin: 20px auto;
     }
 
@@ -235,33 +235,22 @@ $userPrenom = $_SESSION['prenom'];
                 <ul class="nav-list">
                     <li class="nav-item">
                         <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#userModal">
-                            <i class="bi bi-person-plus"></i> Décomptes validés
+                            <i class="bi bi-person-plus"></i> Nouveau Prospect
+                        </a>
+                    </li>
+                   
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ParModal">
+                            <i class="bi bi-file-earmark-text"></i> Création des produits
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ParModal">
-                            <i class="bi bi-file-earmark-text"></i> Fonds de déroulement 
+                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#PvModal" >
+                            <i class="bi bi-file-earmark-text"></i> Vente des produits
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link" >
-                            <i class="bi bi-file-earmark-text"></i> Journal de Caisse
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" >
-                            <i class="bi bi-file-earmark-text"></i> Journal de Banque
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#BanqueModal">
-                            <i class="bi bi-file-earmark-text"></i> Nos banques
-                        </a>
-                    </li>
-                 
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ParModal">
                             <i class="bi bi-file-earmark-text"></i> REPORTING
                         </a>
                     </li>
@@ -276,9 +265,9 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-file-earmark"></i> Total Décomptes validés
+                        <i class="bi bi-file-earmark"></i> Total prospect
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="Totaldv">
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="TotalPropect">
                         
                     </div>
                 </div>
@@ -291,9 +280,9 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-gear"></i> Solde Caisse
+                        <i class="bi bi-gear"></i> Total clients enregistrés
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="Totaljc">
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="Totalclient">
                         
                     </div>
                 </div>
@@ -306,9 +295,9 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-pause-circle"></i> Solde Banque 
+                        <i class="bi bi-pause-circle"></i> Total produits 
                     </h5>
-                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="Totaljb">
+                    <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="Totalproduit">
                         
                     </div>
                 </div>
@@ -321,9 +310,9 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-x-circle text-danger"></i> Total Solde
+                        <i class="bi bi-x-circle text-danger"></i> Total produits vendus
                     </h5>
-                    <div class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;" id="Totalsolde">
+                    <div class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;" id="Totalproduitvendu">
                         
                     </div>
                 </div>
@@ -335,15 +324,11 @@ $userPrenom = $_SESSION['prenom'];
 
     <!-- Tableau liste classeurs contrats -->
     <div class="table-responsive">
-            <h5 class="text-secondary mb-3" id="titreTransaction">
-                    <i class="bi bi-list-check"></i> Journal de transaction du ...
-            </h5>
+          
 
             <h5 class="text-secondary mb-3 d-flex justify-content-between align-items-center" >
            
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#clientModal" >
-                    <i class="bi bi-plus-circle"></i> Nouvelle Transaction
-                </button>
+            
                 <input
                         type="text"
                         id="searchInput"
@@ -424,7 +409,7 @@ $userPrenom = $_SESSION['prenom'];
                                         <select name="idcompte" id="idcompte" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
                                             <option value="0">--Choisir--</option>
                                         </select>
-                                        <label for="idcompte">Compte | Solde disponible : <input type="text" id="solde" value="0" readonly ></label>
+                                        <label for="idcompte">Compte    | Solde disponible : <input type="text" id="solde" value="0" readonly ></label>
                                        
                                     </div>
                                 </div>
@@ -434,7 +419,7 @@ $userPrenom = $_SESSION['prenom'];
                                         <select name="bankList" id="bankList" class="form-select" style="font-size: 12px;border: solid 1px #ccc;">
                                             <option value="0">--Choisir une banque--</option>
                                         </select>
-                                        <label for="bankList">Banque [solde disponible : <input type="text" id="soldebanque" value="0" readonly > ]</label>
+                                        <label for="bankList">Banque</label>
                                     </div>
                                 </div>
 
@@ -490,274 +475,115 @@ $userPrenom = $_SESSION['prenom'];
 
 
 <!-- Modal creation utilisateur -->
-<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true">
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="UserModalLabel">Décompte  Valide</h5>
+                <h5 class="modal-title" id="UserModalLabel">Création prospect</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
             <form id="UserForm" class="p-3">
                             <!-- Section 1 -->
                             <div class="row g-3 mb-1">
-                               <div class="col-md-6">
+                                <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select name="annee" id="annee" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
-                                            <option value="0">--Choisir--</option>
-                                        </select>
-                                        <label for="annee">Annee</label>
+                                        <input type="text" class="form-control" id="nom" placeholder="Saisir nom" required>
+                                        <label for="date_soin">Nom :</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select name="id_prestataire" id="id_prestataire" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
-                                            <option value="0">--Choisir--</option>
-                                        </select>
-                                        <label for="site1">Prestataire</label>
+                                        <input type="text" class="form-control" id="adresse" placeholder="Saisir adresse" required>
+                                        <label for="adresse">Adresse :</label>
                                     </div>
                                 </div>
-                                
+                            
                             </div>
-
                             <!-- Section 2 -->
                             <div class="row g-3 mb-1">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select name="id_assureur" id="id_assureur" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
-                                            <option value="0">--Choisir--</option>
-                                        </select>
-                                        <label for="id_assureur">Assureur</label>
+                                        <input type="text" class="form-control" id="telephone" placeholder="Téléphone" required>
+                                        <label for="telephone">Téléphone :</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select name="id_contrat" id="id_contrat" class="form-select" style="font-size: 12px;border: solid 1px #ccc;">
-                                            <option value="0">--Choisir--</option>
-                                        </select>
-                                        <label for="id_contrat">Contrat</label>
+                                        <input type="email" class="form-control" id="email" placeholder="E-mail" required>
+                                        <label for="email">E-mail :</label>
                                     </div>
                                 </div>
-                                
+                            
                             </div>
-
                             <!-- Section 3 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-6">
+                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="date" class="form-control" id="date_soin" placeholder="Date Soin" required>
-                                        <label for="date_soin">Date Soin</label>
+                                        <input type="date" class="form-control" id="date_prospection" placeholder="Date prospection" required>
+                                        <label for="date_prospection">Date prospection :</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="montant_paye" placeholder="Montant Payé" required>
-                                        <label for="montant_paye">Montant Payé</label>
-                                    </div>
-                                </div>
-                            
-                            </div>
-                            <!-- Section 4 -->
-                            <div class="row g-3 mb-1">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="date" class="form-control" id="date_paiement" placeholder="Date Paiement" required>
-                                        <label for="date_paiement">Date Paiement</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="date" class="form-control" id="date_reception" placeholder="Date Réception" required>
-                                        <label for="date_reception">Date Réception</label>
-                                    </div>
-                                </div>
-                            
-                            </div>
-                            <!-- Section 4 -->
-                            <div class="row g-3 mb-1">
-                                <div class="col-md-12">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="observation" placeholder="Observation" required>
-                                        <label for="observation">Observation</label>
+                                        <select name="moyen_contact_id" id="moyen_contact_id" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="0">--Choisir--</option>
+                                        </select>
+                                        <label for="moyen_contact_id">Moyen de Contact :</label>
                                     </div>
                                 </div>
                        
                             </div>
-                            <input type="text" id="user" value="<?php if(isset($userId)) echo $userId; ?>" hidden>
-
-                            <!-- Boutons d'action -->
-                            <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button type="button" class="btn btn-success" id="" onclick="submitFormDecompte()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
-                                <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearFormUser()">
-                                    <i class="bi bi-plus-circle"></i> Nouveau
-                                </button>
-                            </div>
-                        </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal creation site -->
-<div class="modal fade" id="SiteModal" tabindex="-1" aria-labelledby="SiteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="SiteModalLabel">Création  Site</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            <form id="UserForm" class="p-3">
-                            <!-- Section 1 -->
-                            
-
-                           
                             <!-- Section 3 -->
                             <div class="row g-3 mb-1">
-                                <div class="col-md-12">
+                                 <div class="col-md-12">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="libsite" placeholder="Saisissez le nom du site" required>
-                                        <label for="libsite">Designation </label>
-                                    </div>
-                                </div>
-                            
-                            </div>
-
-                            <!-- Boutons d'action -->
-                            <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button type="button" class="btn btn-success" id="" onclick="submitFormSite()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
-                                <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearFormUser()">
-                                    <i class="bi bi-plus-circle"></i> Nouveau
-                                </button>
-                            </div>
-                        </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Modal creation intermediaire -->
-<div class="modal fade" id="InterModal" tabindex="-1" aria-labelledby="InterModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="InterModalLabel">Création  Intermediaire</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            <form id="InterForm" class="p-3">
-                            <!-- Section 1 -->
-                           
-
-                            <!-- Section 2 -->
-                            <div class="row g-3 mb-1">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="numeroarca" placeholder="Numero ORCA" required>
-                                        <label for="numeroarca">Numero ORCA</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="nomcomplet" placeholder="Nom complet" required>
-                                        <label for="nomcomplet">Nom Complet</label>
+                                        <select name="type_prospect_id" id="type_prospect_id" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="0">--Choisir--</option>
+                                        </select>
+                                        <label for="type_prospect_id">Type :</label>
                                     </div>
                                 </div>
                                 
                             </div>
 
-                            <!-- Section 3 -->
-                            
-                            <div class="row g-3 mb-1">
-                                    <div class="col-md-6">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="telephone" placeholder="Téléphone " required>
-                                                <label for="telephone">Téléphone </label>
-                                            </div>
-                                    </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" id="email1" placeholder="Votre adresse mail" required>
-                                        <label for="email1">E-mail</label>
-                                    </div>
-                                </div>
-                            
-                            </div>
-                             <!-- Section 3 -->
-                            
-                             <div class="row g-3 mb-1">
-                                    <div class="col-md-12">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="adresse" placeholder="Adresse " required>
-                                                <label for="adresse">Adresse </label>
-                                            </div>
-                                    </div>
-                            
-                            
-                            </div>
-
                             <!-- Boutons d'action -->
                             <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button type="button" class="btn btn-success" id="" onclick="submitFormInter()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
-                                <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearFormInter()">
+                                <button type="button" class="btn btn-success" id="" onclick="submitFormProspect()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearFormUser()">
                                     <i class="bi bi-plus-circle"></i> Nouveau
                                 </button>
                             </div>
-                </form>
+                        </form>
             </div>
         </div>
     </div>
 </div>
 
 
-
-
-<!-- Modal Partenaire -->
-
-
-<!-- Modal creation Fond deroulement -->
-<div class="modal fade" id="ParModal" tabindex="-1" aria-labelledby="ParModalLabel" aria-hidden="true">
+<!-- Modal creation produit -->
+<div class="modal fade" id="ParModal" tabindex="-1" aria-labelledby="ParModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="InterModalLabel">Mise à jour fonds de déroulement</h5>
+                <h5 class="modal-title" id="InterModalLabel">Création Produit</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="ParForm" class="p-3">
                            <!-- Section 1 -->
-                           <div class="row g-3 mb-1">
-                                <div class="col-md-6">
-                                   <div class="form-floating">
-                                        <select name="id_assureur1" id="id_assureur1" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
-                                            <option value="0">--Choisir--</option>
-                                        </select>
-                                        <label for="id_assureur1">Assureur</label>
-                                    </div>
-                                </div>
-                              
-                                <div class="col-md-6">
-                                   <div class="form-floating">
-                                        <select name="id_contrat1" id="id_contrat1" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
-                                            <option value="0">--Choisir--</option>
-                                        </select>
-                                        <label for="id_contrat1">Contrat</label>
-                                    </div>
-                                </div>
-                              
-                            </div>
-
                             <!-- Section 2 -->
                             <div class="row g-3 mb-1">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="numeric" class="form-control" id="fonds_recus" placeholder="Fonds Reçu" required>
-                                        <label for="fonds_recus">Fonds Reçus</label>
+                                        <input type="text" class="form-control" id="nom1" placeholder="Désignation" required>
+                                        <label for="nom1">Désignation</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="sinistre_paye" placeholder="Sinistre Payé" required>
-                                        <label for="sinistre_paye">Sinistre Payé</label>
+                                        <input type="text" class="form-control" id="formule" placeholder="Formule" required>
+                                        <label for="formule">Formule </label>
                                     </div>
                                 </div>
                                 
@@ -767,24 +593,27 @@ $userPrenom = $_SESSION['prenom'];
                             <div class="row g-3 mb-1">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="sinistre_encours" placeholder="Sinistre encours" required>
-                                        <label for="sinistre_encours">Sinistre encours</label>
+                                        <select name="type_gestion" id="type_gestion" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="">--Choisir--</option>
+                                            <option value="Assurance">Assurance</option>
+                                            <option value="Autofinancement">Autofinancement</option>
+                                        </select>
+                                        <label for="type_gestion">Type gestion</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="fonds_disponibles" placeholder="Fonds disponibles" required>
-                                        <label for="fonds_disponibles">Fonds disponibles</label>
+                                        <input type="number" class="form-control" id="montant_annuel" placeholder="Montant Annuel" required>
+                                        <label for="montant_annuel">Montant Annuel</label>
                                     </div>
                                 </div>
-                                
                             </div>
 
                             <!-- Section 4 -->
                             <!-- Section 5 -->
                             <!-- Boutons d'action -->
                             <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button type="button" class="btn btn-success" onclick="submitFormFD()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-success" onclick="submitFormProduit()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
                                 <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearForm()">
                                     <i class="bi bi-plus-circle"></i> Nouveau
                                 </button>
@@ -796,37 +625,79 @@ $userPrenom = $_SESSION['prenom'];
     </div>
 </div>
 
-<!-- Nos banques -->
-<div class="modal fade" id="BanqueModal" tabindex="-1" aria-labelledby="BanqueModalLabel" aria-hidden="true"  data-bs-backdrop="static" data-bs-keyboard="false" >
+
+<!-- Modal vente de produits -->
+<div class="modal fade" id="PvModal" tabindex="-1" aria-labelledby="PvModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="InterModalLabel">Création nos partenaires bancaires</h5>
+                <h5 class="modal-title" id="InterModalLabel">Vente de Produit</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="ParForm" class="p-3">
+                           <!-- Section 1 -->
                             <!-- Section 2 -->
                             <div class="row g-3 mb-1">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="libbanque" placeholder="Désignation :" required>
-                                        <label for="libbanque">Désignation</label>
+                                        <select name="client_id" id="client_id" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="">--Choisir--</option>
+                                        </select>
+                                        <label for="client_id">Client</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="comptebanque" placeholder="Compte bancaire" required>
-                                        <label for="comptebanque">Compte Bancaire</label>
+                                        <select name="produit_id" id="produit_id" class="form-select" style="font-size: 12px;border: solid 1px #ccc;" >
+                                            <option value="">--Choisir--</option>
+                                        </select>
+                                        <label for="produit_id">Produit</label>
                                     </div>
+                                </div>
+                               
+                                
+                            </div>
+                                <br>
+                            <!-- Section 3 -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-12">
+                            
+                                   <div class="form-floating">
+                                       <button type="button" class="btn btn-success w-100" onclick="ajouterProduit()">Ajouter <i class="fas fa-spinner spinner"></i></button>
+                                   </div>
+                               
                                 </div>
                                 
                             </div>
-                            <!-- Section 4 -->
-                            <!-- Section 5 -->
+                            
+                            <!-- Section Tableau -->
+                            <div class="row g-3 mb-1">
+                                <div class="col-md-12">
+                                
+                                    <table id="tableVentes" class="table table-striped table-hover align-middle">
+                                    <h5 class="text-secondary mb-3 d-flex justify-content-between align-items-center"> Produits ajoutés </h5>    
+                                    <thead class="table-dark">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Code Produit</th>
+                                                <th>Désignation</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            
+                                            <!-- Ajoutez d'autres lignes ici -->
+                                        </tbody>
+                                    </table>
+                                   
+                                </div>
+                                
+                            </div>
+
                             <!-- Boutons d'action -->
                             <div class="d-flex justify-content-center gap-3 mt-4">
-                                <button type="button" class="btn btn-success" onclick="submitInsertBanque()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
+                                <button type="button" class="btn btn-success" onclick="submitFormVente()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
                                 <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearForm()">
                                     <i class="bi bi-plus-circle"></i> Nouveau
                                 </button>
@@ -837,6 +708,11 @@ $userPrenom = $_SESSION['prenom'];
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <!-- Modal checklist amélioré -->
 <div class="modal fade" id="formChecklist" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
@@ -1193,6 +1069,110 @@ $userPrenom = $_SESSION['prenom'];
     </script>
 
 <script>
+    
+    //traitement vente
+     
+     let ventes = [];
+     let count = 1;
+     function ajouterProduit(){
+       // alert('Bonjour');
+        const produitSelect = document.getElementById('produit_id');
+        const produitId = produitSelect.value;
+        const produitNom = produitSelect.options[produitSelect.selectedIndex].text;
+          // Vérifie si le produit est déjà dans le tableau
+        if (ventes.includes(produitId)) {
+            alert("Ce produit a déjà été ajouté !");
+            return; // ne pas ajouter deux fois
+        }
+        // Ajout au tableau
+        ventes.push(produitId);
+
+        const table = document.getElementById('tableVentes').querySelector('tbody');
+        const row = table.insertRow();
+       // row.innerHTML = `<td>${count++}</td><td>${produitId}</td><td>${produitNom}</td><td> Rétirer</td>`;
+        row.innerHTML = `<td>${count}</td><td>${produitId}</td><td>${produitNom}</td><td><button class="btn btn-danger" onclick="retirerProduit(this, '${produitId}')">🗑️Rétirer <i class="fas fa-spinner spinner"></i></button></td>`;
+        count++;
+
+     }
+     function retirerProduit(button, produitId) {
+        // Supprimer l'élément de la liste "ventes"
+        ventes = ventes.filter(id => id !== produitId);
+
+        // Supprimer la ligne du tableau HTML
+        const row = button.closest("tr");
+        row.remove();
+
+        // Réindexer les lignes du tableau (optionnel mais propre)
+        const rows = document.querySelectorAll('#tableVentes tbody tr');
+        count = 1;
+        rows.forEach(r => {
+            r.cells[0].textContent = count++;
+        });
+    }
+
+     function submitFormVente(){
+        // alert("Bonjour :");
+        const button = document.querySelector("button");
+        const spinner = document.querySelector(".spinner");
+        const dateVente = new Date().toISOString().split('T')[0];
+        const formData = {
+           // client_id: clientId,
+            produit_id: ventes,
+            client_id: document.getElementById('client_id').value,
+            date_vente: dateVente
+        };
+        //alert('Bonjour');
+        button.disabled = true;
+        spinner.style.display = "inline-block";
+       // console.log("Données envoyées :", formData);
+
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/vente', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            //console.log("Réponse API :", data);
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                if (data.status === 200) {
+                    showToast('Vente enregistrée avec succès!', 'success');
+                    //vider tableau
+                    ventes = [];
+                    document.querySelector('#tableVentes tbody').innerHTML = '';
+                    count = 1;
+                   // clearForm();
+                } else {
+                    showToast(data.message || 'Une erreur est survenue.', 'error');
+                }
+            }, 1000);
+        })
+        .catch(error => {
+            setTimeout(() => {
+                button.disabled = false;
+                spinner.style.display = "none";
+
+                showToast('Erreur lors de l\'enregistrement.' + error, 'error');
+              //  console.error('Error:', error);
+            }, 1000);
+        });
+
+       
+     }
+
+
+
+
+
+
+
+
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.className = `toast ${type} show`;
@@ -1276,29 +1256,27 @@ $userPrenom = $_SESSION['prenom'];
     }
 
     // clique bouton user
-    function submitFormDecompte(){
-        alert("Bonjour :");
+    function submitFormProspect(){
+       // alert("Bonjour :");
         const button = document.querySelector("button");
         const spinner = document.querySelector(".spinner");
         
         const formData = {
-            annee: document.getElementById("annee").value,
-            id_prestataire: document.getElementById("id_prestataire").value,
-            id_assureur: document.getElementById("id_assureur").value,
-            id_contrat: document.getElementById("id_contrat").value,
-            date_soin: document.getElementById("date_soin").value,
-            montant_paye: document.getElementById("montant_paye").value,
-            date_reception: document.getElementById("date_reception").value,
-            date_paiement: document.getElementById("date_paiement").value,
-            observation: document.getElementById("observation").value,
-            user: document.getElementById("user").value
+            nom: document.getElementById("nom").value,
+            adresse: document.getElementById("adresse").value,
+            telephone: document.getElementById("telephone").value,
+            email: document.getElementById("email").value,
+            //date_naissance: document.getElementById("date_naissance").value,
+            date_prospection: document.getElementById("date_prospection").value,
+            moyen_contact_id: document.getElementById("moyen_contact_id").value,
+            type_prospect_id: document.getElementById("type_prospect_id").value
         };
         //alert('Bonjour');
         button.disabled = true;
         spinner.style.display = "inline-block";
        // console.log("Données envoyées :", formData);
 
-        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/create_decompte', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/createprospect', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1314,7 +1292,7 @@ $userPrenom = $_SESSION['prenom'];
                 spinner.style.display = "none";
 
                 if (data.status === 200) {
-                    showToast('Décompte valide enregistré avec succès!', 'success');
+                    showToast('Prospect enregistré avec succès!', 'success');
                    // clearForm();
                 } else {
                     showToast(data.message || 'Une erreur est survenue.', 'error');
@@ -1393,78 +1371,23 @@ $userPrenom = $_SESSION['prenom'];
 
     }
 
-    function submitFormFD(){
+    function submitFormProduit(){
         const button = document.querySelector("button");
         const spinner = document.querySelector(".spinner");
     
-
-        const formData = {
-            id_assureur: document.getElementById("id_assureur1").value,
-            id_contrat: document.getElementById("id_contrat1").value,
-            fonds_recus: document.getElementById("fonds_recus").value,
-            sinistre_paye: document.getElementById("sinistre_paye").value,
-            sinistre_encours: document.getElementById("sinistre_encours").value
-        };
-
-        button.disabled = true;
-        spinner.style.display = "inline-block";
-
-        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/create_fond', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            setTimeout(() => {
-                button.disabled = false;
-                spinner.style.display = "none";
-
-                if (data.status === 200) {
-                    showToast('Fonds de déroulemennt enregistré avec succès!', 'success');
-                    clearForm();
-                } else {
-                    showToast(data.message || 'Une erreur est survenue.', 'error');
-                }
-            }, 3000);
-        })
-        .catch(error => {
-            setTimeout(() => {
-                button.disabled = false;
-                spinner.style.display = "none";
-
-                showToast('Erreur lors de l\'enregistrement.', 'error');
-                console.error('Error:', error);
-            }, 3000);
-        });
-    }
-
-    function  submitInsertBanque(){
-        const button = document.querySelector("button");
-        const spinner = document.querySelector(".spinner");
-        if(document.getElementById("libbanque").value === ""){
-            alert("Veuillez saisir le nom de la banque");
-            return;
-        }
-        if(document.getElementById("comptebanque").value === ""){
-            alert("Veuillez saisir le numéro du compte");
-            return;
-        }
        // alert("bonjour ");
         //exit();
         const formData = {
-            idcompte: 1,
-            libbanque: document.getElementById("libbanque").value,
-            comptebanque: document.getElementById("comptebanque").value,
-            soldebanque: 0
+            nom: document.getElementById("nom1").value,
+            formule: document.getElementById("formule").value,
+            type_gestion: document.getElementById("type_gestion").value,
+            montant_annuel: document.getElementById("montant_annuel").value
         };
 
         button.disabled = true;
         spinner.style.display = "inline-block";
 
-        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/createbanque', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/createproduit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1478,7 +1401,7 @@ $userPrenom = $_SESSION['prenom'];
                 spinner.style.display = "none";
 
                 if (data.status === 200) {
-                    showToast('Banque enregistrée', 'success');
+                    showToast('Produit créé', 'success');
                     clearForm();
                 } else {
                     showToast(data.message || 'Une erreur est survenue.', 'error');
@@ -1501,61 +1424,45 @@ $userPrenom = $_SESSION['prenom'];
     <script>
         // Les traitement de la page
         document.addEventListener('DOMContentLoaded', function(){
-            +
-            // chargeSite
-            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_annee.php')
+           
+                // charger type prospect
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/moyens')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
-                    /*
                     if (Array.isArray(data)) {
-                        const selectSite = document.getElementById('annee');
-                        selectSite.innerHTML = ''; // Nettoyer les options précédentes
-
+                        const selectPoste = document.getElementById('moyen_contact_id');
+                        selectPoste.innerHTML = ''; // Nettoyer les options précédentes
                         // Ajouter une option par défaut
                         const defaultOption = document.createElement('option');
                         defaultOption.value = '';
                         defaultOption.textContent = '--choisir--';
-                        selectSite.appendChild(defaultOption);
+                        selectPoste.appendChild(defaultOption);
 
                         // Ajouter les options récupérées depuis l'API
-                        data.annees.forEach(annee => {
+                        data.forEach(moyen => {
                             const option = document.createElement('option');
-                            option.value = annee;
-                            option.textContent = annee;
-                            selectSite.appendChild(option);
+                            option.value = moyen.id;
+                            option.textContent = moyen.libelle;
+                            selectPoste.appendChild(option);
                         });
 
                     } else {
                         console.error('Structure inattendue de la réponse:', data);
                     }
-                        */
+                })
+                .catch(error => console.error('Erreur lors du chargement des sites:', error));
+
               
-                    
-                    const select = document.getElementById('annee');
-
-                    data.annees.forEach(annee => {
-                        const option = document.createElement('option');
-                        option.value = annee;
-                        option.textContent = annee;
-                        select.appendChild(option);
-                    });
-                    //fin
-                })
-                .catch(error => console.error('Erreur lors du chargement des sites:', error));
-
-
-
-                //J'arrive 
-                // charger prestataire
-                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_admin.php/listePresta')
+                
+                // charger client
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/clientpro')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
                     if (Array.isArray(data)) {
-                        const selectPoste = document.getElementById('id_prestataire');
+                        const selectPoste = document.getElementById('client_id');
                         selectPoste.innerHTML = ''; // Nettoyer les options précédentes
-
                         // Ajouter une option par défaut
                         const defaultOption = document.createElement('option');
                         defaultOption.value = '';
@@ -1563,15 +1470,12 @@ $userPrenom = $_SESSION['prenom'];
                         selectPoste.appendChild(defaultOption);
 
                         // Ajouter les options récupérées depuis l'API
-                        data.forEach(presta => {
+                        data.forEach(client => {
                             const option = document.createElement('option');
-                            option.value = presta.id_prestataire;
-                            option.textContent = presta.nom_prestataire;
+                            option.value = client.id;
+                            option.textContent = client.nom + " " + client.email;
                             selectPoste.appendChild(option);
                         });
-
-                        
-
 
                     } else {
                         console.error('Structure inattendue de la réponse:', data);
@@ -1579,16 +1483,15 @@ $userPrenom = $_SESSION['prenom'];
                 })
                 .catch(error => console.error('Erreur lors du chargement des sites:', error));
 
-             
-                // charger assureur
-                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_partenaire.php/partenaires')
+           
+                // charger produit
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/produit')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
                     if (Array.isArray(data)) {
-                        const selectPoste = document.getElementById('id_assureur');
+                        const selectPoste = document.getElementById('produit_id');
                         selectPoste.innerHTML = ''; // Nettoyer les options précédentes
-
                         // Ajouter une option par défaut
                         const defaultOption = document.createElement('option');
                         defaultOption.value = '';
@@ -1596,32 +1499,12 @@ $userPrenom = $_SESSION['prenom'];
                         selectPoste.appendChild(defaultOption);
 
                         // Ajouter les options récupérées depuis l'API
-                        data.forEach(assureur => {
+                        data.forEach(produit => {
                             const option = document.createElement('option');
-                            option.value = assureur.idpartenaire;
-                            option.textContent = assureur.denom_social;
+                            option.value = produit.id;
+                            option.textContent = produit.nom;
                             selectPoste.appendChild(option);
                         });
-
-                        // pour fonds de deroulement
-                        // Ajouter une option par défaut
-                        const selectAssu = document.getElementById('id_assureur1');
-                        selectAssu.innerHTML = ''; // Nettoyer les options précédentes
-
-                        // Ajouter une option par défaut
-                        const defaultOption1 = document.createElement('option');
-                        defaultOption1.value = '';
-                        defaultOption1.textContent = '--choisir--';
-                        selectAssu.appendChild(defaultOption);
-
-                        // Ajouter les options récupérées depuis l'API
-                        data.forEach(assureur => {
-                            const option = document.createElement('option');
-                            option.value = assureur.idpartenaire;
-                            option.textContent = assureur.denom_social;
-                            selectAssu.appendChild(option);
-                        });
-
 
                     } else {
                         console.error('Structure inattendue de la réponse:', data);
@@ -1629,105 +1512,15 @@ $userPrenom = $_SESSION['prenom'];
                 })
                 .catch(error => console.error('Erreur lors du chargement des sites:', error));
 
-               
-                // charger contrat
-                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_pc.php')
-                .then(response => response.json())
-                .then(json => {
-                    const select = document.getElementById('id_contrat');
-                    
-                    // Effacer les options précédentes
-                    select.innerHTML = '';
-
-                    if (json.success) {
-                         // Ajouter une option par défaut
-                            const defaultOption = document.createElement('option');
-                            defaultOption.value = '';
-                            defaultOption.textContent = '--choisir--';
-                            select.appendChild(defaultOption);
-                        json.data.forEach(contrat => {
-                            const option = document.createElement("option");
-                            option.value = contrat.id;
-                            option.textContent = contrat.label;
-                            select.appendChild(option);
-                        });
-                    } else {
-                        const option = document.createElement("option");
-                        option.textContent = json.message || "Aucun contrat disponible";
-                        option.disabled = true;
-                        select.appendChild(option);
-                    }
-
-                    // Fonds de deroulement
-                    
-                    const selectContrat = document.getElementById('id_contrat1');
-                    
-                    // Effacer les options précédentes
-                    selectContrat.innerHTML = '';
-
-                    if (json.success) {
-                         // Ajouter une option par défaut
-                            const defaultOption = document.createElement('option');
-                            defaultOption.value = '';
-                            defaultOption.textContent = '--choisir--';
-                            selectContrat.appendChild(defaultOption);
-                        json.data.forEach(contrat => {
-                            const option = document.createElement("option");
-                            option.value = contrat.id;
-                            option.textContent = contrat.label;
-                            selectContrat.appendChild(option);
-                        });
-                    } else {
-                        const option = document.createElement("option");
-                        option.textContent = json.message || "Aucun contrat disponible";
-                        option.disabled = true;
-                        selectContrat.appendChild(option);
-                    }
-
-
-                })
-                .catch(error => console.error('Erreur lors du chargement des sites:', error));
-
-                // combo compte
-                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/Compte')
-                .then(response => response.json())
-                .then(data => {
-                    // Vérifier si la réponse est un tableau
-                    if (Array.isArray(data)) {
-                        const selectPoste = document.getElementById('idcompte');
-                        selectPoste.innerHTML = ''; // Nettoyer les options précédentes
-
-                        // Ajouter une option par défaut
-                        const defaultOption = document.createElement('option');
-                        defaultOption.value = '';
-                        defaultOption.textContent = '--choisir--';
-                        selectPoste.appendChild(defaultOption);
-
-                        // Ajouter les options récupérées depuis l'API
-                        data.forEach(compte => {
-                            const option = document.createElement('option');
-                            option.value = compte.idcompte;
-                            option.textContent = compte.libcompte;
-                            selectPoste.appendChild(option);
-                        });
-
-                        
-
-
-                    } else {
-                        console.error('Structure inattendue de la réponse:', data);
-                    }
-                })
-                .catch(error => console.error('Erreur lors du chargement des sites:', error));
-
+           
 
                  // combo banque
-                 fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/Banque')
+                 fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/tp')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
                     if (Array.isArray(data)) {
-                        const selectPoste = document.getElementById('bankList');
+                        const selectPoste = document.getElementById('type_prospect_id');
                         selectPoste.innerHTML = ''; // Nettoyer les options précédentes
 
                         // Ajouter une option par défaut
@@ -1737,10 +1530,10 @@ $userPrenom = $_SESSION['prenom'];
                         selectPoste.appendChild(defaultOption);
 
                         // Ajouter les options récupérées depuis l'API
-                        data.forEach(banque => {
+                        data.forEach(tp => {
                             const option = document.createElement('option');
-                            option.value = banque.idbanque;
-                            option.textContent = banque.libbanque;
+                            option.value = tp.id;
+                            option.textContent = tp.libelle;
                             selectPoste.appendChild(option);
                         });
 
@@ -1797,19 +1590,15 @@ $userPrenom = $_SESSION['prenom'];
         // chargement de la page affichage de statistiques
         document.addEventListener('DOMContentLoaded', function(){
             // chargeSite
-            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/total')
+            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/total')
                 .then(response => response.json())
                 .then(data => {
                     // recuperation de statistiques
-                    document.getElementById('Totaldv').textContent = data.data.totaldv[0].total_dv;
-                    document.getElementById('Totaljc').textContent = data.data.totaljc[0].total_jc;
-                    document.getElementById('Totaljb').textContent = data.data.totaljb[0].total_jb;
-
-                    // Convertir les valeurs en nombres (float)
-                    let totaljc = parseFloat(data.data.totaljc[0].total_jc) || 0;
-                    let totaljb = parseFloat(data.data.totaljb[0].total_jb) || 0;
-                    // Faire l'addition et afficher le résultat
-                   document.getElementById('Totalsolde').textContent = (totaljc + totaljb).toFixed(2);
+                    document.getElementById('TotalPropect').textContent = data.data.totalprospect[0].total_prospect;
+                    document.getElementById('Totalclient').textContent = data.data.totalclient[0].total_client;
+                    document.getElementById('Totalproduit').textContent = data.data.totalproduit[0].total_produit;
+                    document.getElementById('Totalproduitvendu').textContent = data.data.totalprovendu[0].total_general_ventes;
+                   
                 })
                 .catch(error => console.error('Erreur lors du chargement des parametre:', error));
             
@@ -1820,11 +1609,8 @@ $userPrenom = $_SESSION['prenom'];
       
         // Sélectionnez d'abord l'élément
         document.getElementById('id_contrat').addEventListener('change', function(event) {
-           
-           
             const selectedValue = event.target.value;
-
-            alert("combo " + selectedValue);
+            //alert("combo " + selectedValue);
         });
 
     </script>
@@ -1856,26 +1642,11 @@ $userPrenom = $_SESSION['prenom'];
                 console.error('Erreur:', error);
                 soldeField.value = 'Erreur';
         });
-    });
-    // combo banque
-    document.getElementById("bankList").addEventListener('change', function(){
-        //alert("ok");
-        let idbanque = this.value;
-        let soldeField1 = document.getElementById('soldebanque');
-        if(idbanque == 0){
-            soldeField1.value = '';
-            return;
-        }
 
-        fetch(`http://localhost:8080/crm-gga/app/codes/api/v1/api_soldebanqe.php?idbanque=${idbanque}`)
-            .then(response => response.json())
-            .then(data => {
-                soldeField1.value = data.soldebanque;
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-                soldeField1.value = 'Erreur';
-        });
+
+
+
+
     });
 
     function clearForm(){
@@ -1912,9 +1683,9 @@ $userPrenom = $_SESSION['prenom'];
         let montantdebit = 0.0;
         let liboperation="";
         let soldeData = parseFloat(document.getElementById("solde").value);
-        let soldebanque;
-       
+        
         // verification de champs
+
      if(datejour==""){
          alert("veuillez sélectionner la date  ");
          return;
@@ -1932,8 +1703,6 @@ $userPrenom = $_SESSION['prenom'];
             if(banque == "0" || banque == ""){
                 alert("Veuillez sélectionner une banque.");
                 return;
-            }else{
-                soldebanque = parseFloat(document.getElementById("soldebanque").value);
             }
       }
 
@@ -1941,6 +1710,9 @@ $userPrenom = $_SESSION['prenom'];
          alert("veuillez saisir le montant ");
          return;
      }
+
+
+
         //type =1 recette 2= depense
         if(typeOperation === 1 ) {
             montantcredit = montant;
@@ -1964,6 +1736,7 @@ $userPrenom = $_SESSION['prenom'];
                 alert("Le solde est insuffisant pour la depense 0");
                 return;
             }
+            
             //alert("ok " + typeOperation );
         }else{
           alert("Veuillez sélectionner une opération.");
@@ -1999,10 +1772,6 @@ $userPrenom = $_SESSION['prenom'];
             solde: soldeData,
             refer: refer
         };
-        const datasolde = {
-            idbanque: banque,
-            soldebanque: soldebanque
-        };
       
 
         button.disabled = true;
@@ -2017,8 +1786,7 @@ $userPrenom = $_SESSION['prenom'];
             body: JSON.stringify({
                 dataJO: dataJO,
                 dataJB: dataJB,
-                dataJC: dataJC,
-                datasolde: datasolde
+                dataJC: dataJC
             })
         })
         .then(response => response.json())

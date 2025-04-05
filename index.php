@@ -47,6 +47,9 @@ switch ($request) {
     case 'parametres':
         include 'parametres/index.php';
         break;
+    case 'commercial':
+        include 'commercial/index.php';
+        break;
     case 'admin':
         include 'admin/index.php';
         break;
@@ -56,7 +59,7 @@ switch ($request) {
     case 'facture':
         include 'facture/index.php';
         break;
-
+   
     case 'users':
         include 'users/index.php';
         break;

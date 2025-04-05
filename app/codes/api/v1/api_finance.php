@@ -80,13 +80,18 @@ try {
                 $dataJO = $data['dataJO'];
                 $dataJB = $data['dataJB'];
                 $dataJC = $data['dataJC'];
-           
-                $result = $fina->EnregistrerJournal($dataJO,$dataJB,$dataJC);
+                $datasolde = $data['datasolde'];
+                $result = $fina->EnregistrerJournal($dataJO,$dataJB,$dataJC,$datasolde);
                 if($result){
                     $response = ['status' => 200, 'message' => 'Operation enregistree'];
                 }
                 
-            
+            }elseif($action === 'createbanque') {
+                $data = json_decode(file_get_contents("php://input"), true);
+                $result = $fina->insertBanque($data);
+                if($result){
+                    $response = ['status' => 200, 'message' => 'Banque enregistrée'];
+                }
             }else {
                 http_response_code(405); // methode non autorisée
                 $response = ['status' => 405, 'message' => 'Méthode incorecte'];

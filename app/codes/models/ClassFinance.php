@@ -117,15 +117,57 @@ include_once(__DIR__ . '/Config/ParamDB.php');
         return $this->executeQuery($query, $data);
     } 
     public function getUpdateSolde($idcompte, $solde){
+
         $query="update compte set solde = :solde where idcompte = :idcompte";
+       
         return $this->executeQuery($query, [':idcompte' => $idcompte, ':solde' => $solde]);
+    }
+    public function insertBanque($data){
+        $query ="INSERT INTO banque(idcompte, libbanque, comptebanque, soldebanque) VALUES (:idcompte, :libbanque, :comptebanque, :soldebanque)";
+        return $this->executeQuery($query, $data);
+    }
+    public function updateSoldeBanque($idbanque,$solde){
+        
+        $req="SELECT solde FROM banque ORDER BY id_banque DESC LIMIT 1";
+        $result= $this->executeQuery($req);
+        $anciensolde=0;
+        if($result){
+            $jb=$result[0];
+            $anciensolde=$jb['soldebanque'];
+        }else{
+            $anciensolde=0;
+        }
+        $soldesave=$anciensolde + $solde;
+        $query="update banque set soldebanque = :soldebanque where idbanque = :idbanque";
+        return $this->executeQuery($query, [':idbanque' => $idbanque, ':solde' => $soldesave]);
+    }
+    public function reduireSoldeBanque($idbanque,$solde){
+        
+        $req="SELECT solde FROM banque ORDER BY id_banque DESC LIMIT 1";
+        $result= $this->executeQuery($req);
+        $anciensolde=0;
+        if($result){
+            $jb=$result[0];
+            $anciensolde=$jb['soldebanque'];
+        }else{
+            $anciensolde=0;
+        }
+        $soldesave=$anciensolde - $solde;
+        $query="update banque set soldebanque = :soldebanque where idbanque = :idbanque";
+        return $this->executeQuery($query, [':idbanque' => $idbanque, ':solde' => $soldesave]);
     }
     public function getSoldecompte($idcompte){
         $query="SELECT solde FROM compte where idcompte= :idcompte";
         //return $this->executeQuery($query);
         return $this->executeQuery($query, [':idcompte' => $idcompte]);
     }
-    public function EnregistrerJournal($dataJO, $dataJB, $dataJC){
+    public function getSoldeBanque($idbanque){
+        $query="SELECT soldebanque FROM banque where idbanque= :idbanque";
+        //return $this->executeQuery($query);
+        return $this->executeQuery($query, [':idbanque' => $idbanque]);
+    }
+
+    public function EnregistrerJournal($dataJO, $dataJB, $dataJC, $datasolde){
         try{
            // $this->conn->beginTransaction();
             // Étape 1 : Enregistrer le client
@@ -136,6 +178,12 @@ include_once(__DIR__ . '/Config/ParamDB.php');
             if($dataJO['idcompte'] == 1 ){
                 $this->InsertJournalBanque($dataJB);
                 $this->getUpdateSolde($dataJB['idcompte'],$dataJB['solde']);
+                if($dataJO['typeOperation']==="Recette"){
+                    $this->updateSoldeBanque($datasolde['idbanque'],$datasolde['soldebanque']);
+                }else{
+                    $this->reduireSoldeBanque($datasolde['idbanque'],$datasolde['soldebanque']);
+                }
+                
             }elseif($dataJO['idcompte'] == 2){
                 $this->InsertJournalCaisse($dataJC);
                 $this->getUpdateSolde($dataJO['idcompte'],$dataJO['solde']);
@@ -154,13 +202,13 @@ include_once(__DIR__ . '/Config/ParamDB.php');
     }
     public function getListeJB(){
         $query = "SELECT id_operation, date_operation, beneficiaire, entree_fond, sortie_fond, 
-        solde, refer, compte, banque FROM journal_banque ";
+        solde, refer, idcompte, idbanque FROM journal_banque ";
         return $this->executeQuery($query);
 
     }
     public function getListeJO(){
         $query = "SELECT J.idjo, libcompte, datejour, typeOperation, montant, motif, beneficiaire, montantcredit,
-        montantdebit FROM journal_operation J INNER join compte c on c.idcompte=J.idcompte ";
+        montantdebit FROM journal_operation J INNER join compte c on c.idcompte=J.idcompte WHERE DATE(J.datejour) = CURDATE()";
         return $this->executeQuery($query);
 
     }
@@ -171,8 +219,7 @@ include_once(__DIR__ . '/Config/ParamDB.php');
     }
 
     public function ComboContrats(){
-        $query = "
-            SELECT pc.idcontrat, pc.type_contrat, pc.etat_contrat, c.idclient, c.den_social, pc.effectif_Benef, pc.val_frais_gest,pc.tva,pc.numero_police,
+        $query = "SELECT pc.idcontrat, pc.type_contrat, pc.etat_contrat, c.idclient, c.den_social, pc.effectif_Benef, pc.val_frais_gest,pc.tva,pc.numero_police,
                 pc.datecreate,ag.idagent,ag.nomagent,ag.prenomagent,tc.idtype,tc.libtype  
             FROM 
                 police_contrat AS pc
@@ -186,11 +233,10 @@ include_once(__DIR__ . '/Config/ParamDB.php');
             ";
             $results = $this->executeQuery($query);
             if ($results && count($results) > 0) {
-            return $results;
+                 return $results;
             } else {
-            return []; // Retour tab vide si aucun contrat trouvé
+                 return []; // Retour tab vide si aucun contrat trouvé
             }
-
     }
     public function getTotalDecompte() {
         $query = "SELECT COUNT(*) AS total_dv FROM decomptes_valides";
