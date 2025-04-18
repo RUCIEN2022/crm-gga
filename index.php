@@ -43,7 +43,18 @@ switch ($request) {
     case 'contrats/classeurs':
         include 'contrats/classeurs.php';
         break;
-
+    case 'contrats/contrats-en-gestion':
+        include 'contrats/contrats-en-gestion.php';
+        break;
+    case 'contrats/contrats-en-attente':
+        include 'contrats/contrats-en-attente.php';
+        break;
+    case 'contrats/contrats-en-suspension':
+        include 'contrats/contrats-en-suspension.php';
+        break;
+    case 'contrats/contrats-resilies':
+        include 'contrats/contrats-resilies.php';
+        break;
     case 'contrats/cotation':
         include 'contrats/cotations.php';
         break;

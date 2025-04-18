@@ -233,15 +233,16 @@ fieldset {
             </nav>
             <div class="card shadow" style="background-color: #f4f4f9;">
             <div class="card-body">
-                <h5 class="card-title">Gestion du contrat</h5>
+                
                 <form id="form-action">
                 <div class="row">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                <a href="./" class="btn text-light fw-bold" style="background-color:#3498db">
+                <a href="./gestion" class="btn text-light fw-bold" style="background-color:#3498db">
                     <i class="bi bi-arrow-left-circle"></i>
                 </a>
+                
                 <div class="d-flex align-items-center" style="width: 35%;">
-                   
+                
                 </div>
             </div>
     <!-- Numéro Police -->

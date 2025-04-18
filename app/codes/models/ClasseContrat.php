@@ -137,7 +137,7 @@ $val_frais_gest, $tva, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire_id
         }
     }
      //insert mouvement
-     public function CreerMouvementContrat($dataMouv) {
+     public function CreerMouvementContrat($data) {
        
         $idcontrat   = $data['idcontrat'] ?? '';
         $typeops     = $data['type_operation'] ?? '';
@@ -778,22 +778,16 @@ public function getIdSiteByUser($idutile) {
             ORDER BY datecotation DESC
         ";
         
-        // Exécution de la requête
         $results = $this->executeQuery($query);
         
         return $results ?: [];
     }
     public function countCotation() {
-        $query = "SELECT COUNT(*) AS total FROM cotations";
-        
-        // Exécution de la requête
-        $result = $this->executeQuery($query);
-        
-        // Récupérer le total des cotations
-        return $result ? $result[0]['total'] : 0;
+        $query = "SELECT COUNT(*) AS total_cotation FROM cotations WHERE statut = 1";
+        return $this->executeQuery($query);
+       
     }
-                           
-    
+     
 // liste contrats assurance
 public function listeGlobalContratsAssur() {
     $query = "
@@ -867,14 +861,19 @@ public function listeContratsParAssureur($idAssureur) {
         $query = "SELECT COUNT(*) AS suspendus FROM police_contrat WHERE etat_contrat=3";
         return $this->executeQuery($query);
     }
-    //contrats resilié
+    //contrats en attente
     public function totalContrats_attentes() {
         $query = "SELECT COUNT(*) AS attentes FROM police_contrat WHERE etat_contrat=1";
         return $this->executeQuery($query);
     }
+    //contrats resilié
+    public function totalContrats_resilies() {
+        $query = "SELECT COUNT(*) AS resilies FROM police_contrat WHERE etat_contrat=4";
+        return $this->executeQuery($query);
+    }
     // total des contrats
     public function totalNewContrats() {
-        $query = "SELECT COUNT(*) AS total_newcontrats FROM police_contrat WHERE etat_contrat=0";
+        $query = "SELECT COUNT(*) AS total_newcontrats FROM police_contrat WHERE etat_contrat=1";
         return $this->executeQuery($query);
     }
     // total des contrats assurance
@@ -1029,35 +1028,56 @@ ORDER BY
 public function analyseComparativeParAssureur() {
     $sql = "
        SELECT 
+    DATE_FORMAT(pc.datecreate, '%Y-%m') AS mois, -- Format YYYY-MM
     p.denom_social AS assureur,
     COUNT(pc.idcontrat) AS total_contrats,
-    SUM(COALESCE(pc.val_frais_gest, pc.tva, 0)) AS frais_gestion_gga,
-    SUM(COALESCE(pa.prime_ttc, ca.budget_total)) AS chiffre_affaire,
-    SUM(
-        COALESCE(pc.effectif_Benef, 0)
-    ) AS total_assures
+    SUM(COALESCE(pc.val_frais_gest, 0) + COALESCE(pc.tva, 0)) AS frais_gestion_gga,
+    SUM(COALESCE(pa.prime_ttc, 0)) AS chiffre_affaire,
+    SUM(COALESCE(pc.effectif_Benef, 0)) AS total_assures
 FROM 
     police_contrat pc
 JOIN 
-police_assurance pa ON pc.idcontrat = pa.idcontrat
-    
+    police_assurance pa ON pc.idcontrat = pa.idcontrat
 LEFT JOIN 
     partenaire p ON pa.idpartenaire = p.idpartenaire
-LEFT JOIN 
-contrat_autofinance ca ON pc.idcontrat=ca.idcontrat
+WHERE
+    pc.type_contrat = 1
 GROUP BY 
-    p.denom_social
+    mois, p.denom_social
 ORDER BY 
-    total_contrats DESC, chiffre_affaire DESC;
+    mois DESC, total_contrats DESC, chiffre_affaire DESC;
+;
 
     ";
-    
-    // Exécution de la requête
+  
     $result = $this->executeQuery($sql); 
-    // Retour des données sous forme de tableau
     return $result;
 }
-
+//analyse contrats autofinancement
+public function analyseContratAutofinancement() {
+    $sql = "
+       SELECT 
+    DATE_FORMAT(pc.datecreate, '%Y-%m') AS mois,
+    COUNT(pc.idcontrat) AS total_contrats,  -- Nombre total de contrats
+    SUM(COALESCE(pc.effectif_Benef, 0)) AS total_beneficiaires,
+    SUM(COALESCE(ca.budget_total, 0)) AS budget_total_contrats,
+    SUM(COALESCE(pc.val_frais_gest, 0) + COALESCE(pc.tva, 0)) AS frais_gestion
+FROM 
+    police_contrat pc
+JOIN 
+    contrat_autofinance ca ON pc.idcontrat = ca.idcontrat
+WHERE 
+    pc.type_contrat = 2 
+GROUP BY 
+    mois
+ORDER BY 
+    mois DESC;
+";
+    
+    $result = $this->executeQuery($sql); 
+ 
+    return $result;
+}
 
     // Total FG previsionnel
     public function TotalFrais_de_Gestion_prevision() {
@@ -1104,6 +1124,6 @@ ORDER BY
         $query = "SELECT * FROM agent";
         return $this->executeQuery($query);
     }
-
+   
 }
 ?>

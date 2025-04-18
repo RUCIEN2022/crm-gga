@@ -16,7 +16,7 @@
 </li>
 
 <li data-section="sinistre">
-    <a href="../sinistre/"><i class="bi bi-exclamation-triangle"></i><span>Sinistre</span></a>
+    <a href="#"><i class="bi bi-exclamation-triangle"></i><span>Sinistre</span></a>
 </li>
 <li data-section="medical">
     <a href="../medical/"><i class="bi bi-heart-pulse"></i><span>Médical</span></a>

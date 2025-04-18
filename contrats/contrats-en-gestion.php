@@ -167,7 +167,7 @@ $userPrenom = $_SESSION['prenom'];
             <div class="table-responsive">
             <table id="contratsTable" class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #923a4d;">
-                    <h5>Tous les contrats</h5>
+                    <h5>Contrats en gestion</h5>
                     <tr>
                         <th>#</th>
                         <th>Mise en place</th>
