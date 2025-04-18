@@ -1,15 +1,16 @@
 <?php
-
+header('Content-Type: application/json'); 
 include_once("../app/codes/models/ClasseContrat.php");
 
 if (isset($_POST["BtnSaveContrat"])) {
     $response = ["status" => "error", "message" => "Erreur inconnue."];
-    // Vérif champs requis
+    // Vérification des champs requis
     if (empty($_POST["typecontrat"]) || empty($_POST["client"]) || empty($_POST["gestionnaire"])) {
         $response["message"] = "Tous les champs sont obligatoires.";
         echo json_encode($response);
         exit;
     }
+    // Nettoyage et récupération des données
     $typeContrat = filter_input(INPUT_POST, "typecontrat", FILTER_SANITIZE_SPECIAL_CHARS);
     $client = filter_input(INPUT_POST, "client", FILTER_SANITIZE_NUMBER_INT);
     $gestionnaire = filter_input(INPUT_POST, "gestionnaire", FILTER_SANITIZE_NUMBER_INT);
@@ -34,32 +35,14 @@ if (isset($_POST["BtnSaveContrat"])) {
     $taxe = $totalFraisGestion * $taux;
 
     $contrat = new Contrat();
-    
     $ann = date('y');
-    $prefix="ND";
-    $lastnd=$contrat->getLastNoteDebitId();
-    $idnd=str_pad($lastnd + 1, 3, '0', STR_PAD_LEFT); //formatage à 3 chiffres
-    $initialesagent=$contrat->getInitialesAgent($gestionnaire);
-    $initialesclient=$contrat->getInitialesClient($client);
-
-    $numfac = $prefix."/" .$idnd. "/" .$initialesclient."/".$ann."/".$initialesagent;
-
+    $numfac = "ND/" . mt_rand(100, 999) . "/OVI/$ann/YVD";
+    
     if ($typeContrat == 2) {
         do {
-           
-            $annee = date('y');
-            $moisJour = date('md');
-            $idClient = str_pad($client, 3, '0', STR_PAD_LEFT); // on formate à 3 chiffres
-            $idSite =  $contrat->getIdSiteByUser($idutile);
-            $site = str_pad($idSite, 3, '0', STR_PAD_LEFT);
-            $lastContratId = $contrat->getLastContratId();
-            $idLastContrat = str_pad($lastContratId + 1, 8, '0', STR_PAD_LEFT);
-            $numPolice = $annee . $gestionnaire. '-' . $moisJour . '-' . $idClient . '-' . $site. '-'. $idLastContrat;
-            // verif si existe déjà
+            $numPolice = "GGA-" . str_pad(mt_rand(0, 9999999), 7, '0', STR_PAD_LEFT);
             $existe = $contrat->verifierExistenceNumPolice($numPolice);
         } while ($existe);
-    
-        echo "Numéro de police généré : " . $numPolice;
     }
     
     $datacontrat = $contrat->creerPoliceContrat($client, $typeContrat, 1, $couverture, $effectTot, $numPolice, $effectifAgent, $effectifConj, $effectifEnf, $fraisGestionGGA, $totalFraisGestion, $taxe, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire, $idutile, "");
@@ -101,12 +84,8 @@ if (isset($_POST["BtnSaveContrat"])) {
     } elseif ($typeContrat == 2) {
         $contrat->creerFacture_FraisGGA($datacontrat, $numfac, "", $budgetTotal, $fg, $valtaxe, $modfact, 0, $idutile);
     }
-    $response = ["status" => "success", "message" => "Votre contrat est créée avec succès.", "numPolice" => $numPolice];
-
-header("Location: success.php?message=" . urlencode($response["message"]) . "&numPolice=" . urlencode($response["numPolice"]));
-exit;
-
-
-    
+    $response = ["status" => "success", "message" => "Contrat enregistré avec succès."];
+    echo json_encode($response);
+    exit;
 }
 ?>

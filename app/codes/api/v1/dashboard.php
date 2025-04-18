@@ -22,6 +22,8 @@ try {
     $contratsAutofinMois = $contrat->totalGlobalContratsAutoFinMoisEncours() ?? 0;
     $couvnat = $contrat->Total_Couverture_Nationale() ?? 0;
     $couvinter = $contrat->Total_Couverture_Internationale() ?? 0;
+
+    $totalcotation = $contrat->countCotation() ?? 0;
     
     $taches = [
         'total' => $contrat->getTotalTaches() ?? 0,
@@ -37,6 +39,7 @@ try {
 
     // Appel de la méthode analyseComparativeParAssureur de la classe Contrat
     $assureursData = $contrat->analyseComparativeParAssureur();
+    $autofinData = $contrat->analyseContratAutofinancement();
 
     // Structure de la réponse avec l'analyse comparative
     $response = [
@@ -54,8 +57,10 @@ try {
             'couvinter' => $couvinter,
             'taches' => $taches,
             'couverture' => $couverture,
-            // Ajout des résultats de l'analyse des assureurs
-            'analyseAssureurs' => $assureursData
+            'totalcotation' => $totalcotation,
+
+            'analyseAssureurs' => $assureursData,
+            'analyseAutofin' => $autofinData
         ],
     ];
 

@@ -153,31 +153,27 @@ $userPrenom = $_SESSION['prenom'];
         <div class="card shadow">
             <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
-            <a href="./" class="btn text-light fw-bold" style="background-color:#3498db">
-                    <i class="bi bi-arrow-left-circle"></i>
-                </a>
-                    
+                    <a href="./creation" class="btn btn-danger">
+                        <i class="bi bi-plus-circle"></i> Créer nouveau
+                    </a>
                     <input
                         type="text"
                         id="searchInput"
                         class="form-control w-50"
-                        placeholder="Numéro police, Client, Type, Date)"
+                        placeholder="Rechercher un partenaire (Numéro, Nom, Type, Date)"
                     />
                 </div>
             <div class="table-responsive">
             <table id="contratsTable" class="table table-bordered table-striped table-hover">
                 <thead style="background-color: #923a4d;">
-                    <h5>Tous les contrats</h5>
                     <tr>
                         <th>#</th>
-                        <th>Mise en place</th>
-                        <th>Numéro Police</th>
+                        <th>Date mise en place</th>
+                        <th>Numéro de Police</th>
                         <th>Type de Contrat</th>
+                        <th>Total_Frais_gestion</th>
                         <th>Client</th>
-                        <th>Prime/Budget</th>
-                        <th>Seuil</th>
                         <th>Gestionnaire</th>
-                        <th>Statut</th>
                        
                     </tr>
                 </thead>

@@ -13,6 +13,7 @@ try {
     $encours = $contrat->totalContrats_encours() ?? 0;
     $suspendus = $contrat->totalContrats_suspension() ?? 0;
     $attentes = $contrat->totalContrats_attentes() ?? 0;
+    $resilies = $contrat->totalContrats_resilies() ?? 0;
     $list = [
         'listcontrat' => $contrat->listeLastContrats() ?? null,
     ];
@@ -24,6 +25,7 @@ try {
             'encours' => $encours,
             'suspendus' => $suspendus,
             'attentes' => $attentes,
+            'resilies' => $resilies,
             'listcontrat' => $list,
         ],
     ];

@@ -270,7 +270,7 @@ $userPrenom = $_SESSION['prenom'];
 <div class="row text-center">
     <!-- Total Contrats -->
     <div class="col-md-3">
-        <a href="total-contrats.html" class="text-decoration-none">
+        <a href="./classeurs" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
@@ -283,7 +283,7 @@ $userPrenom = $_SESSION['prenom'];
     </div>
     <!-- En cours de gestion -->
     <div class="col-md-3">
-        <a href="en-cours-gestion.html" class="text-decoration-none">
+        <a href="./contrats-en-gestion" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
@@ -296,11 +296,11 @@ $userPrenom = $_SESSION['prenom'];
     </div>
     <!-- En suspension -->
     <div class="col-md-2">
-        <a href="en-suspension.html" class="text-decoration-none">
+        <a href="./contrats-en-attente" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                    <i class="bi bi-hourglass-split text-warning"></i> En attente
+                    <i class="bi bi-hourglass-split text-danger"></i> En attente
                     </h5>
                     <div id="attentes" class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"></div>
                 </div>
@@ -309,26 +309,26 @@ $userPrenom = $_SESSION['prenom'];
     </div>
     <!-- En suspension -->
     <div class="col-md-2">
-        <a href="en-resiliation.html" class="text-decoration-none">
+        <a href="./contrats-en-suspension" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                    <i class="bi bi-pause-circle text-warning"></i> En suspension
+                    <i class="bi bi-pause-circle text-danger"></i> En suspension
                     </h5>
-                    <div id="suspendus" class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;"></div>
+                    <div id="suspendus" class="circle-value border border-danger shadow text-danger mx-auto" style=""></div>
                 </div>
             </div>
         </a>
     </div>
     <!-- En résiliation -->
     <div class="col-md-2">
-        <a href="en-resiliation.html" class="text-decoration-none">
+        <a href="./contrats-resilies" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
                     <i class="bi bi-slash-circle text-danger"></i> En résiliation
                     </h5>
-                    <div id="suspendus" class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;"></div>
+                    <div id="resilies" class="circle-value border border-danger shadow text-danger mx-auto" style=""></div>
                 </div>
             </div>
         </a>
@@ -342,9 +342,7 @@ $userPrenom = $_SESSION['prenom'];
     <h5 class="text-secondary mb-3">
         <i class="bi bi-list-check"></i> Contrats Récents
     </h5>
-    <a href="./classeurs" class="btn btn-danger d-flex align-items-center gap-2">
-    <i class="bi bi-folder2-open"></i>
-</a>
+  
 
 </div>
 
@@ -775,6 +773,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if (data.data.suspendus && data.data.suspendus[0]) {
         document.getElementById('suspendus').textContent = data.data.suspendus[0].suspendus;
     }
+    if (data.data.resilies && data.data.resilies[0]) {
+        document.getElementById('resilies').textContent = data.data.resilies[0].resilies;
+    }
 
 
     const contrats = data.data.listcontrat.listcontrat;
@@ -836,7 +837,9 @@ document.addEventListener("DOMContentLoaded", function() {
         case 2:
             return '<span class="text-success">En Cours</span>';
         case 3:
-            return '<span class="text-warning text-dark">En suspension</span>';
+            return '<span class="text-warning">En suspension</span>';
+        case 4:
+            return '<span class="text-danger">Resilié</span>';
         default:
             return '<span class="badge bg-secondary">Statut inconnu</span>';
     }
