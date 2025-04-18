@@ -23,8 +23,8 @@ class Administraction{
          // reqte d'insertion
    
         $query ="INSERT INTO reception_facture(id_prestataire, tp, rd, numero_facture, date_reception, 
-        periode_prestation, moyen_reception, montant_facture) VALUES (:id_prestataire, :tp, :rd, :numero_facture, :date_reception, 
-        :periode_prestation, :moyen_reception, :montant_facture)";
+        periode_prestation, moyen_reception, montant_facture, statut, cheminfichier) VALUES (:id_prestataire, :tp, :rd, :numero_facture, :date_reception, 
+        :periode_prestation, :moyen_reception, :montant_facture, :statut, :cheminfichier)";
 
         return $this->executeQuery($query, $data);
     }
@@ -36,13 +36,42 @@ class Administraction{
     }
     public function CreerPrestataire($data){
         // reqte d'insertion
-       $query ="INSERT INTO prestataires(nom_prestataire, adresse, contact, email, rib)
-       VALUES (:nom_prestataire, :adresse, :contact, :email, :rib)";
+       $query ="INSERT INTO prestataires(nom_prestataire, adresse, contact, email, rib, statut)
+       VALUES (:nom_prestataire, :adresse, :contact, :email, :rib, :statut)";
        return $this->executeQuery($query, $data);
     }
+    
+    public function updatePrestataire($id, $data){
+        // $query = "UPDATE partenaire set denom_social = :denom_social, pays_assu = :pays_assu, ville_assu = :ville_assu, adresse_assu = :adresse_assu, code_interne = :code_interne,
+          //numeroAgree = :numeroAgree, Rccm = :Rccm, numero_impot = :numero_impot, emailEntre = :emailEntre, telephone_Entr = :telephone_Entr, nomRespo = :nomRespo, emailRespo = :emailRespo, TelephoneRespo = :TelephoneRespo where idpartenaire = :idpartenaire ";
+         //return $this->executeQuery($query, $data);//cfr les explication de la methode executeQuery ci-haut
+         $data['id_prestataire'] = $id;
+         $Rqte = "UPDATE prestataires SET ";
+         $dataset = [];
+         $params = [];
+     
+         foreach ($data as $key => $value) {
+             if ($key !== 'id_prestataire') {
+                 $dataset[] = "$key = :$key";
+             }
+             $params[$key] = $value;
+         }
+     
+         $Rqte .= implode(', ', $dataset) . " WHERE id_prestataire = :id_prestataire";
+     
+         return $this->executeQuery($Rqte, $params);
+
+     }
+     public function ChangerEtatPrestataire($id){
+        // reqte d'insertion
+       $query ="UPDATE  prestataires SET statut=0 where id_prestataire=:id_prestataire";
+      // return $this->executeQuery($query, $data);
+       return $this->executeQuery($query, [':id_prestataire' => $id]);
+    }
+
     public function getListePrestataire(){
 
-        $query = "SELECT id_prestataire, nom_prestataire, adresse, contact, email, rib FROM prestataires";
+        $query = "SELECT id_prestataire, nom_prestataire, adresse, contact, email, rib FROM prestataires where statut=1 order by nom_prestataire asc";
         return $this->executeQuery($query);
     }
     public function CreerCourrierEntrant($data){

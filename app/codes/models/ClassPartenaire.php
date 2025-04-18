@@ -56,7 +56,7 @@
             }
             public function ListePartenaire(){
                 $query = "SELECT idpartenaire, denom_social, pays_assu, ville_assu, adresse_assu, code_interne, numeroAgree, Rccm, numero_impot, emailEntre,
-                 telephone_Entr, nomRespo, emailRespo, TelephoneRespo, etatpartenaire, adresseip FROM partenaire where etatpartenaire = 1";
+                 telephone_Entr, nomRespo, emailRespo, TelephoneRespo, etatpartenaire, adresseip FROM partenaire where etatpartenaire = 1 order by denom_social asc";
                 return $this->executeQuery($query);
             }
             public function RecherchePartenaire($idpartenaire){

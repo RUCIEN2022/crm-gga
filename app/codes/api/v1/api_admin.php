@@ -83,22 +83,42 @@ try {
 
             break;
         // A completer avec ses methodes    
-        /*
+        
         case 'PUT':
               
-             if ($action === 'UpdateUser' && $id) { //j'appel l'action + id 
+             if ($action === 'updatePresta' && $id) { //j'appel l'action + id 
                 // Récup data envoyées
                 $data = json_decode(file_get_contents("php://input"), true);
                 if ($data) {
-                    $response = $user->UpdateUser($id, $data);
+                   // $response = $admin->updatePrestataire($id, $data);
+                    $result = $admin->updatePrestataire($id, $data);
+                    if ($result) {
+                        $response = ['status' => 200, 'message' => 'Mise à jour réussie'];
+                    } else {
+                        $response = ['status' => 500, 'message' => 'Échec de la mise à jour'];
+                    }
                 } else {
                     $response = ['status' => 400, 'message' => 'Données manquantes pour la mise à jour'];
                 }
+            }elseif($action === 'ChangeEtat' && $id){
+               //$data = json_decode(file_get_contents("php://input"), true);
+                //if ($data) {
+                   // $response = $admin->updatePrestataire($id, $data);
+                    $result = $admin->ChangerEtatPrestataire($id);
+                    if ($result) {
+                        $response = ['status' => 200, 'message' => 'Mise à jour réussie'];
+                    } else {
+                        $response = ['status' => 500, 'message' => 'Échec de la mise à jour'];
+                    }
+               // } else {
+                 //   $response = ['status' => 400, 'message' => 'Données manquantes pour la mise à jour'];
+               // }
             }else {
                 $response = ['status' => 400, 'message' => 'Action ou ID manquant pour la mise à jour'];
             }
            
             break;
+         /*
         case 'DELETE':
             if ($action === 'SuppUser' && $id) {//j'appel l'action + id 
                 $response = $user->DeleteUser($id);

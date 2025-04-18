@@ -64,11 +64,20 @@ switch ($request) {
     case 'parametres':
         include 'parametres/index.php';
         break;
+    case 'parametres/partenaires':
+            include 'parametres/partenaires.php';
+            break;
+    case 'parametres/importation':
+            include 'parametres/importation.php';
+            break;
     case 'commercial':
         include 'commercial/index.php';
         break;
     case 'admin':
         include 'admin/index.php';
+        break;
+    case 'admin/prestataires':
+        include 'admin/prestataires.php';
         break;
     case 'finances':
         include 'finances/index.php';
@@ -83,12 +92,7 @@ switch ($request) {
     case 'users':
         include 'users/index.php';
         break;
-    case 'partenaires':
-            include 'partenaires/index.php';
-            break;
-    case 'partenaires/creation':
-            include 'partenaires/creation.php';
-            break;
+    
     case 'clients/creation':
             include 'clients/creation.php';
             break;
@@ -104,9 +108,13 @@ switch ($request) {
     case 'success':
             include 'success.php';
             break;
+    case 'success':
+            include 'success.php';
+            break;
     case 'failed':
             include '500.php';
             break; 
+            
     default:
         // Vérifiez si le fichier 404.php existe avant de l'inclure
         if (file_exists('404.php')) {

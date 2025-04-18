@@ -1800,16 +1800,21 @@ $userPrenom = $_SESSION['prenom'];
             fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/total')
                 .then(response => response.json())
                 .then(data => {
-                    // recuperation de statistiques
-                    document.getElementById('Totaldv').textContent = data.data.totaldv[0].total_dv;
-                    document.getElementById('Totaljc').textContent = data.data.totaljc[0].total_jc;
-                    document.getElementById('Totaljb').textContent = data.data.totaljb[0].total_jb;
+                    // Vérifier la présence de chaque élément
+                    let totalDV = data?.data?.totaldv?.[0]?.total_dv || "0";
+                    let totalJC = data?.data?.totaljc?.[0]?.total_jc || "0";
+                    let totalJB = data?.data?.totaljb?.[0]?.total_jb || "0";
 
-                    // Convertir les valeurs en nombres (float)
-                    let totaljc = parseFloat(data.data.totaljc[0].total_jc) || 0;
-                    let totaljb = parseFloat(data.data.totaljb[0].total_jb) || 0;
-                    // Faire l'addition et afficher le résultat
-                   document.getElementById('Totalsolde').textContent = (totaljc + totaljb).toFixed(2);
+                    // Afficher les données si elles existent
+                    document.getElementById('Totaldv').textContent = totalDV;
+                    document.getElementById('Totaljc').textContent = totalJC;
+                    document.getElementById('Totaljb').textContent = totalJB;
+
+                    // Additionner les valeurs converties en float
+                    let totaljcNum = parseFloat(totalJC) || 0;
+                    let totaljbNum = parseFloat(totalJB) || 0;
+
+                    document.getElementById('Totalsolde').textContent = (totaljcNum + totaljbNum).toFixed(2);
                 })
                 .catch(error => console.error('Erreur lors du chargement des parametre:', error));
             
@@ -1933,7 +1938,7 @@ $userPrenom = $_SESSION['prenom'];
                 alert("Veuillez sélectionner une banque.");
                 return;
             }else{
-                soldebanque = parseFloat(document.getElementById("soldebanque").value);
+                soldebanque = parseFloat(document.getElementById("soldebanque").value) + montant;
             }
       }
 
@@ -1946,7 +1951,7 @@ $userPrenom = $_SESSION['prenom'];
             montantcredit = montant;
             montantdebit = 0;
             liboperation="Recette";
-            soldeData= soldeData + montant
+            soldeData= soldeData + montant;
             //alert("ok " + typeOperation + " " + montantcredit + " " + montantdebit + " " + banque );
         }else if(typeOperation === 2 ){
             if(soldeData > 0 ){
@@ -1954,7 +1959,7 @@ $userPrenom = $_SESSION['prenom'];
                     montantcredit = 0;
                     montantdebit = montant ;
                     liboperation = "Depense"
-                    soldeData = soldeData - montant
+                    soldeData = soldeData - montant;
                 }else{
                     alert("Le solde est insuffisant pour la depense. ");
                     return;
@@ -2003,7 +2008,8 @@ $userPrenom = $_SESSION['prenom'];
             idbanque: banque,
             soldebanque: soldebanque
         };
-      
+         
+        alert('banque ' + banque + ' ' + soldebanque);
 
         button.disabled = true;
         spinner.style.display = "inline-block";

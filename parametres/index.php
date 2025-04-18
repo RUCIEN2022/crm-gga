@@ -278,7 +278,7 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-file-earmark"></i> Total Utilisateur
+                        <i class="bi bi-file-earmark"></i> Utilisateurs
                     </h5>
                     <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalUtil">
                         
@@ -293,7 +293,7 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-gear"></i> Total Client
+                        <i class="bi bi-gear"></i> Clients
                     </h5>
                     <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalClient">
                         
@@ -308,7 +308,7 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-pause-circle"></i> Total Intermédiaire 
+                        <i class="bi bi-pause-circle"></i> Intermédiaires 
                     </h5>
                     <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="totalInt">
                         
@@ -319,11 +319,11 @@ $userPrenom = $_SESSION['prenom'];
     </div>
     <!-- En résiliation -->
     <div class="col-md-3">
-        <a href="en-resiliation.html" class="text-decoration-none">
+        <a href="./partenaires" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-x-circle text-danger"></i> Total Partenaire
+                        <i class="bi bi-x-circle text-danger"></i> Partenaires
                     </h5>
                     <div class="circle-value border border-danger shadow text-light mx-auto" style="background-color: #923a4d;" id="totalPart">
                         
@@ -340,7 +340,7 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-file-earmark"></i> Total Site
+                        <i class="bi bi-file-earmark"></i>Sites
                     </h5>
                     <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalSite">
                         
@@ -355,7 +355,7 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-gear"></i> Total Poste
+                        <i class="bi bi-gear"></i> Postes
                     </h5>
                     <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalPoste">
                         
@@ -370,7 +370,7 @@ $userPrenom = $_SESSION['prenom'];
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-pause-circle"></i> Total Profil 
+                        <i class="bi bi-pause-circle"></i> Profils 
                     </h5>
                     <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;"  id="totalProfil">
                         

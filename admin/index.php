@@ -260,11 +260,12 @@ $userPrenom = $_SESSION['prenom'];
 <div class="row text-center">
     <!-- Total Contrats -->
     <div class="col-md-3">
-        <a href="total-contrats.html" class="text-decoration-none">
+        <a href="./prestataires" class="text-decoration-none">
             <div class="card shadow hover-effect" style="border: #923a4d solid 1px;">
                 <div class="card-body">
                     <h5 class="card-title text-secondary">
-                        <i class="bi bi-file-earmark"></i> Total Prestataire
+                        
+                        <i class="bi bi-file-earmark"></i> Prestataires
                     </h5>
                     <div class="circle-value bg-light shadow text-secondary mx-auto" style="border: #923a4d solid 1px;" id="totalUtil">
                         
@@ -327,7 +328,7 @@ $userPrenom = $_SESSION['prenom'];
     </div>
 </div>
 <!-- Modal Static Content -->
-<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
+<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -371,16 +372,33 @@ $userPrenom = $_SESSION['prenom'];
                                 </div>
                             </div>
                             <div class="row g-3 mb-1">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-floating">
                                         <input type="date" class="form-control" id="date_reception" placeholder="Date Reception" required>
                                         <label for="date_reception">Date Reception</label>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="periode_prestation" placeholder="Periode de prestation" required>
-                                        <label for="periode_prestation">Periode Prestation</label>
+                                        <div class="row align-items-center mb-3">
+                                           <label for="date_reception">Periode de prestation</label>
+                                        </div>
+                                        <div class="row align-items-center mb-3">
+                                            <div class="col-auto">
+                                                <label for="periode_debut">Du</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="date" class="form-control" id="periode_debut" required>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label for="periode_fin">au</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="date" class="form-control" id="periode_fin" required>
+                                            </div>
+                                        </div>
+                                       
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -402,11 +420,18 @@ $userPrenom = $_SESSION['prenom'];
                                 
                             </div>
                             <!-- Boutons d'action -->
-                            <div class="d-flex justify-content-center gap-3 mt-4">
+                            <div class="d-flex justify-content-between">
+                               <div class="form-group">
+                                   <label for="">Attachez Facture</label>
+                                  
+                                   <input type="file" name="fichier_facture" accept=".pdf" class="form-control" required>
+                               </div>
+                               <div class="action d-flex gap-3 mt-4">
                                 <button type="button" class="btn btn-success" id="" onclick="submitFormReception()">Enregistrer <i class="fas fa-spinner spinner"></i></button>
                                 <button type="button" class="btn btn-danger d-flex align-items-center gap-2" onclick="clearForm()">
                                     <i class="bi bi-plus-circle"></i> Nouveau
                                 </button>
+                            </div>
                             </div>
                         </form>
             </div>
@@ -417,7 +442,7 @@ $userPrenom = $_SESSION['prenom'];
 
 
 <!-- Modal creation Prestataire -->
-<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true">
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -487,7 +512,7 @@ $userPrenom = $_SESSION['prenom'];
 
 
 <!-- Modal Courrier entrant -->
-<div class="modal fade" id="InterModal" tabindex="-1" aria-labelledby="InterModalLabel" aria-hidden="true">
+<div class="modal fade" id="InterModal" tabindex="-1" aria-labelledby="InterModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -569,7 +594,7 @@ $userPrenom = $_SESSION['prenom'];
 
 
 <!-- Modal creation Partenaire -->
-<div class="modal fade" id="ParModal" tabindex="-1" aria-labelledby="ParModalLabel" aria-hidden="true">
+<div class="modal fade" id="ParModal" tabindex="-1" aria-labelledby="ParModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -641,7 +666,7 @@ $userPrenom = $_SESSION['prenom'];
 </div>
 
 <!-- Modal checklist amélioré -->
-<div class="modal fade" id="formChecklist" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+<div class="modal fade" id="formChecklist" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
@@ -910,6 +935,82 @@ $userPrenom = $_SESSION['prenom'];
             }, 2000);
         }
             */
+
+
+         
+            function submitFormReception() {
+                
+                //alert('ok');
+                const form = document.getElementById("clientForm");
+                const formData = new FormData();
+
+                // Récupération des données
+                const id_prestataire = document.getElementById('site').value;
+                const tp = document.getElementById('tp').value;
+                const rd = document.getElementById('rd').value;
+                const numero_facture = document.getElementById('numero_facture').value;
+                const date_reception = document.getElementById('date_reception').value;
+                const periode_debut = document.getElementById('periode_debut').value;
+                const periode_fin = document.getElementById('periode_fin').value;
+                const moyen_reception = document.getElementById('moyen_reception').value;
+                const montant_facture = document.getElementById('montant_facture').value;
+                const fichier = form.querySelector('input[name="fichier_facture"]').files[0];
+
+                // Validation minimale
+                if (!fichier) {
+                    alert("Veuillez joindre un fichier de facture.");
+                    return;
+                }
+
+                // Formater la période comme tu veux : ici exemple : "2025-04-01 au 2025-04-30"
+                const periode_prestation = `${periode_debut} au ${periode_fin}`;
+
+                // Remplir le FormData
+                formData.append('id_prestataire', id_prestataire);
+                formData.append('tp', tp);
+                formData.append('rd', rd);
+                formData.append('numero_facture', numero_facture);
+                formData.append('date_reception', date_reception);
+                formData.append('periode_prestation', periode_prestation);
+                formData.append('moyen_reception', moyen_reception);
+                formData.append('montant_facture', montant_facture);
+                formData.append('statut', 1); // par défaut ou tu peux ajouter un champ
+                formData.append('fichier_facture', fichier);
+
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_rf.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Réponse API :", data);
+                    setTimeout(() => {
+                      //  button.disabled = false;
+                        //spinner.style.display = "none";
+
+                        if (data.success === true) {
+                            showToast('Facture enregistrée avec succès!', 'success');
+                            clearForm();
+                            form.reset();
+                        } else {
+                            showToast('Une erreur est survenue.', 'error');
+                        }
+                    }, 1000);
+                  
+                })
+                .catch(err => {
+                    setTimeout(() => {
+                        button.disabled = false;
+                        spinner.style.display = "none";
+
+                        showToast('Erreur lors de l\'enregistrement.' + error, 'error');
+                    //  console.error('Error:', error);
+                    }, 1000);
+                });
+            }
+
+
+   /*
     function submitFormReception() {
         const button = document.querySelector("button");
         const spinner = document.querySelector(".spinner");
@@ -917,7 +1018,7 @@ $userPrenom = $_SESSION['prenom'];
         // la date
         const today = new Date();
         const formattedDate = today.toISOString().split('T')[0];
-
+        const periode_prestation = "Du " + document.getElementById("periode_debut").value + " au " + document.getElementById("periode_fin").value
         const formData = {
             //site: 1,
             id_prestataire: document.getElementById("site").value,
@@ -925,9 +1026,10 @@ $userPrenom = $_SESSION['prenom'];
             rd: document.getElementById("rd").value,
             numero_facture: document.getElementById("numero_facture").value,
             date_reception: document.getElementById("date_reception").value,
-            periode_prestation: document.getElementById("periode_prestation").value,
+            periode_prestation: periode_prestation,
             moyen_reception: document.getElementById("moyen_reception").value,
-            montant_facture: document.getElementById("montant_facture").value
+            montant_facture: document.getElementById("montant_facture").value,
+            statut: 1
         };
 
         button.disabled = true;
@@ -966,7 +1068,7 @@ $userPrenom = $_SESSION['prenom'];
               //  console.error('Error:', error);
             }, 1000);
         });
-    }
+    }*/
 
     // clique bouton user
     function submitFormPresta(){
@@ -978,7 +1080,8 @@ $userPrenom = $_SESSION['prenom'];
             adresse: document.getElementById("adresse").value,
             contact: document.getElementById("contact").value,
             email: document.getElementById("email").value,
-            rib: document.getElementById("rib").value
+            rib: document.getElementById("rib").value,
+            statut:1
         };
         //alert('Bonjour' + formData['rib'] );
         button.disabled = true;

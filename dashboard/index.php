@@ -250,7 +250,7 @@ body{
 document.addEventListener("DOMContentLoaded", function() {
     
     // URL du endpoint backend
-    const apiUrl = 'http://localhost/crm-gga/app/codes/api/v1/dashboard.php';
+    const apiUrl = 'http://localhost:8080/crm-gga/app/codes/api/v1/dashboard.php';
     // Fonction pour récupérer les données du backend
     function fetchDashboardData() {
         fetch(apiUrl)

@@ -126,10 +126,10 @@ include_once(__DIR__ . '/Config/ParamDB.php');
         $query ="INSERT INTO banque(idcompte, libbanque, comptebanque, soldebanque) VALUES (:idcompte, :libbanque, :comptebanque, :soldebanque)";
         return $this->executeQuery($query, $data);
     }
-    public function updateSoldeBanque($idbanque,$solde){
+    public function updateSoldeBanque($idbanque,$soldebanque){
         
-        $req="SELECT solde FROM banque ORDER BY id_banque DESC LIMIT 1";
-        $result= $this->executeQuery($req);
+        $req="SELECT soldebanque FROM banque where idbanque=:idbanque ORDER BY idbanque DESC LIMIT 1";
+        $result= $this->executeQuery($req, [':idbanque' => $idbanque]);
         $anciensolde=0;
         if($result){
             $jb=$result[0];
@@ -137,14 +137,14 @@ include_once(__DIR__ . '/Config/ParamDB.php');
         }else{
             $anciensolde=0;
         }
-        $soldesave=$anciensolde + $solde;
+        $soldesave=$anciensolde + $soldebanque;
         $query="update banque set soldebanque = :soldebanque where idbanque = :idbanque";
-        return $this->executeQuery($query, [':idbanque' => $idbanque, ':solde' => $soldesave]);
+        return $this->executeQuery($query, [':idbanque' => $idbanque, ':soldebanque' => $soldesave]);
     }
-    public function reduireSoldeBanque($idbanque,$solde){
+    public function reduireSoldeBanque($idbanque,$soldebanque){
         
-        $req="SELECT solde FROM banque ORDER BY id_banque DESC LIMIT 1";
-        $result= $this->executeQuery($req);
+        $req="SELECT soldebanque FROM banque where idbanque=:$idbanque ORDER BY id_banque DESC LIMIT 1";
+        $result= $this->executeQuery($req, [':idbanque' => $idbanque]);
         $anciensolde=0;
         if($result){
             $jb=$result[0];
@@ -152,9 +152,9 @@ include_once(__DIR__ . '/Config/ParamDB.php');
         }else{
             $anciensolde=0;
         }
-        $soldesave=$anciensolde - $solde;
+        $soldesave=$anciensolde - $soldebanque;
         $query="update banque set soldebanque = :soldebanque where idbanque = :idbanque";
-        return $this->executeQuery($query, [':idbanque' => $idbanque, ':solde' => $soldesave]);
+        return $this->executeQuery($query, [':idbanque' => $idbanque, ':soldebanque' => $soldesave]);
     }
     public function getSoldecompte($idcompte){
         $query="SELECT solde FROM compte where idcompte= :idcompte";

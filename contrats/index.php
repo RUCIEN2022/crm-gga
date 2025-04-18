@@ -753,7 +753,7 @@ $userPrenom = $_SESSION['prenom'];
     <script>
 
 document.addEventListener("DOMContentLoaded", function() {
-    const apiUrl = 'http://localhost/crm-gga/app/codes/api/v1/gestion.php';
+    const apiUrl = 'http://localhost:8080/crm-gga/app/codes/api/v1/gestion.php';
 
     function fetchDataProd() {
         fetch(apiUrl)
