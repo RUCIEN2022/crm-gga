@@ -194,7 +194,7 @@
       const simulateDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
       await simulateDelay(3000);
       try {
-        const response = await fetch("http://localhost:8080/crm-gga/app/codes/api/v1/api_user.php/login", {
+        const response = await fetch("http://localhost/crm-gga/app/codes/api/v1/api_user.php/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(requestData),

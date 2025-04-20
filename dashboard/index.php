@@ -306,11 +306,13 @@ body{
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-<script>
+<script type="module">
+import { BASE_API_URL } from '../app/codes/models/Config/ConfigUrl_api.js';
 document.addEventListener("DOMContentLoaded", function() {
     
     // URL du endpoint backend
-    const apiUrl = 'http://localhost:8080/crm-gga/app/codes/api/v1/dashboard.php';
+    //const apiUrl = 'http://localhost/crm-gga/app/codes/api/v1/dashboard.php';
+    const apiUrl = BASE_API_URL + "dashboard.php";
     // Fonction pour récupérer les données du backend
     function fetchDashboardData() {
         fetch(apiUrl)

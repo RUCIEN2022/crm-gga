@@ -748,11 +748,11 @@ $userPrenom = $_SESSION['prenom'];
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="script.js"></script>
-    <script>
-
+    <script type="module">
+import { BASE_API_URL } from '../app/codes/models/Config/ConfigUrl_api.js';
 document.addEventListener("DOMContentLoaded", function() {
-    const apiUrl = 'http://localhost:8080/crm-gga/app/codes/api/v1/gestion.php';
-
+    //const apiUrl = 'http://localhost/crm-gga/app/codes/api/v1/gestion.php';
+    const apiUrl = BASE_API_URL + "gestion.php";
     function fetchDataProd() {
         fetch(apiUrl)
             .then(response => response.json())

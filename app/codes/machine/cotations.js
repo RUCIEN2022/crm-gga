@@ -14,6 +14,7 @@ const searchInput = document.getElementById("searchInput");
 
 // Fonction pour charger les types de contrat
 function chargerTypesContrat() {
+    const apiUrl = BASE_API_URL + "ggacontrat.php/getTypeContrat";
     fetch('http://localhost:8080/crm-gga/app/codes/api/v1/ggacontrat.php/getTypeContrat')
         .then(response => response.json())
         .then(data => {
