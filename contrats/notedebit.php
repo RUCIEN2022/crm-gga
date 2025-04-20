@@ -1,5 +1,5 @@
-
 <?php 
+//include_once("../app/codes/api/v1/processContrat.php");
 session_start();
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {//si on ne trouve aucun utilisateur
@@ -18,18 +18,81 @@ $userPrenom = $_SESSION['prenom'];
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Facture GGA</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <!-- CSS de Select2 -->
+
+    <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family:Verdana, Geneva, Tahoma, sans-serif;
+        body{
+            background-color: #f4f4f9;
+            font-size: 12px;
         }
-        .invoice-card {
-            max-width: 900px;
-            margin: 50px auto;
-            padding: 20px;
+   
+        /* Effet de tremblement (shake) */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-2px);
+    }
+    50% {
+        transform: translateX(2px);
+    }
+    75% {
+        transform: translateX(-1px);
+    }
+}
+
+/* Effet de pulsation (pulse) */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Animation pour la notification */
+.animate-notification {
+    animation: pulse 1.5s infinite; /* Remplacez `pulse` par `shake` pour l'effet tremblement */
+}
+
+.text-orange {
+    color:rgb(240, 235, 235); /* Orange */
+}
+
+
+        .user-info {
+    display: flex;
+    flex-direction: column; /* Organise les éléments en colonne */
+    align-items: center; /* Aligne le texte à gauche */
+}
+        .user-name {
+    font-weight: bold;
+    margin-bottom: 5px; /* Ajoute un espace entre le nom et l'heure */
+}
+        .time {
+    font-size: 1.5em;
+    color: gray; /* Ajoute une couleur plus discrète pour l'heure */
+}
+.invoice-card {
+           
+           
             border-radius: 10px;
         }
         .header-logo {
@@ -56,189 +119,204 @@ $userPrenom = $_SESSION['prenom'];
     border-radius: 15px 15px 15px 15px;    /* Arrondis en haut */
     padding: 15px;
     }
-
+        /* Animation fluide */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        
+        }
     </style>
 </head>
 <body>
-
-<?php
-/*
-    if (!isset($_GET['np'])) {
-        die("Numéro de police manquant !");
-    }
-
-    $numPolice = $_GET['np'];
-    $api_url = "http://localhost/crm-gga/app/codes/api/contrat.php?np=" . urlencode($numPolice);
-    
-    $response = file_get_contents($api_url);
-    $contrat = json_decode($response, true);
-
-    if (!$contrat || isset($contrat['error'])) {
-        die("Contrat non trouvé !");
-    }
-    */
-?>
-<div class="container">
+<div id="loader" class="loader" style="display: none;">
+    <img src="loader.gif" alt="Chargement..." />
+</div>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <?php include_once('navbar.php'); ?>
+        <div id="content">
+            <?php include_once('topbar.php'); ?>
+            <div id="facturePDF" class="container">
     <div class="card invoice-card shadow">
         <div class="card-body m-5">
-        <div class="header-logo d-flex justify-content-center mt-0">
-        <img src="../ressources/logogga2.PNG" alt="Logo GGA" class="img-fluid" style="width: 900px;margin-top: -70px;">
-        </div>
-
-            
+      
             <!-- Infos Client -->
-                <div class="d-flex justify-content-between pt-5">
+                <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                 <span style="display: inline-block; height: 45px; width: 10px; border-right: 3px solid #923a4d; margin-right: 10px;"></span>
-                <span class="fw-bold text-center rounded-3" style="background-color: #ccc; padding: 10px 100px;">
+                <span class="fw-bold text-center rounded-3" style="background-color: #ccc; padding: 10px 100px;font-size:14px">
                     Facture
                 </span>
                 
                 </div>
-
-
-                <div class="text-end">
-                    <h5 class="text-end fw-fold"><span id="codeND" style="font-size: 14px;"></span></h5>
+                <div class="row">
+                    <h5 id="codeND"></h5>
                 </div>
                 
             </div>
-            <div class="text-end pt-5">
-               
-                    <h5 class="text-end fw-fold"><span id="codeND" style="font-size: 14px;"></span></h5>
-                    <h5 class="fw-bold text-end" style="font-size: 14px;"><span id="nomclient"></span></h5>
-                    <p style="font-size: 14px;"><span id="adresseclient"></span><br>
-                       <span id="communevilleclient" style="text-decoration: underline;"></span><br>
-                    </p>
-                    <span class="text-center" style="font-size: 14px;">Date d'édition : <span id="dateedition"></span></span>
-                </div>
-            <!-- Message -->
-            <p class="mt-3" style="font-size: 14px;">Cher client,</p>
-            <p style="font-size: 12px;">Veuillez trouver la Facture N° <strong><span id="codeND"></span></strong>, correspondant aux 50% des honoraires de GGA pour <br> la gestion de la couverture médicale de vos agents et ayants droit en province.</p>
+            <div class="text-end pt-4 pe-2 p-3">
+            <h5 class="fw-bold mb-1 text-uppercase" id="nomclient" style="color: #0d6efd;"></h5>
+            
+            <p class="mb-1" style="font-size: 13px;">
+                <i class="bi bi-geo-alt-fill text-secondary"></i>
+                <span id="adresseclient"></span>
+            </p>
 
-            <!-- Détails Facture -->
-            <ul class="list-unstyled" style="font-size: 14px;">
-                <li>Période : Du <span id="dateeffet"></span> Au <span id="dateecheance"></span></li>
-                <li>Nombre de bénéficiaires : <span id="nombrebenef"></span></li>
-                <li>Cotisation totale : <span id="montantbudget"></span></li>
-                <li>Frais de gestion GGA : <span id="fraisgestion"></span></li>
-                <li>TVA sur Frais de gestion : <span id="tva"></span></li>
-                <li class="fw-bold" style="font-size: 14px;">Total Frais de gestion : <strong><span id="totalfraisgestion"></span></strong></li>
-            </ul>
-            <p class="" style="font-size: 14px;"><span id="pourcentagefraisgestion"></span> à reverser à la mise en place : <span id="montantfrais"></span></p>
-            <p><h5 style="font-size: 14px;">Nous restons à votre disposition pour toute information complémentaire.</h5></p>
-            <hr>
-            <!-- Infos Bancaires -->
-            <h5 class="text-start fw-bold text-uppercase mt-4" style="font-size: 12px;text-decoration:underline">
-                Merci de transférer les fonds uniquement sur le compte ci-dessous
+            <p class="mb-2" style="font-size: 13px;">
+                <strong>Ville : </strong><span id="communevilleclient" class="text-decoration-underline"></span>
+            </p>
+
+            <p class="text-muted fst-italic" style="font-size: 12px;">
+                <i class="bi bi-calendar-event me-1"></i>Édité le : <span id="dateedition"></span>
+            </p>
+        </div>
+
+            <!-- Message -->
+            
+
+            <div class="card shadow-sm p-4 mb-4 rounded-4 border-0" style="background-color: #ffffff;">
+                <p class="" style="font-size: 14px;">Cher client,</p>
+            <p style="font-size: 12px;">Veuillez trouver la Facture N° <strong><span id="codeND"></span></strong>, correspondant aux 50% des honoraires de GGA pour <br> la gestion de la couverture médicale de vos agents et ayants droit en province.</p>
+            <h5 class="mb-3 fw-semibold text-secondary">
+                <i class="bi bi-file-text me-2"></i>Détails de la Facture
             </h5>
 
-            <div class="row text-center mt-4">
-                <div class="col-md-6">
-                    <div class="bank-details text-start" style="font-size: 10px;">
-                        <h5 style="font-size: 12px;"><strong>Titulaire du compte :</strong> GGA RDC PRODUCTION</h5>
-                        <h5 style="font-size: 12px;"><strong>Domiciliation :</strong> BANK OF AFRICA</h5>
-                        <h5 style="font-size: 12px;"><strong>BIC :</strong> AFRICDKSXXX</h5>
-                        <h5 style="font-size: 12px;"><strong>RIB :</strong> 00029 01015 02118310024 69 (USD)</h5>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="bank-details text-start" style="font-size: 12px;">
-                        <h5 style="font-size: 12px;"><strong>Titulaire du compte :</strong> GGA RDC PRODUCTION</h5>
-                        <h5 style="font-size: 12px;"><strong>Domiciliation :</strong> RAWBANK</h5>
-                        <h5 style="font-size: 12px;"><strong>BIC :</strong> RAWBODKI</h5>
-                        <h5 style="font-size: 12px;"><strong>RIB :</strong> 05100-05101-010083563402-62 (USD)</h5>
-                    </div>
-                </div>
+            <table class="table table-bordered table-sm align-middle small">
+                <tbody>
+                <tr>
+                    <th style="width: 35%"><i class="bi bi-shield-lock-fill me-1 text-secondary"></i>Numéro de police</th>
+                    <td id="numeropolice" class="fw-bold text-dark"></td>
+                </tr>
+                <tr>
+                    <th><i class="bi bi-calendar-event me-1 text-secondary"></i>Période</th>
+                    <td>Du <span id="dateeffet"></span> au <span id="dateecheance"></span></td>
+                </tr>
+                <tr>
+                    <th><i class="bi bi-people-fill me-1 text-secondary"></i>Nombre de bénéficiaires</th>
+                    <td id="nombrebenef"></td>
+                </tr>
+                <tr>
+                    <th><i class="bi bi-cash me-1 text-secondary"></i>Cotisation totale</th>
+                    <td id="montantbudget" class="fw-medium text-success"></td>
+                </tr>
+                <tr>
+                    <th><i class="bi bi-gear-fill me-1 text-secondary"></i>Frais de gestion GGA</th>
+                    <td id="fraisgestion"></td>
+                </tr>
+                <tr>
+                    <th><i class="bi bi-percent me-1 text-secondary"></i>TVA sur frais de gestion</th>
+                    <td id="tva"></td>
+                </tr>
+                <tr class="table-light">
+                    <th class="fw-bold"><i class="bi bi-calculator me-1 text-primary"></i>Total frais de gestion</th>
+                    <td id="totalfraisgestion" class="fw-bold text-secondary"></td>
+                </tr>
+                <tr class="table-light">
+                    <th class="fw-bold"><i class="bi bi-calculator me-1 text-primary"></i><span id="pourcentagefraisgestion"></span> à reverser à la mise en place</th>
+                    <td id="montantfrais" class="fw-bold text-danger"></td>
+                </tr>
+                </tbody>
+            </table>
             </div>
+           
+            <hr>
+            <div class="row text-center mt-4">
+    <div class="col">
+        <button class="btn text-light me-2" style="background-color: #923a4d;">
+            <i class="fas fa-file-pdf"></i> Générer facture PDF
+        </button>
+        <button class="btn btn-primary me-2" style="background-color:rgb(58, 77, 146);">
+            <i class="fas fa-envelope"></i> Envoyer par mail
+        </button>
+        <button class="btn btn-secondary">
+            <i class="fas fa-times"></i> Fermer
+        </button>
+    </div>
+</div>
+
 
             <hr>
-
-            <!-- Signatures -->
-            <div class="row text-center mt-4">
-                <div class="col-md-6">
-                    <p class="fw-bold" style="font-size: 10px;"><span id="nomuser"></span> <?php echo $userPrenom. " ".$userNom;?></p>
-                    <p><a href="#" class="text-decoration-none" style="font-size: 12px;">Gestionnaire Production</a></p>
-                </div>
-                <div class="col-md-6">
-                    <p class="fw-bold" style="font-size: 10px;">Yves MOBOLAMA</p>
-                    <p><a href="#" class="text-decoration-none" style="font-size: 12px;">Directeur Général</a></p>
-                </div>
-            </div>
-            <div class="row text-start mt-5">
-                <div class="col-md-12">
-                    <p>
-                        <h5 style="font-size: 8px;"><span class="text-danger">GROUPEMENT DE GESTION ET D’ASSURANCE RDC</span> – S.A. AVEC CONSEIL D’ADMINISTRATION AU CAPITAL DE 10 000 USD ENTIEREMENT LIBERE. GESTIONNAIRE AGREE PAR L’ARCA SOUS N° 30001.</h5>
-                        <h5 style="font-size: 8px;">66 BOULEVARD DU 30 JUIN, IMMEUBLE RR HOUSE – 2ème ETAGE  - KINSHASA / GOMBE  – TEL : 081 889 6969 – RCCM CD/KNG/RCCM/18-B-00262 – ID NAT 01-83-N57853Z </h5>
-                        <h5 style="font-size: 8px;">N° IMPÔT A2030206F</h5>
-                    </p>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Récupérer le numéro de police depuis l'URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const numeroPolice = urlParams.get("np");
+    function chargerFacture(numeroPolice) {
+    const url = `http://localhost/crm-gga/app/codes/api/v1//ControllerGetContrat.php?np=${encodeURIComponent(numeroPolice)}`;
 
-    if (!numeroPolice) {
-        alert("Aucun numéro de police fourni !");
-        return;
-    }
-    function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("fr-FR"); // Convertit en JJ/MM/AAAA
-}
-
-function formatCurrency(value) {
-    return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(value);
-}
-    // Effectuer une requête AJAX pour récupérer les données
-    fetch(`../app/codes/api/v1/ControllerGetContrat.php?np=${numeroPolice}`)
-        .then(response => response.json())
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Erreur serveur : ${response.status}`);
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.error) {
-                alert("Contrat non trouvé !");
+                console.error('Erreur :', data.error);
                 return;
             }
+            function formatMontant(valeur) {
+    return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'USD' }).format(valeur);
+}
+            // Injection des données dans la page avec les bons ID
+            document.getElementById('nomclient').textContent = data.Client_name;
+            document.getElementById('adresseclient').textContent = data.adresse_entr;
+            document.getElementById('communevilleclient').textContent = data.ville_entr;
+            document.getElementById('montantbudget').textContent = formatMontant(data.prime_ttc);
+            document.querySelectorAll('#codeND').forEach(el => el.textContent = data.num_nd);
+            document.getElementById('pourcentagefraisgestion').textContent = data.modalite + ' %';
+            document.getElementById('nombrebenef').textContent = data.effectif_Benef;
+            document.getElementById('fraisgestion').textContent = formatMontant(data.frais_gga ?? 0);
+            document.getElementById('tva').textContent = formatMontant(data.tva ?? 0);
 
-            // Remplir les champs du document avec les données récupérées
-            document.getElementById("codeND").textContent = data.num_nd;
-            document.getElementById("nomclient").textContent = data.Client_name;
-            document.getElementById("adresseclient").textContent = data.adresse_entr;
-            document.getElementById("communevilleclient").textContent = data.ville_entr;
-            document.getElementById("dateeffet").textContent = formatDate(data.dateEffet);
-            document.getElementById("dateecheance").textContent = formatDate(data.dateEcheance);
-            document.getElementById("nombrebenef").textContent = data.effectif_Benef;
-            document.getElementById("montantbudget").textContent = formatCurrency(data.prime_ttc);
-            document.getElementById("fraisgestion").textContent = formatCurrency(data.frais_gga);
-            document.getElementById("pourcentagefraisgestion").textContent = formatCurrency(data.modalite);
-            document.getElementById("tva").textContent = formatCurrency(data.tva);
+            // Calcul du total des frais de gestion (frais + TVA)
+            const total = (parseFloat(data.frais_gga || 0) + parseFloat(data.tva || 0)).toFixed(2);
+            document.getElementById('totalfraisgestion').textContent = formatMontant(total);
 
-            // Calcul du total frais de gestion
-            document.getElementById("totalfraisgestion").textContent = formatCurrency(
-            parseFloat(data.frais_gga) + parseFloat(data.tva)
-        );
+            // Montant à reverser (50% de frais de gestion, par exemple)
+            const reverser = (total * (parseFloat(data.modalite || 0) / 100)).toFixed(2);
+            document.getElementById('montantfrais').textContent = formatMontant(reverser);
 
-        
-        const pourcentage = 50;
-            document.getElementById("pourcentagefraisgestion").textContent = pourcentage + "%";
-            const totalFraisGestion = (parseFloat(data.frais_gga) || 0) + (parseFloat(data.tva) || 0);
-            const montantFrais = (totalFraisGestion * pourcentage) / 100;
-            document.getElementById("montantfrais").textContent = formatCurrency(montantFrais);
-            function formatCurrency(value) {
-                return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "USD" }).format(value);
-            }
+            // Numéro de police
+            document.getElementById('numeropolice').textContent = data.numeropolice;
 
-
-            const today = new Date().toISOString().split("T")[0];
-            document.getElementById("dateedition").textContent = formatDate(today);
-
+            // Date édition
+            const now = new Date().toLocaleDateString('fr-FR');
+            document.getElementById('dateedition').textContent = now;
         })
-        .catch(error => console.error("Erreur lors de la récupération des données :", error));
+        .catch(error => {
+            console.error('Erreur de chargement :', error.message);
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const numeroPolice = urlParams.get('np');
+
+    if (numeroPolice) {
+        chargerFacture(numeroPolice);
+    } else {
+        console.warn('Numéro de police non fourni dans l\'URL.');
+    }
 });
+
 </script>
+
 
 
 </body>
