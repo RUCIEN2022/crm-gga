@@ -74,7 +74,9 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="../app/codes/machine/login.js"></script>
 
-  <script>
+  <script type="module">
+    import { BASE_API_URL } from '../app/codes/models/Config/ConfigUrl_api.js';
+    const apiUrl = BASE_API_URL + "api_user.php/login";
     const loginForm = document.getElementById("loginForm");
     const loginButton = document.getElementById("loginButton");
     const spinner = loginButton.querySelector(".spinner-border");
@@ -194,7 +196,7 @@
       const simulateDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
       await simulateDelay(3000);
       try {
-        const response = await fetch("http://localhost/crm-gga/app/codes/api/v1/api_user.php/login", {
+        const response = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(requestData),
@@ -232,9 +234,6 @@
       }
 });
   </script>
-<<<<<<< HEAD
 
-=======
->>>>>>> 6b44c833410003b750186074fae5e279f31eb3bf
 </body>
 </html>

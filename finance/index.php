@@ -109,7 +109,7 @@ $userPrenom = $_SESSION['prenom'];
         padding: 10px;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        max-width: 950px;
+        max-width: 650px;
         margin: 20px auto;
     }
 
@@ -243,17 +243,7 @@ $userPrenom = $_SESSION['prenom'];
                             <i class="bi bi-file-earmark-text"></i> Fonds de déroulement 
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" >
-                            <i class="bi bi-file-earmark-text"></i> Journal de Caisse
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" >
-                            <i class="bi bi-file-earmark-text"></i> Journal de Banque
-                        </a>
-                    </li>
+                
                     <li class="nav-item">
                         <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#BanqueModal">
                             <i class="bi bi-file-earmark-text"></i> Nos banques
@@ -261,7 +251,7 @@ $userPrenom = $_SESSION['prenom'];
                     </li>
                  
                     <li class="nav-item">
-                        <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#ParModal">
+                        <a href="reporting" class="nav-link" >
                             <i class="bi bi-file-earmark-text"></i> REPORTING
                         </a>
                     </li>
@@ -341,9 +331,18 @@ $userPrenom = $_SESSION['prenom'];
 
             <h5 class="text-secondary mb-3 d-flex justify-content-between align-items-center" >
            
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#clientModal" >
-                    <i class="bi bi-plus-circle"></i> Nouvelle Transaction
-                </button>
+               
+                <div class="btn-group" role="group" aria-label="Exportation">
+                    <button class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#clientModal" >
+                        <i class="bi bi-plus-circle"></i> Nouvelle Transaction
+                    </button>
+                     
+                    <button class="btn btn-outline-secondary btn-sm" onclick="window.open('../impression/impression_journal.php', '_blank')">
+                        <i class="bi bi-printer"></i> Imprimer le journal
+                    </button>
+                   
+               </div>
+
                 <input
                         type="text"
                         id="searchInput"
@@ -387,12 +386,13 @@ $userPrenom = $_SESSION['prenom'];
 
 
 <!-- Modal Journal -->
-<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
+<div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="clientModalLabel">Journal des transactions</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                
             </div>
             <div class="modal-body">
             <form id="clientForm" class="p-3">
@@ -490,7 +490,7 @@ $userPrenom = $_SESSION['prenom'];
 
 
 <!-- Modal creation utilisateur -->
-<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true">
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="UserModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -599,7 +599,7 @@ $userPrenom = $_SESSION['prenom'];
 </div>
 
 <!-- Modal creation site -->
-<div class="modal fade" id="SiteModal" tabindex="-1" aria-labelledby="SiteModalLabel" aria-hidden="true">
+<div class="modal fade" id="SiteModal" tabindex="-1" aria-labelledby="SiteModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -636,7 +636,7 @@ $userPrenom = $_SESSION['prenom'];
     </div>
 </div>
 <!-- Modal creation intermediaire -->
-<div class="modal fade" id="InterModal" tabindex="-1" aria-labelledby="InterModalLabel" aria-hidden="true">
+<div class="modal fade" id="InterModal" tabindex="-1" aria-labelledby="InterModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -715,7 +715,7 @@ $userPrenom = $_SESSION['prenom'];
 
 
 <!-- Modal creation Fond deroulement -->
-<div class="modal fade" id="ParModal" tabindex="-1" aria-labelledby="ParModalLabel" aria-hidden="true">
+<div class="modal fade" id="ParModal" tabindex="-1" aria-labelledby="ParModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -839,7 +839,7 @@ $userPrenom = $_SESSION['prenom'];
 </div>
 
 <!-- Modal checklist amélioré -->
-<div class="modal fade" id="formChecklist" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+<div class="modal fade" id="formChecklist" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-danger text-white">
@@ -1932,20 +1932,37 @@ $userPrenom = $_SESSION['prenom'];
          alert("veuillez sélectionner le compte ");
          return;
      }
-      if(idcompte === 1){
-           banque = document.getElementById("bankList").value;
-            if(banque == "0" || banque == ""){
-                alert("Veuillez sélectionner une banque.");
-                return;
-            }else{
-                soldebanque = parseFloat(document.getElementById("soldebanque").value) + montant;
-            }
-      }
-
-      if(montant == "" ||  montant === 0){
+     if(montant == "" ||  montant === 0){
          alert("veuillez saisir le montant ");
          return;
      }
+      if(idcompte === 1){
+           banque = document.getElementById("bankList").value;
+           if(typeOperation === 1 ) {
+                if(banque == "0" || banque == ""){
+                    alert("Veuillez sélectionner une banque.");
+                    return;
+                }else{
+                    soldebanque = parseFloat(document.getElementById("soldebanque").value) + montant;
+                }
+           }else if(typeOperation === 2 ){
+                if(banque == "0" || banque == ""){
+                    alert("Veuillez sélectionner une banque.");
+                    return;
+                }else{
+                    if(parseFloat(document.getElementById("soldebanque").value) === montant || parseFloat(document.getElementById("soldebanque").value) > montant){
+                        soldebanque = parseFloat(document.getElementById("soldebanque").value) - montant;
+                    }else{
+                        alert("Solde insuffisant a la banque ");
+                        return;
+                    }
+                    
+                }
+           }
+            
+      }
+
+     
         //type =1 recette 2= depense
         if(typeOperation === 1 ) {
             montantcredit = montant;
@@ -1972,6 +1989,7 @@ $userPrenom = $_SESSION['prenom'];
             //alert("ok " + typeOperation );
         }else{
           alert("Veuillez sélectionner une opération.");
+          return;
         }
        
         const dataJO = {
@@ -2009,7 +2027,7 @@ $userPrenom = $_SESSION['prenom'];
             soldebanque: soldebanque
         };
          
-        alert('banque ' + banque + ' ' + soldebanque);
+       // alert('banque ' + banque + ' ' + soldebanque);
 
         button.disabled = true;
         spinner.style.display = "inline-block";

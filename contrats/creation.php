@@ -1,6 +1,6 @@
 <?php 
 include_once("../app/codes/api/v1/processContrat.php");
-session_start();
+//session_start();
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {//si on ne trouve aucun utilisateur
     header("Location: ../login/"); // on redirige vers la page de connexion si non connecté

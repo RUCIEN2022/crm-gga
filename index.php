@@ -58,6 +58,9 @@ switch ($request) {
     case 'contrats/cotation':
         include 'contrats/cotations.php';
         break;
+    case 'impression':
+            include 'impression/impression_journal.php';
+            break;
         
     case 'contrats/rapports':
         include 'contrats/reporting.php';
@@ -90,8 +93,11 @@ switch ($request) {
     case 'admin/prestataires':
         include 'admin/prestataires.php';
         break;
-    case 'finances':
-        include 'finances/index.php';
+    case 'finance':
+        include 'finance/index.php';
+        break;
+    case 'finance/reporting':
+        include 'finance/reporting.php';
         break;
     case 'facture':
         include 'facture/index.php';

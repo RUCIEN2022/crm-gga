@@ -92,7 +92,20 @@ try {
                 if($result){
                     $response = ['status' => 200, 'message' => 'Banque enregistrée'];
                 }
-            }else {
+            }elseif($action === 'afficherJO'){
+                $data = json_decode(file_get_contents("php://input"), true);
+                $response = $fina->getJournalParDate($data);
+
+            }elseif($action === 'rechercheJB'){
+                $data = json_decode(file_get_contents("php://input"), true);
+                $response = $fina->getJB($data);
+
+            }elseif($action === 'rechercheJC'){
+                $data = json_decode(file_get_contents("php://input"), true);
+                $response = $fina->getJC($data);
+
+            }
+            else {
                 http_response_code(405); // methode non autorisée
                 $response = ['status' => 405, 'message' => 'Méthode incorecte'];
             }

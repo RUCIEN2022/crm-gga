@@ -240,7 +240,7 @@ $userPrenom = $_SESSION['prenom'];
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="./creation" class="nav-link">
+                        <a href="./creations" class="nav-link">
                             <i class="bi bi-file-earmark-plus"></i> Créer contrat
                         </a>
                     </li>

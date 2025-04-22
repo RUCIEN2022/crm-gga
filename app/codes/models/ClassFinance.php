@@ -200,18 +200,65 @@ include_once(__DIR__ . '/Config/ParamDB.php');
         return $this->executeQuery($query);
 
     }
+    public function getJC($data){
+        $date1= $data['date1'];
+        $date2=$data['date2'];
+        $query = "SELECT id_operation, date_operation, beneficiaire, entree_fond, sortie_fond, solde, refer FROM journal_caisse
+                  WHERE date_operation BETWEEN :date1 AND :date2
+                  ORDER BY id_operation ASC";
+    
+        return $this->executeQuery($query, [
+            ':date1' => $date1,
+            ':date2' => $date2
+        ]);
+    }
     public function getListeJB(){
         $query = "SELECT id_operation, date_operation, beneficiaire, entree_fond, sortie_fond, 
         solde, refer, idcompte, idbanque FROM journal_banque ";
         return $this->executeQuery($query);
 
     }
+    public function getJB($data){
+        $date1= $data['date1'];
+        $date2=$data['date2'];
+        $query = "SELECT J.id_operation, date_operation, beneficiaire, entree_fond, sortie_fond, 
+        solde, refer, libbanque FROM journal_banque J INNER JOIN banque B on B.idbanque=J.idbanque
+                  WHERE J.date_operation BETWEEN :date1 AND :date2
+                  ORDER BY J.date_operation ASC";
+    
+        return $this->executeQuery($query, [
+            ':date1' => $date1,
+            ':date2' => $date2
+        ]);
+    }
     public function getListeJO(){
         $query = "SELECT J.idjo, libcompte, datejour, typeOperation, montant, motif, beneficiaire, montantcredit,
-        montantdebit FROM journal_operation J INNER join compte c on c.idcompte=J.idcompte WHERE DATE(J.datejour) = CURDATE()";
+        montantdebit,J.solde FROM journal_operation J INNER join compte c on c.idcompte=J.idcompte WHERE DATE(J.datejour) = CURDATE()";
         return $this->executeQuery($query);
 
     }
+    /*public function getJournalParDate($date1, $date2){
+        $query = "SELECT J.idjo, libcompte, datejour, typeOperation, montant, motif, beneficiaire, montantcredit,
+        montantdebit,J.solde FROM journal_operation J INNER join compte c on c.idcompte=J.idcompte WHERE DATE(J.datejour) BETWEEN :date1 AND :date2  ORDER BY DATE(datejour) ASC";
+        return $this->executeQuery($query, [':date1' => $date1, ':date2' => $date2]);
+
+    }*/
+    public function getJournalParDate($data){
+        $date1= $data['date1'];
+        $date2=$data['date2'];
+        $query = "SELECT J.idjo, libcompte, datejour, typeOperation, montant, motif, beneficiaire, montantcredit,
+                  montantdebit, J.solde
+                  FROM journal_operation J
+                  INNER JOIN compte c ON c.idcompte = J.idcompte
+                  WHERE J.datejour BETWEEN :date1 AND :date2
+                  ORDER BY J.datejour ASC";
+    
+        return $this->executeQuery($query, [
+            ':date1' => $date1,
+            ':date2' => $date2
+        ]);
+    }
+    
     //mes fonctions supplementaire
     public function listeContrat(){
         $query = "SELECT numero_police FROM police_contrat where etat_contrat=1 ";

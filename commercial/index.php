@@ -953,7 +953,7 @@ $userPrenom = $_SESSION['prenom'];
         document.addEventListener('DOMContentLoaded', fetchPartners);
 
         function fetchPartners() {
-            fetch('http://localhost/crm-gga/app/codes/api/v1/api_finance.php/JO')
+            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/JO')
                 .then(response => response.json())
                 .then(data => {
                     const tableBody = document.querySelector('#journalTable tbody');
@@ -1126,7 +1126,7 @@ $userPrenom = $_SESSION['prenom'];
         spinner.style.display = "inline-block";
        // console.log("Données envoyées :", formData);
 
-        fetch('http://localhost/crm-gga/app/codes/api/v1/api_com.php/vente', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/vente', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1221,7 +1221,7 @@ $userPrenom = $_SESSION['prenom'];
         spinner.style.display = "inline-block";
         console.log("Données envoyées :", formData);
 
-        fetch('http://localhost/crm-gga/app/codes/api/v1/api_client.php/create', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_client.php/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1276,7 +1276,7 @@ $userPrenom = $_SESSION['prenom'];
         spinner.style.display = "inline-block";
        // console.log("Données envoyées :", formData);
 
-        fetch('http://localhost/crm-gga/app/codes/api/v1/api_com.php/createprospect', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/createprospect', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1336,7 +1336,7 @@ $userPrenom = $_SESSION['prenom'];
         spinner.style.display = "inline-block";
        // console.log("Données envoyées :", formData);
 
-        fetch('http://localhost/crm-gga/app/codes/api/v1/api_parametres.php/create1', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_parametres.php/create1', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1387,7 +1387,7 @@ $userPrenom = $_SESSION['prenom'];
         button.disabled = true;
         spinner.style.display = "inline-block";
 
-        fetch('http://localhost/crm-gga/app/codes/api/v1/api_com.php/createproduit', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/createproduit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -1426,7 +1426,7 @@ $userPrenom = $_SESSION['prenom'];
         document.addEventListener('DOMContentLoaded', function(){
            
                 // charger type prospect
-                fetch('http://localhost/crm-gga/app/codes/api/v1/api_com.php/moyens')
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/moyens')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
@@ -1456,7 +1456,7 @@ $userPrenom = $_SESSION['prenom'];
               
                 
                 // charger client
-                fetch('http://localhost/crm-gga/app/codes/api/v1/api_com.php/clientpro')
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/clientpro')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
@@ -1485,7 +1485,7 @@ $userPrenom = $_SESSION['prenom'];
 
            
                 // charger produit
-                fetch('http://localhost/crm-gga/app/codes/api/v1/api_com.php/produit')
+                fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/produit')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
@@ -1515,7 +1515,7 @@ $userPrenom = $_SESSION['prenom'];
            
 
                  // combo banque
-                 fetch('http://localhost/crm-gga/app/codes/api/v1/api_com.php/tp')
+                 fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/tp')
                 .then(response => response.json())
                 .then(data => {
                     // Vérifier si la réponse est un tableau
@@ -1590,7 +1590,7 @@ $userPrenom = $_SESSION['prenom'];
         // chargement de la page affichage de statistiques
         document.addEventListener('DOMContentLoaded', function(){
             // chargeSite
-            fetch('http://localhost/crm-gga/app/codes/api/v1/api_com.php/total')
+            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_com.php/total')
                 .then(response => response.json())
                 .then(data => {
                     // recuperation de statistiques
@@ -1633,7 +1633,7 @@ $userPrenom = $_SESSION['prenom'];
             return;
         }
 
-        fetch(`http://localhost/crm-gga/app/codes/api/v1/api_solde.php?idcompte=${idcompte}`)
+        fetch(`http://localhost:8080/crm-gga/app/codes/api/v1/api_solde.php?idcompte=${idcompte}`)
             .then(response => response.json())
             .then(data => {
                 soldeField.value = data.solde;
@@ -1777,7 +1777,7 @@ $userPrenom = $_SESSION['prenom'];
         button.disabled = true;
         spinner.style.display = "inline-block";
 
-        fetch('http://localhost/crm-gga/app/codes/api/v1/api_finance.php/create_JO', {
+        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/api_finance.php/create_JO', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
