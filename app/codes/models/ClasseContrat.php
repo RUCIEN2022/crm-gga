@@ -28,6 +28,9 @@ class Contrat {
             return false;
         }
     }
+    public function lastInsertId() {
+        return $this->conn->lastInsertId();
+    }
     
     
    
@@ -136,6 +139,67 @@ $val_frais_gest, $tva, $pource_app_fond, $val_app_fond, $seuil, $gestionnaire_id
         	return false;
         }
     }
+    public function EnregistrerContrat($dataPC, $dataPAS, $dataPAT, $dataND){
+        try {
+            $conn = new connect();
+    
+            // Étape 1 : Insertion dans police_contrat
+            $sqlPC = "INSERT INTO police_contrat (
+                idclient, type_contrat, etat_contrat, couverture, effectif_Benef, numero_police, 
+                effectif_agent, effectif_conjoint, effectif_enfant, pource_frais_gest, 
+                val_frais_gest, tva, pource_app_fond, val_app_fond, seuil, 
+                gestionnaire_id, idutile, datecreate
+            ) VALUES (
+                '".$dataPC['idclient']."', '".$dataPC['type_contrat']."', '".$dataPC['etat_contrat']."', '".$dataPC['couverture']."', '".$dataPC['effectif_Benef']."', 
+                '".$dataPC['numero_police']."', '".$dataPC['effectif_agent']."', '".$dataPC['effectif_conjoint']."', '".$dataPC['effectif_enfant']."', 
+                '".$dataPC['pource_frais_gest']."', '".$dataPC['val_frais_gest']."', '".$dataPC['tva']."', '".$dataPC['pource_app_fond']."', 
+                '".$dataPC['val_app_fond']."', '".$dataPC['seuil']."', '".$dataPC['gestionnaire_id']."', '".$dataPC['idutile']."', CURRENT_TIMESTAMP
+            )";
+    
+            $result = $conn->fx_ecriture($sqlPC);
+    
+            if (!$result) {
+                throw new Exception("Erreur lors de l'enregistrement du contrat.");
+            }
+    
+            // Récupération de l'ID du contrat inséré
+            $idcontrat = $conn->lastInsertId(); // Méthode à implémenter dans ta classe connect si elle n'existe pas déjà
+    
+            // Préparation des données enfants avec l'ID du contrat
+            $dataND['idcontrat'] = $idcontrat;
+    
+            if ($dataPC['type_contrat'] == 1) {
+                $dataPAS['idcontrat'] = $idcontrat;
+                $this->creerPoliceAssurance(
+                    $dataPAS['idcontrat'], $dataPAS['idpartenaire'], $dataPAS['prime_nette'], 
+                    $dataPAS['accessoire'], $dataPAS['prime_ttc'], $dataPAS['intermediaire_id'], 
+                    $dataPAS['cocher_reassur'], $dataPAS['reassureur'], $dataPAS['quote_part_assureur'], 
+                    $dataPAS['quote_part_reassur'], $dataPAS['paie_sin_assur'], $dataPAS['paie_sin_gga'], 
+                    $dataPAS['dateEffet'], $dataPAS['dateEcheance']
+                );
+            } elseif ($dataPC['type_contrat'] == 2) {
+                $dataPAT['idcontrat'] = $idcontrat;
+                $this->creerContratAutoFinance(
+                    $dataPAT['idcontrat'], $dataPAT['budget_total'], 
+                    $dataPAT['fg_index_sin'], $dataPAT['modalite_compl']
+                );
+            }
+    
+            // Enregistrement de la facture dans tous les cas
+            $this->creerFacture_FraisGGA(
+                $dataND['idcontrat'], $dataND['num_nd'], $dataND['date_edit'], 
+                $dataND['amount_contrat'], $dataND['frais_gga'], $dataND['tva'], 
+                $dataND['modalite'], $dataND['etatfact'], $dataND['idutile']
+            );
+    
+            return true;
+    
+        } catch (Exception $e) {
+            // Tu peux aussi faire un log ici si besoin
+            return false;
+        }
+    }
+    
      //insert mouvement
      public function CreerMouvementContrat($data) {
        
@@ -543,9 +607,11 @@ public function getIdSiteByUser($idutile) {
                 c.idclient, c.den_social AS Client_name, c.pays_entr, 
                 c.ville_entr, c.adresse_entr, pc.datecreate, pc.couverture,  
                 pc.effectif_Benef, p.denom_social AS assureur, pa.prime_ttc,
-                pa.dateEffet, pa.dateEcheance
+                pa.dateEffet, pa.dateEcheance,nd.num_nd,nd.date_edit,nd.amount_contrat,
+               nd.frais_gga,nd.tva,nd.modalite
             FROM police_contrat AS pc
             INNER JOIN police_assurance AS pa ON pc.idcontrat = pa.idcontrat
+            INNER JOIN notedebit AS nd ON pc.idcontrat = nd.idcontrat
             INNER JOIN partenaire AS p ON pa.idpartenaire = p.idpartenaire
             INNER JOIN client AS c ON pc.idclient = c.idclient
             INNER JOIN typecontrat AS tc ON pc.type_contrat = tc.idtype
@@ -553,30 +619,27 @@ public function getIdSiteByUser($idutile) {
         ";
 
         $result = (new connect())->fx_lecture($query, [':numero_police' => $numero_police]);
-
-        return !empty($result) ? $result[0] : null; // Retourne un seul résultat (ou null si vide)
+        return !empty($result) ? $result[0] : null;
     }
-
-    /**
-     * Récupérer les détails d'un contrat auto par son numéro de police.
-     */
     public function FindContrats_auto($numero_police) {
         $query = "
-            SELECT 
+           SELECT 
                 pc.idcontrat, pc.etat_contrat, pc.datecreate, tc.libtype, 
                 pc.numero_police, c.idclient, c.den_social AS Client_name, 
                 c.pays_entr, c.ville_entr, c.adresse_entr, pc.couverture,  
-                pc.effectif_Benef, COALESCE(ca.budget_total, 0) AS budget_total
+                pc.effectif_Benef, COALESCE(ca.budget_total, 0) AS budget_total,
+               nd.num_nd,nd.date_edit,nd.amount_contrat,
+               nd.frais_gga,nd.tva,nd.modalite
             FROM police_contrat AS pc
             INNER JOIN contrat_autofinance AS ca ON pc.idcontrat = ca.idcontrat
+            INNER JOIN notedebit AS nd ON pc.idcontrat = nd.idcontrat
             INNER JOIN client AS c ON pc.idclient = c.idclient
             INNER JOIN typecontrat AS tc ON pc.type_contrat = tc.idtype
             WHERE pc.numero_police = :numero_police
         ";
 
         $result = (new connect())->fx_lecture($query, [':numero_police' => $numero_police]);
-
-        return !empty($result) ? $result[0] : null; // Retourne un seul résultat (ou null si vide)
+        return !empty($result) ? $result[0] : null;
     }
     
     public function ContratEnCours() {
@@ -1120,6 +1183,18 @@ ORDER BY
         $query = "SELECT * FROM typecontrat";
         return $this->executeQuery($query);
     }
+    public function getTypeContratByNumPolice($numero_police) {
+        $query = "
+            SELECT tc.libtype
+            FROM police_contrat pc
+            INNER JOIN typecontrat tc ON pc.type_contrat = tc.idtype
+            WHERE pc.numero_police = :numero_police
+        ";
+    
+        $result = (new connect())->fx_lecture($query, [':numero_police' => $numero_police]);
+        return !empty($result) ? $result[0]['libtype'] : null;
+    }
+    
     public function getGestionnaire() {
         $query = "SELECT * FROM agent";
         return $this->executeQuery($query);

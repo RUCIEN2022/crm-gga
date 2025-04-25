@@ -1761,7 +1761,7 @@ fetchTraitements();
         if (result.isConfirmed) {
             btn.disabled = true;
 
-            fetch('http://localhost:8080/crm-gga/app/codes/api/v1/valider_facture.php', {
+            fetch('http://localhost/crm-gga/app/codes/api/v1/valider_facture.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 <?php 
 //include_once("../app/codes/api/v1/processContrat.php");
-//session_start();
+session_start();
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {//si on ne trouve aucun utilisateur
     header("Location: ../login/"); // on redirige vers la page de connexion si non connecté
@@ -203,7 +203,7 @@ $userPrenom = $_SESSION['prenom'];
             <form id="clientForm" method="POST">
                 <div class="form-section">
                 <div class="row g-3">
-                <span class="fw-bold text-danger" style="font-size: 16px;">Mise en place contrat / <span class="fw-bold text-dark" id="typecont" style="font-size: 16px;"></span></span> 
+                <span class="fw-bold text-danger" style="font-size: 16px;">Mise en placeeeeeeeeeeee contrat / <span class="fw-bold text-dark" id="typecont" style="font-size: 16px;"></span></span> 
                 <hr>
                 <div class="col-md-3">
                         <label for="typecontrat" class="form-label">Type Police</label>
@@ -548,7 +548,7 @@ function calculateValModFact() {
 <script>
 document.getElementById('BtnSaveContrat').addEventListener('click', async function () {
     const btn = this;
-    const form = document.getElementById('clientForm');
+    const form = document.getElementById('clientForm'); // Remplace par l'ID exact de ton formulaire
 
     if (!form) {
         Swal.fire({
@@ -566,7 +566,7 @@ document.getElementById('BtnSaveContrat').addEventListener('click', async functi
 
     const confirmation = await Swal.fire({
         title: 'Confirmer l\'enregistrement ?',
-        text: 'Confirmez-vous la création de ce contrat ?',
+        text: 'Voulez-vous vraiment enregistrer ce contrat ?',
         icon: 'question',
         showCancelButton: true,
         confirmButtonText: 'Oui, enregistrer',
@@ -581,19 +581,6 @@ document.getElementById('BtnSaveContrat').addEventListener('click', async functi
         const formData = new FormData(form);
 
         try {
-            // Affiche le loader avec le texte "En cours de création..."
-            Swal.fire({
-                title: 'En cours de création...',
-                html: 'Veuillez patienter un instant.',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            // Attendre 4 secondes avant d’envoyer les données
-            await new Promise(resolve => setTimeout(resolve, 4000));
-
             const response = await fetch('http://localhost/crm-gga/app/codes/api/v1/ajoutcontrat.php', {
                 method: 'POST',
                 body: formData
@@ -605,17 +592,10 @@ document.getElementById('BtnSaveContrat').addEventListener('click', async functi
                 await Swal.fire({
                     icon: 'success',
                     title: 'Succès !',
-                    html: data.message, // Affiche le message avec balises HTML (ex : <strong>)
+                    text: data.message,
                     confirmButtonText: 'OK'
                 });
-
-                form.reset();
-
-                // Redirection vers la page de note de débit avec le numéro de police
-                if (data.numPolice) {
-                    window.location.href = `./notedebit?np=${encodeURIComponent(data.numPolice)}`;
-                }
-
+                form.reset(); // réinitialise le formulaire après succès
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -624,7 +604,6 @@ document.getElementById('BtnSaveContrat').addEventListener('click', async functi
                     confirmButtonText: 'OK'
                 });
             }
-
         } catch (error) {
             console.error(error);
             Swal.fire({
@@ -638,8 +617,6 @@ document.getElementById('BtnSaveContrat').addEventListener('click', async functi
         }
     }
 });
-
-
 </script>
 
 

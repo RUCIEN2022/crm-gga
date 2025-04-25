@@ -6,7 +6,7 @@ include_once(__DIR__ . '/../../models/ClassFinance.php');
 
 $fina = new Finance();
 $result = $fina->getJournalParDate();
-
+echo json_encode( result ['solde' => $result[0]['solde']]);
 /*
 if (isset($_GET['date1']) && isset($_GET['date2'])) {
     $date1 = $_GET['date1'];

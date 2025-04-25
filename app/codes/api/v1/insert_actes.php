@@ -5,6 +5,8 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
 include_once(__DIR__ . '/../../models/ClasseMedical.php');
+$chemin = __DIR__ . "/../../../../../ressources/";
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $requiredFields = ['zactes', 'nom_assure', 'contrat', 'montant', 'date_soin', 'prestataire', 'iduser'];

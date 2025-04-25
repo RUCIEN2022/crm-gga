@@ -71,6 +71,7 @@ include_once(__DIR__ . '/Config/ParamDB.php');
     public function InsertJournalOp($data){
         
            //recuperation solde
+           /*
            $req="SELECT solde FROM journal_operation ORDER BY id_operation DESC LIMIT 1";
            $result= $this->executeQuery($req);
            if($result){
@@ -79,7 +80,7 @@ include_once(__DIR__ . '/Config/ParamDB.php');
            }else{
                $data['solde'] = $data['montantcredit'] - $data['montantdebit'];
            }
-   
+   */
 
         $query ="INSERT INTO journal_operation(idcompte, datejour, typeOperation, montant, motif, beneficiaire, 
         montantcredit, montantdebit, solde,ref_oper) VALUES (:idcompte, :datejour, :typeOperation, :montant, :motif, :beneficiaire, 
@@ -127,19 +128,21 @@ include_once(__DIR__ . '/Config/ParamDB.php');
         return $this->executeQuery($query, $data);
     }
     public function updateSoldeBanque($idbanque,$soldebanque){
-        
+        /*
         $req="SELECT soldebanque FROM banque where idbanque=:idbanque ORDER BY idbanque DESC LIMIT 1";
         $result= $this->executeQuery($req, [':idbanque' => $idbanque]);
         $anciensolde=0;
         if($result){
             $jb=$result[0];
             $anciensolde=$jb['soldebanque'];
+            
         }else{
             $anciensolde=0;
         }
         $soldesave=$anciensolde + $soldebanque;
+        */
         $query="update banque set soldebanque = :soldebanque where idbanque = :idbanque";
-        return $this->executeQuery($query, [':idbanque' => $idbanque, ':soldebanque' => $soldesave]);
+        return $this->executeQuery($query, [':idbanque' => $idbanque, ':soldebanque' => $soldebanque]);
     }
     public function reduireSoldeBanque($idbanque,$soldebanque){
         

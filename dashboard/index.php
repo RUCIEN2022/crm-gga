@@ -309,25 +309,20 @@ body{
 <script type="module">
 import { BASE_API_URL } from '../app/codes/models/Config/ConfigUrl_api.js';
 document.addEventListener("DOMContentLoaded", function() {
-    
-    // URL du endpoint backend
     //const apiUrl = 'http://localhost/crm-gga/app/codes/api/v1/dashboard.php';
     const apiUrl = BASE_API_URL + "dashboard.php";
-    // Fonction pour récupérer les données du backend
     function fetchDashboardData() {
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
                 if (data.success) {
-                  
                     // totalContrats
                     document.getElementById('totalContrats').textContent = data.data.totalContrats[0].total_contrats;
                     // fraisGestion
                     const fraisGestion = data.data.fraisGestion[0].frais_gest;
                     document.getElementById('fraisGestion').textContent = (fraisGestion ? parseFloat(fraisGestion).toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $' : '0 us$');
-
-                    // Vérification de la présence des données pour 'totalBeneficiaires'
+                    // Vérifi de la présence des données pour 'totalBeneficiaires'
                     const totalBeneficiaires = data.data.totalBeneficiaires[0].total_beneficiaires;
                     document.getElementById('totalBeneficiaires').textContent = (totalBeneficiaires ? totalBeneficiaires : '0');
 

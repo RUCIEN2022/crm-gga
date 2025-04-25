@@ -1969,14 +1969,16 @@ $userPrenom = $_SESSION['prenom'];
             montantdebit = 0;
             liboperation="Recette";
             soldeData= soldeData + montant;
+            
             //alert("ok " + typeOperation + " " + montantcredit + " " + montantdebit + " " + banque );
         }else if(typeOperation === 2 ){
             if(soldeData > 0 ){
                 if(soldeData > montant || soldeData === montant){
                     montantcredit = 0;
                     montantdebit = montant ;
-                    liboperation = "Depense"
+                    liboperation = "Depense";
                     soldeData = soldeData - montant;
+                    alert("solde " + soldeData + " Montant " + montant );
                 }else{
                     alert("Le solde est insuffisant pour la depense. ");
                     return;
@@ -1991,7 +1993,7 @@ $userPrenom = $_SESSION['prenom'];
           alert("Veuillez sélectionner une opération.");
           return;
         }
-       
+     
         const dataJO = {
             idcompte: idcompte,
             datejour: datejour,
@@ -2014,6 +2016,7 @@ $userPrenom = $_SESSION['prenom'];
             idcompte: idcompte,
             idbanque: banque
         };
+        alert(" recette solde " + soldebanque + " Montant " + montant );
         const dataJC = {
             date_operation: datejour,
             beneficiaire: beneficiaire,

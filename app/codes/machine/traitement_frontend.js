@@ -1,4 +1,5 @@
 
+
 document.getElementById('reassurance').addEventListener('change', function () {
     const reassuranceFields = document.getElementById('reassurance-fields');
     const reassureur = document.getElementById('reassureur');
@@ -121,8 +122,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const typepolice = document.getElementById('typecont');
 
     // Fonction pour charger les types de contrat
+    
     function chargerTypesContrat() {
-        fetch('http://localhost:8080/crm-gga/app/codes/api/v1/ggacontrat.php/getTypeContrat')
+       // const apiUrl = BASE_API_URL + "ggacontrat.php/getTypeContrat";
+      //  fetch(apiUrl)
+        fetch('http://localhost/crm-gga/app/codes/api/v1/ggacontrat.php/getTypeContrat')
             .then(response => response.json())
             .then(data => {
                 if (data.status === 200) {
